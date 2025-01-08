@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MovieApp.Core.Entities.Base;
 
-public class BaseEntity
+public abstract class BaseEntity
 {
-    public int Id{ get; set; }
+    public int Id { get; set; }
     public DateTime CreatedTime { get; set; }
     public bool IsDeleted { get; set; }
 }
