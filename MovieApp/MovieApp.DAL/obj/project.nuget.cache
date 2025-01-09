@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "7DAvWCuZcdeXRhEIkdg9fPSmGJ5vw7NCK1UlMuIzr44yj5n+rMkWogEqutLIBOQrAJsC5ECzhHpgR+BFTZcjtA==",
+  "dgSpecHash": "1SCyUoBykTArpZRqzCaye67SAmm+JzuvoFn+XKcvzG38794fNd5fxHFwEiNjZQpatQN2ATNPoSRM7qAGUnDF9A==",
   "success": true,
-  "projectFilePath": "C:\\Users\\ll Novbe\\Desktop\\Movie-API\\MovieApp\\MovieApp.DAL\\MovieApp.DAL.csproj",
+  "projectFilePath": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/MovieApp.DAL.csproj",
   "expectedPackageFiles": [],
   "logs": []
 }

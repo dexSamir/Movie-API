@@ -8,24 +8,25 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\ll Novbe\\.nuget\\packages\\": {}
+    "/Users/samirhebibov/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\ll Novbe\\Desktop\\Movie-API\\MovieApp\\MovieApp.BL\\MovieApp.BL.csproj",
+      "projectUniqueName": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/MovieApp.BL.csproj",
       "projectName": "MovieApp.BL",
-      "projectPath": "C:\\Users\\ll Novbe\\Desktop\\Movie-API\\MovieApp\\MovieApp.BL\\MovieApp.BL.csproj",
-      "packagesPath": "C:\\Users\\ll Novbe\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\ll Novbe\\Desktop\\Movie-API\\MovieApp\\MovieApp.BL\\obj\\",
+      "projectPath": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/MovieApp.BL.csproj",
+      "packagesPath": "/Users/samirhebibov/.nuget/packages/",
+      "outputPath": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\ll Novbe\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "/Users/samirhebibov/.nuget/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
+        "/usr/local/share/dotnet/library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -59,7 +60,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/8.0.101/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

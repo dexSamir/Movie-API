@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace MovieApp.Core.Entities;
-
 public class Director : BaseEntity
 {
     public string Name { get; set; }
