@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace MovieApp.Core.Helpers.Enums;
 public enum Plan
 {
-    Basic, 
-    Standart, 
-    Premium
+    Basic = 1, 
+    Standart = 2, 
+    Premium = 4
 }
