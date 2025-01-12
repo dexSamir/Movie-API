@@ -16,7 +16,7 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task<bool> RemoveAsync(int id);
     void Remove(T entity);
     Task<int> SaveAsync();
-    int GetCurrentUserId();
+    string GetCurrentUserId();
     Task<User?> GetCurrentUserAsync(); 
 }
 
