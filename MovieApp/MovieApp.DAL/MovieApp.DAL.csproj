@@ -22,9 +22,11 @@
   <ItemGroup>
     <None Remove="Context\" />
     <None Remove="Repositories\" />
+    <None Remove="Configurations\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Context\" />
     <Folder Include="Repositories\" />
+    <Folder Include="Configurations\" />
   </ItemGroup>
 </Project>
