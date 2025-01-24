@@ -9,5 +9,5 @@ namespace MovieApp.Core.Entities;
 public  class Genre : BaseEntity
 {
     public string Name { get; set; }
-    public ICollection<MovieGenre> Movies { get; set; } 
+    public ICollection<MovieGenre>? Movies { get; set; } 
 }

@@ -12,5 +12,5 @@ public class Actor : BaseEntity
     public string Surname { get; set; }
     public string Biography { get; set; }
     public DateTime BirthDate { get; set; }
-    public ICollection<MovieActor> Movies { get; set; } = new HashSet<MovieActor>();
+    public ICollection<MovieActor>? Movies { get; set; } = new HashSet<MovieActor>();
 }

@@ -9,4 +9,20 @@
   <ItemGroup>
     <ProjectReference Include="..\MovieApp.DAL\MovieApp.DAL.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Services\" />
+    <None Remove="Services\Interfaces\" />
+    <None Remove="Services\Implements\" />
+    <None Remove="DTOs\" />
+    <None Remove="DTOs\DirectorDtos\" />
+    <None Remove="Profiles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Services\" />
+    <Folder Include="Services\Interfaces\" />
+    <Folder Include="Services\Implements\" />
+    <Folder Include="DTOs\" />
+    <Folder Include="DTOs\DirectorDtos\" />
+    <Folder Include="Profiles\" />
+  </ItemGroup>
 </Project>

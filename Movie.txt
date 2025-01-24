@@ -1,0 +1,11 @@
+1)Entities: 
+	1. Movie
+	2. Director 
+	3. Actor 
+	4. User 
+	5. Genre 
+	6. Rating 
+	7. Review 
+	8. Subscription 
+	9. WatchList 
+	10. WatchHistory  

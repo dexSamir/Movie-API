@@ -10,7 +10,7 @@ public class Rating : BaseEntity
 {
     public int Score { get; set; }
     public ICollection<MovieRating> Movies { get; set; } 
-    public string UserId { get; set; }
-    public User User { get; set; }
+    public string? UserId { get; set; }
+    public User? User { get; set; }
 
 }

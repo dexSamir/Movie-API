@@ -12,4 +12,5 @@ public abstract class BaseEntity
     public DateTime CreatedTime { get; set; }
     public DateTime? UpdatedTime { get; set; }
     public bool IsDeleted { get; set; }
+    public bool IsVisible { get; set; }
 }

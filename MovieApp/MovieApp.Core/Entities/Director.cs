@@ -9,8 +9,9 @@ namespace MovieApp.Core.Entities;
 public class Director : BaseEntity
 {
     public string Name { get; set; }
+    public string? ImageUrl { get; set; }
     public string Surname { get; set; }
-    public DateTime BirthDate { get; set; }
-    public string Biography { get; set; }
-    public ICollection<Movie> Movies { get; set; } = new HashSet<Movie>(); 
+    public DateTime? BirthDate { get; set; }
+    public string? Biography { get; set; }
+    public ICollection<Movie>? Movies { get; set; } = new HashSet<Movie>(); 
 }
