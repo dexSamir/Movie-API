@@ -1,0 +1,6 @@
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/obj/Debug/net8.0/MovieApp.DAL.csproj.AssemblyReference.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/obj/Debug/net8.0/MovieApp.DAL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/obj/Debug/net8.0/MovieApp.DAL.AssemblyInfoInputs.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/obj/Debug/net8.0/MovieApp.DAL.AssemblyInfo.cs
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/obj/Debug/net8.0/MovieApp.DAL.csproj.CoreCompileInputs.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.DAL/obj/Debug/net8.0/MovieApp.DAL.sourcelink.json

@@ -1,0 +1,13 @@
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/bin/Debug/net8.0/MovieApp.Core.deps.json
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/bin/Debug/net8.0/MovieApp.Core.dll
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/bin/Debug/net8.0/MovieApp.Core.pdb
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.csproj.AssemblyReference.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.GeneratedMSBuildEditorConfig.editorconfig
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.AssemblyInfoInputs.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.AssemblyInfo.cs
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.csproj.CoreCompileInputs.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.sourcelink.json
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.dll
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/refint/MovieApp.Core.dll
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/MovieApp.Core.pdb
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.Core/obj/Debug/net8.0/ref/MovieApp.Core.dll

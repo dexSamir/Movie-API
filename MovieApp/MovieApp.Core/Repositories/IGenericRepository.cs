@@ -8,6 +8,7 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
 {
     IQueryable<T> GetAll(params string[] includes);
     Task<T?> GetByIdAsync(int id);
+    Task<T?> GetByFilter(Expression<Func<T, bool>> expression);
     IQueryable<T> GetWhere(Expression<Func<T, bool>> expression);
     Task<bool> IsExistAsync(Expression<Func<T, bool>> expression);
     Task<bool> IsExistAsync(int id);
@@ -17,6 +18,8 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     void Remove(T entity);
     Task<int> SaveAsync();
     string GetCurrentUserId();
-    Task<User?> GetCurrentUserAsync(); 
+    Task<User?> GetCurrentUserAsync();
+    Task <int> GetFilteredCount(Expression<Func<T, bool>> expression); 
+    Task<ICollection<T>> GetFilteredList(Expression<Func<T, bool>> expression); 
 }
 
