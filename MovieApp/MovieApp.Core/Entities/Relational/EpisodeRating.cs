@@ -1,6 +1,8 @@
 ﻿using System;
+using MovieApp.Core.Entities.Base;
+
 namespace MovieApp.Core.Entities.Relational;
-public class EpisodeRating
+public class EpisodeRating 
 {
     public int Id { get; set; }
     public int? EpisodeId { get; set; }

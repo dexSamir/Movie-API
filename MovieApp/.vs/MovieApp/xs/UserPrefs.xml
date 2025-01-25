@@ -1,22 +1,31 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.Core/Entities/WatchList.cs">
+    <Files>
+      <File FileName="MovieApp.Core/Entities/Subscription.cs" Line="1" Column="1" />
+      <File FileName="MovieApp.Core/Entities/User.cs" Line="13" Column="95" />
+      <File FileName="MovieApp.Core/Entities/WatchHistory.cs" Line="1" Column="1" />
+      <File FileName="MovieApp.Core/Entities/WatchList.cs" Line="1" Column="1" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MovieApp" expanded="True">
-            <Node name="MovieApp.DAL" expanded="True">
-              <Node name="Context" expanded="True" />
+          <Node name="MovieApp">
+            <Node name="MovieApp.API" expanded="True" />
+            <Node name="MovieApp.Core" expanded="True">
+              <Node name="Helpers" expanded="True">
+                <Node name="Enums" expanded="True" />
+              </Node>
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

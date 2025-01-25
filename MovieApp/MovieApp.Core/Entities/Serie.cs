@@ -22,18 +22,5 @@ public class Serie : BaseEntity
     public ICollection<SerieGenre>? Genres { get; set; }
     public ICollection<SerieRating>? Ratings { get; set; }
     public ICollection<Review>? Reviews { get; set; }
-
-    public double AvgRating {
-        get
-        {
-            var AllRatings = Seasons?
-                .SelectMany(x => x.Episodes)
-                .SelectMany(e => e.Ratings)
-                .Select(r => r.Rating)
-                .ToList();
-
-            return AllRatings != null && AllRatings.Any() ? AllRatings.Average() : 0.0; 
-        }
-    }
 }
 

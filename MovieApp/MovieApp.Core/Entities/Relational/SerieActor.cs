@@ -1,6 +1,6 @@
 ﻿using System;
 namespace MovieApp.Core.Entities.Relational;
-public class SerieActor
+public class SerieActor 
 {
     public int Id { get; set; }
     public int? ActorId { get; set; }

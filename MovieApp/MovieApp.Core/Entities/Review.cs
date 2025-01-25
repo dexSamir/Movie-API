@@ -9,6 +9,7 @@ namespace MovieApp.Core.Entities;
 public class Review : BaseEntity
 {
     public string Content { get; set; }
+    public int? Score { get; set; }
     public int? MovieId { get; set; }    
     public Movie? Movie { get; set; }
     public int? SerieId { get; set; }

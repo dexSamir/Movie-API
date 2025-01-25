@@ -1,8 +1,9 @@
 ﻿using System;
+using MovieApp.Core.Entities.Base;
+
 namespace MovieApp.Core.Entities;
-public class MovieRating
+public class MovieRating : BaseEntity
 {
-	public int Id { get; set; }
 	public int? MovieId { get; set; }
 	public Movie? Movie { get; set; }
 	public int? RatingId { get; set; }
