@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.AspNetCore.Identity;
+using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.Core.Entities;
 public class User : IdentityUser
@@ -8,7 +9,9 @@ public class User : IdentityUser
     public string Surname { get; set; }
     public ICollection<Review>? Reviews { get; set; } = new HashSet<Review>();
     public ICollection<MovieRating>? Ratings { get; set; } = new HashSet<MovieRating>();
+    public ICollection<SerieRating>? RatingsSeries { get; set; } = new HashSet<SerieRating>();
+    public ICollection<EpisodeRating>? EpisodeRating { get; set; } = new HashSet<EpisodeRating>();
     public ICollection<Subscription> Subscriptions { get; set; } = new HashSet<Subscription>();
-    public ICollection<WatchList>? WatchLists { get; set; } = new HashSet<WatchList>(); 
+    public ICollection<WatchList>? WatchLists { get; set; } = new HashSet<WatchList>();
 }
 

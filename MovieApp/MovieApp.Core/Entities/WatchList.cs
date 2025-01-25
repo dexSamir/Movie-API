@@ -6,6 +6,7 @@ public class WatchList : BaseEntity
 {
 	public string? UserId { get; set; }
 	public User? User { get; set; }
-	public ICollection<Movie> Movies { get; set; }
-	public EWatchListType? ListType { get; set; }
+	public ICollection<Movie>? Movies { get; set; }
+	public ICollection<Serie>? Series { get; set; }
+    public EWatchListType? ListType { get; set; }
 }

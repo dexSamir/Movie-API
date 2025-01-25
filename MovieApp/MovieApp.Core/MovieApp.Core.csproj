@@ -11,8 +11,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Remove="Repositories\" />
+    <None Remove="Entities\Relational\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Repositories\" />
+    <Folder Include="Entities\Relational\" />
   </ItemGroup>
 </Project>

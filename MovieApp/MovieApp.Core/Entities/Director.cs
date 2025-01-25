@@ -14,4 +14,5 @@ public class Director : BaseEntity
     public DateTime? BirthDate { get; set; }
     public string? Biography { get; set; }
     public ICollection<Movie>? Movies { get; set; } = new HashSet<Movie>(); 
+    public ICollection<Serie>? Series { get; set; } = new HashSet<Serie>();
 }

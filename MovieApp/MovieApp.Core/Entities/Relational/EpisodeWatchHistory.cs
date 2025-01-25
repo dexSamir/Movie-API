@@ -1,0 +1,16 @@
+﻿using System;
+using MovieApp.Core.Entities.Base;
+
+namespace MovieApp.Core.Entities.Relational;
+public class EpisodeWatchHistory : BaseEntity
+{
+    public string UserId { get; set; }
+    public User User { get; set; }
+
+    public int EpisodeId { get; set; }
+    public Episode Episode { get; set; }
+
+    public bool IsCompleted { get; set; } = false; 
+    public DateTime WatchedTime { get; set; }
+    public TimeSpan WatchedDuration { get; set; }
+}
