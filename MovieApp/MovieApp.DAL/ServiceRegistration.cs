@@ -1,0 +1,15 @@
+﻿using System;
+using Microsoft.Extensions.DependencyInjection;
+using MovieApp.Core.Repositories;
+using MovieApp.DAL.Repositories;
+
+namespace MovieApp.DAL;
+public static class ServiceRegistration
+{
+	public static IServiceCollection AddRepositories(this IServiceCollection services)
+	{
+		services.AddScoped<IDirectorRepository, DirectorRepository>();
+		return services; 
+	}
+}
+
