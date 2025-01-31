@@ -1,6 +1,5 @@
 ﻿using MovieApp.Core.Entities.Base;
 using MovieApp.Core.Helpers.Enums;
-
 namespace MovieApp.Core.Entities;
 public class SupportTicket : BaseEntity
 {

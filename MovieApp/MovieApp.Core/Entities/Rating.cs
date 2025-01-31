@@ -1,13 +1,21 @@
 ﻿using MovieApp.Core.Entities.Base;
-using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.Core.Entities;
 public class Rating : BaseEntity
 {
     public int Score { get; set; }
-    public ICollection<MovieRating> Movies { get; set; }
-    public ICollection<SerieRating> Series { get; set; }
-    public ICollection<EpisodeRating> Episodes { get; set; }
+
+    public int MovieId { get; set; }
+    public Movie Movie { get; set; }
+
+    public int SerieId { get; set; }
+    public Serie Serie { get; set; }
+
+    public int EpisodeId { get; set; }
+    public Episode Episode { get; set; }
+
+    public int ReviewId { get; set; }
+    public Review Review { get; set; }
 
     public string? UserId { get; set; }
     public User? User { get; set; }

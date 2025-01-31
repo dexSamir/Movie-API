@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using MovieApp.Core.Entities.Base;
+﻿using MovieApp.Core.Entities.Base;
 using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.Core.Entities;
@@ -17,10 +15,15 @@ public class Serie : BaseEntity
     public History? History { get; set; }
     public int? DirectorId { get; set; }
     public Director? Director { get; set; }
+    public ICollection<SerieSubtitle>? SerieSubtitles { get; set; }
     public ICollection<Season> Seasons { get; set; } = new HashSet<Season>();
     public ICollection<SerieActor>? Actors { get; set; } = new HashSet<SerieActor>();
     public ICollection<SerieGenre>? Genres { get; set; }
-    public ICollection<SerieRating>? Ratings { get; set; }
+    public ICollection<Rating>? Ratings { get; set; }
+    public ICollection<Recommendation> Recommendations { get; set; }
+    public ICollection<AudioTrack> AudioTracks { get; set; }
     public ICollection<Review>? Reviews { get; set; }
+    public ICollection<CustomListItem> CustomListItems { get; set; }
+    public ICollection<History> Histories { get; set; }
 }
 

@@ -7,6 +7,5 @@ public class ActivityLog : BaseEntity
 	public User User { get; set; }
 	public string Action { get; set; }
 	public DateTime LogDate { get; set; }
-
 }
 

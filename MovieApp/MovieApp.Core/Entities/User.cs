@@ -10,11 +10,21 @@ public class User : IdentityUser
     public bool IsDeleted { get; set; }
     public DateTime BirthDate { get; set; }
     public bool IsVisible { get; set; }
+
+
+    public ICollection<UserPreferences> UserPreferences { get; set; } 
+    public ICollection<SupportTicket> SupportTicket { get; set; } 
+    public ICollection<FAQ> CreatedBy { get; set; }
+    public ICollection<UserPreferences> AssignedTicket { get; set; }
     public ICollection<CustomList>? CustomLists { get; set; } = new HashSet<CustomList>();
-    public ICollection<Review>? Comment { get; set; } = new HashSet<Review>();
-    public ICollection<MovieRating>? Ratings { get; set; } = new HashSet<MovieRating>();
-    public ICollection<SerieRating>? RatingsSeries { get; set; } = new HashSet<SerieRating>();
-    public ICollection<EpisodeRating>? EpisodeRating { get; set; } = new HashSet<EpisodeRating>();
-    public ICollection<Subscription> Subscriptions { get; set; } = new HashSet<Subscription>();
+    public ICollection<DownloadList>? DownloadLists { get; set; } = new HashSet<DownloadList>();
+    public ICollection<Review>? Reviews { get; set; } = new HashSet<Review>();
+    public ICollection<Subscription> Subscriptions { get; set; }
+    public ICollection<Recommendation> Recommendations { get; set; }
+    public ICollection<Rental> Rentals { get; set; }
+    public ICollection<Payment> Payments { get; set; }
+    public ICollection<Notification> Notifications { get; set; }
+    public ICollection<ActivityLog> Logs { get; set; }
+    public ICollection<History> Histories { get; set; }
 }
 

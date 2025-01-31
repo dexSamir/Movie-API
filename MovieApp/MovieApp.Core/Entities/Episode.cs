@@ -1,6 +1,4 @@
-﻿using System;
-using MovieApp.Core.Entities.Base;
-using MovieApp.Core.Entities.Relational;
+﻿using MovieApp.Core.Entities.Base;
 
 namespace MovieApp.Core.Entities;
 public class Episode : BaseEntity
@@ -13,7 +11,9 @@ public class Episode : BaseEntity
     public DateTime ReleaseDate { get; set; }
     public int SeasonId { get; set; }
     public Season Season { get; set; }
-    public ICollection<Review>? Comments { get; set; }
-    public ICollection<EpisodeRating>? Ratings{ get; set; }
+    public ICollection<DownloadListItem> DownloadListItems { get; set; }
+    public ICollection<History> Histories { get; set; }
+    public ICollection<Review>? Reviews { get; set; }
+    public ICollection<Rating>? Ratings { get; set; }
 }
 
