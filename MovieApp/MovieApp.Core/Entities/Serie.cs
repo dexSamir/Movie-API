@@ -11,8 +11,8 @@ public class Serie : BaseEntity
 	public string? PosterUrl { get; set; }
     public string? TrailerUrl { get; set; }
 	public int SeasonCount { get; set; }
-	public int? WatchListId { get; set; }
-	public WatchList? WatchList{ get; set; }
+    public int EpisodeCount { get; set; }
+    public int? WatchListId { get; set; }
     public int? HistoryId { get; set; }
     public History? History { get; set; }
     public int? DirectorId { get; set; }

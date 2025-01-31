@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.Core.Entities;
 
@@ -16,7 +15,7 @@ public class AppDbContext : IdentityDbContext<User>
 	public DbSet<MovieGenre> MovieGenres { get; set; }
 	public DbSet<MovieRating> MovieRatings { get; set; }
 	public DbSet<Rating> Ratings { get; set; }
-	public DbSet<Review> Reviews { get; set; }
+	public DbSet<Comment> Comments{ get; set; }
 	public DbSet<Subscription> Subscriptions { get; set; }
 	public DbSet<WatchHistory> WatchHistories { get; set; }
 	public DbSet<WatchList> WatchLists { get; set; }

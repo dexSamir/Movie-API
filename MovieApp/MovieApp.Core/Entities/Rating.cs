@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MovieApp.Core.Entities.Base;
+﻿using MovieApp.Core.Entities.Base;
 using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.Core.Entities;

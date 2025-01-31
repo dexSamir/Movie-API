@@ -19,5 +19,5 @@ public class Movie : BaseEntity
     public ICollection<MovieActor>? Actors { get; set; } = new HashSet<MovieActor>(); 
     public ICollection<MovieGenre>? Genres { get; set; }
     public ICollection<MovieRating>? Ratings { get; set; }
-    public ICollection<Review>? Reviews { get; set; }
+    public ICollection<Comment>? Comments { get; set; }
 }
