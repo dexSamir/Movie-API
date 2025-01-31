@@ -1,7 +1,4 @@
-﻿
-
-namespace MovieApp.Core.Entities.Base;
-
+﻿namespace MovieApp.Core.Entities.Base;
 public abstract class BaseEntity
 {
     public int Id { get; set; }

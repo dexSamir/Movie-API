@@ -1,5 +1,4 @@
-﻿using System;
-namespace MovieApp.Core.Entities.Relational;
+﻿namespace MovieApp.Core.Entities.Relational;
 public class SerieGenre
 {
     public int Id { get; set; }
