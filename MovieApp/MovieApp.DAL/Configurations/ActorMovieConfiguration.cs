@@ -12,12 +12,13 @@ public class ActorMovieConfiguration : IEntityTypeConfiguration<MovieActor>
 
         builder.HasOne(x => x.Actor)
             .WithMany(x => x.Movies)
-            .HasForeignKey(x => x.ActorId);
+            .HasForeignKey(x => x.ActorId)
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasOne(x => x.Movie)
             .WithMany(x => x.Actors)
-            .HasForeignKey(x => x.MovieId); 
-           
+            .HasForeignKey(x => x.MovieId)
+            .OnDelete(DeleteBehavior.Cascade);
     } 
 }
 

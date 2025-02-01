@@ -78,5 +78,10 @@ public class AppDbContext : IdentityDbContext<User>
     public AppDbContext(DbContextOptions options) : base(options)
     {
     }
+    protected override void OnModelCreating(ModelBuilder builder)
+    {
+        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly); 
+        base.OnModelCreating(builder);
+    }
 }
 

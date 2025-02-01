@@ -11,18 +11,28 @@ public class ActorConfiguration : IEntityTypeConfiguration<Actor>
         builder.HasKey(b => b.Id);
 
         builder.Property(x => x.Name)
+            .IsUnicode(true)
             .IsRequired()
             .HasMaxLength(50);
 
         builder.Property(x => x.Surname)
+            .IsUnicode(true)
             .IsRequired()
             .HasMaxLength(50);
 
         builder.Property(x => x.Biography)
-            .HasMaxLength(200);
+            .HasMaxLength(2000);
 
         builder.Property(x => x.BirthDate)
-            .IsRequired();
+            .IsRequired()
+            .HasColumnType("date");
+
+        builder.Property(x => x.CreatedTime)
+            .IsRequired()
+            .HasColumnType("date");
+
+        builder.Property(x => x.UpdatedTime)
+            .HasColumnType("date");
     }
 }
 

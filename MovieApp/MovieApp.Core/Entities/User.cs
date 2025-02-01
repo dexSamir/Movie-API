@@ -14,6 +14,7 @@ public class User : IdentityUser
     public UserStatistics Stats { get; set; }
 
     public ICollection<Friendship> Friends { get; set; }
+    public ICollection<ChatMessage> ChatMessages { get; set; }
     public ICollection<UserPreferences> UserPreferences { get; set; } 
     public ICollection<SupportTicket> SupportTicket { get; set; } 
     public ICollection<FAQ> CreatedBy { get; set; }

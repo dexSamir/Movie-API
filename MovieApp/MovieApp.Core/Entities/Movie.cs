@@ -13,8 +13,6 @@ public class Movie : BaseEntity
 
     public int? DirectorId { get; set; }
     public Director? Director { get; set; }
-    public int? HistoryId { get; set; }
-    public History? History { get; set; }
 
     public int LikeCount { get; set; } = 0;
     public int DislikeCount { get; set; } = 0;
@@ -26,8 +24,6 @@ public class Movie : BaseEntity
     public ICollection<Review>? Reviews { get; set; }
     public ICollection<Rental> Rentals { get; set; }
     public ICollection<AudioTrack> AudioTracks { get; set; }
-    public ICollection<CustomListItem> CustomListItems { get; set; }
-    public ICollection<DownloadListItem> DownloadListItems { get; set; }
     public ICollection<Recommendation> Recommendations { get; set; }
     public ICollection<History> Histories { get; set; }
 }
