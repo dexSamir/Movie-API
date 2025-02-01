@@ -1,6 +1,8 @@
 
+using Microsoft.EntityFrameworkCore;
 using MovieApp.BL;
 using MovieApp.DAL;
+using MovieApp.DAL.Context;
 
 namespace MovieApp.API;
 
@@ -14,6 +16,9 @@ public class Program
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+        builder.Services.AddDbContext<AppDbContext>(opt =>
+            opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
+
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 

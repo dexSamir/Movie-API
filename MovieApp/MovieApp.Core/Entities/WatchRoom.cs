@@ -20,6 +20,8 @@ public class WatchRoom
     public int? SerieId { get; set; }
     public Serie? Serie { get; set; }
 
+    public string ShareCode { get; set; }
+
     public ICollection<WatchRoomUser> Participants { get; set; }
     public ICollection<ChatMessage> ChatMessages { get; set; }
 }
