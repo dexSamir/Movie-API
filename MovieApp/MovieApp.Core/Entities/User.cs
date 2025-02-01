@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using MovieApp.Core.Entities.Relational;
 namespace MovieApp.Core.Entities;
 public class User : IdentityUser
 {
@@ -11,7 +10,10 @@ public class User : IdentityUser
     public DateTime BirthDate { get; set; }
     public bool IsVisible { get; set; }
 
+    public int UserStatisticsId { get; set; }
+    public UserStatistics Stats { get; set; }
 
+    public ICollection<Friendship> Friends { get; set; }
     public ICollection<UserPreferences> UserPreferences { get; set; } 
     public ICollection<SupportTicket> SupportTicket { get; set; } 
     public ICollection<FAQ> CreatedBy { get; set; }
@@ -26,5 +28,7 @@ public class User : IdentityUser
     public ICollection<Notification> Notifications { get; set; }
     public ICollection<ActivityLog> Logs { get; set; }
     public ICollection<History> Histories { get; set; }
+    public ICollection<WatchRoom> HostedRooms { get; set; }
+    public ICollection<WatchRoomUser> JoinedRooms { get; set; }
 }
 
