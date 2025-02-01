@@ -28,6 +28,5 @@ public class Analytics : BaseEntity
     public int? MostRatedMovieId { get; set; }
     public int? MostRatedSerieId { get; set; }
     public DateTime AnalyticsDate { get; set; }
-    
 }
 

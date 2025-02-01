@@ -1,5 +1,4 @@
-﻿using System;
-using MovieApp.Core.Entities.Base;
+﻿using MovieApp.Core.Entities.Base;
 
 namespace MovieApp.Core.Entities;
 public class History : BaseEntity
@@ -19,6 +18,6 @@ public class History : BaseEntity
 	public DateTime WatchedAt { get; set; }
 	public int? StoppedAt { get; set; }
 	public bool IsCompleted { get; set; }
-	public int WatchedDuration { get; set; }
+	public int WatchedDuration { get; set; } 
 
 }
