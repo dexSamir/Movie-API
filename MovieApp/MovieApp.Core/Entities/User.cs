@@ -17,7 +17,7 @@ public class User : IdentityUser
     public ICollection<ChatMessage> ChatMessages { get; set; }
     public ICollection<UserPreferences> UserPreferences { get; set; } 
     public ICollection<SupportTicket> SupportTicket { get; set; } 
-    public ICollection<FAQ> CreatedBy { get; set; }
+    public ICollection<FAQ> CreatedFAQS { get; set; }
     public ICollection<UserPreferences> AssignedTicket { get; set; }
     public ICollection<CustomList>? CustomLists { get; set; } = new HashSet<CustomList>();
     public ICollection<DownloadList>? DownloadLists { get; set; } = new HashSet<DownloadList>();

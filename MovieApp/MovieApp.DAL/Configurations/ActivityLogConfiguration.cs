@@ -15,10 +15,10 @@ public class ActivityLogConfiguration : IEntityTypeConfiguration<ActivityLog>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp"); 
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.LogDate)
             .IsRequired()
@@ -29,6 +29,7 @@ public class ActivityLogConfiguration : IEntityTypeConfiguration<ActivityLog>
             .HasForeignKey(x => x.UserId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasIndex(x => x.UserId); 
     }
 }
 

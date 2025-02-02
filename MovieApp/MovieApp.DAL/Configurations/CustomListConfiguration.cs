@@ -11,10 +11,10 @@ public class CustomListConfiguration :IEntityTypeConfiguration<CustomList>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(cl => cl.ListName)
             .IsRequired()
@@ -32,6 +32,10 @@ public class CustomListConfiguration :IEntityTypeConfiguration<CustomList>
             .WithOne(cli => cli.CustomList)
             .HasForeignKey(cli => cli.CustomListId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(cl => cl.UserId); 
+
+        builder.HasIndex(cl => cl.ListName);
     }
 }
 

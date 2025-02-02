@@ -24,12 +24,15 @@ public class AudioTrackConfiguration : IEntityTypeConfiguration<AudioTrack>
             .HasForeignKey(at => at.LanguageId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
-
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
+
+        builder.Property(x => x.UpdatedTime)
+            .HasColumnType("timestamp");
+
+        builder.HasIndex(a => new { a.MovieId, a.SeriesId, a.LanguageId })
+               .IsUnique();
     }
 }
 

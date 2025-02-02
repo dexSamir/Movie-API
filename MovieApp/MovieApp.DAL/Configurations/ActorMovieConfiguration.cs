@@ -19,6 +19,10 @@ public class ActorMovieConfiguration : IEntityTypeConfiguration<MovieActor>
             .WithMany(x => x.Actors)
             .HasForeignKey(x => x.MovieId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(ma => new { ma.MovieId, ma.ActorId }) 
+               .IsUnique();
+
     } 
 }
 

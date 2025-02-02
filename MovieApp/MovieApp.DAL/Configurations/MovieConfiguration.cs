@@ -32,10 +32,10 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.LikeCount)
             .HasDefaultValue(0);
@@ -86,6 +86,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .WithOne(x => x.Movie)
             .HasForeignKey(x => x.MovieId);
 
+        builder.HasIndex(m => m.ReleaseDate);
     }
 }
 

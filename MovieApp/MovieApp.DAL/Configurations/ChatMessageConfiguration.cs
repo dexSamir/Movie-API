@@ -41,10 +41,14 @@ public class ChatMessageConfiguration : IEntityTypeConfiguration<ChatMessage>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
+
+        builder.HasIndex(cm => cm.MessageType);
+
+        builder.HasIndex(cm => cm.SentAt);
     }
 }
 

@@ -34,10 +34,12 @@ public class DownloadListItemConfiguration : IEntityTypeConfiguration<DownloadLi
 
         builder.Property(dli => dli.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(dli => dli.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
+
+        builder.HasIndex(dli => dli.DownloadListId);
     }
 }
 

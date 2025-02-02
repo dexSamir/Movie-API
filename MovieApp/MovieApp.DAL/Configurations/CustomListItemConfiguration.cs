@@ -30,10 +30,14 @@ public class CustomListItemConfiguration : IEntityTypeConfiguration<CustomListIt
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
+
+        builder.HasIndex(cli => cli.CustomListId);
+        builder.HasIndex(cli => cli.MovieId);
+        builder.HasIndex(cli => cli.SeriesId);
     }
 }
 

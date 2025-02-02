@@ -47,10 +47,10 @@ public class AnalyticsConfiguration : IEntityTypeConfiguration<Analytics>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(a => a.AnalyticsDate)
             .HasColumnType("date");
@@ -116,6 +116,8 @@ public class AnalyticsConfiguration : IEntityTypeConfiguration<Analytics>
             .HasForeignKey(a => a.MostRatedSerieId)
             .OnDelete(DeleteBehavior.SetNull);
 
+        builder.HasIndex(a => new { a.AnalyticsDate, a.AnalyticsType })
+               .IsUnique();
     }
 }
 

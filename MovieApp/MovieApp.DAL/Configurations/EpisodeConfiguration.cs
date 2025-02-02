@@ -16,10 +16,10 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(e => e.ImageUrl)
             .HasMaxLength(500);
@@ -64,8 +64,9 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
         builder.HasMany(e => e.Ratings)
             .WithOne(r => r.Episode)
             .HasForeignKey(r => r.EpisodeId)
-            .OnDelete(DeleteBehavior.Cascade); 
+            .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasIndex(e => e.SeasonId);
     }
 }
 

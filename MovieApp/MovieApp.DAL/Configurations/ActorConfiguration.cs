@@ -29,10 +29,10 @@ public class ActorConfiguration : IEntityTypeConfiguration<Actor>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
     }
 }
 

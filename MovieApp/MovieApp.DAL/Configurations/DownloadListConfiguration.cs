@@ -11,10 +11,10 @@ public class DownloadListConfiguration : IEntityTypeConfiguration<DownloadList>
 
         builder.Property(x => x.CreatedTime)
             .IsRequired()
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.Property(x => x.UpdatedTime)
-            .HasColumnType("date");
+            .HasColumnType("timestamp");
 
         builder.HasOne(dl => dl.User)
             .WithMany(u => u.DownloadLists)
@@ -25,6 +25,8 @@ public class DownloadListConfiguration : IEntityTypeConfiguration<DownloadList>
             .WithOne(dli => dli.DownloadList)
             .HasForeignKey(dli => dli.DownloadListId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasIndex(dl => dl.UserId);
     }
 }
 
