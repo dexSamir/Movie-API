@@ -22,6 +22,7 @@ public class WatchRoom
 
     public string ShareCode { get; set; }
 
+    public ICollection<WatchRoomInvite> Invites{ get; set; }
     public ICollection<WatchRoomUser> Participants { get; set; }
     public ICollection<ChatMessage> ChatMessages { get; set; }
 }

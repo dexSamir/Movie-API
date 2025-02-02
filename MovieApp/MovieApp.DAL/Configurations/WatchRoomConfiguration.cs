@@ -56,6 +56,12 @@ public class WatchRoomConfiguration : IEntityTypeConfiguration<WatchRoom>
             .WithOne(cm => cm.WatchRoom)
             .HasForeignKey(cm => cm.WatchRoomId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(wr => wr.Invites)
+            .WithOne(wru => wru.WatchRoom)
+            .HasForeignKey(wru => wru.WatchRoomId)
+            .OnDelete(DeleteBehavior.NoAction);
+
     }
 }
 

@@ -1,6 +1,7 @@
-﻿using MovieApp.Core.Helpers.Enums;
+﻿using MovieApp.Core.Entities.Base;
+using MovieApp.Core.Helpers.Enums;
 namespace MovieApp.Core.Entities;
-public class WatchRoomInvite
+public class WatchRoomInvite : BaseEntity
 {
 	public string InviterId { get; set; }
 	public User Inviter { get; set; }
