@@ -16,7 +16,6 @@ public class Episode : BaseEntity
     public int SeasonId { get; set; }
     public Season Season { get; set; }
 
-    public ICollection<History> Histories { get; set; }
     public ICollection<Review>? Reviews { get; set; }
     public ICollection<Rating>? Ratings { get; set; }
 }

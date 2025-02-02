@@ -14,10 +14,8 @@ public class Rating : BaseEntity
     public int EpisodeId { get; set; }
     public Episode Episode { get; set; }
 
-    public int ReviewId { get; set; }
-    public Review Review { get; set; }
-
     public string? UserId { get; set; }
     public User? User { get; set; }
 
+    public ICollection<Review> Reviews { get; set; }
 }

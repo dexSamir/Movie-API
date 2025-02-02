@@ -13,11 +13,17 @@ public class User : IdentityUser
     public int UserStatisticsId { get; set; }
     public UserStatistics Stats { get; set; }
 
+    public int LikedMoviesCount { get; set; } = 0;
+    public int DislikedMoviesCount { get; set; } = 0;
+
+    public ICollection<Rating>? Ratings { get; set; } = new HashSet<Rating>();
+    public ICollection<FriendRequest> ReceivedRequests { get; set; } = new HashSet<FriendRequest>();
+    public ICollection<FriendRequest> SentRequests { get; set; } = new HashSet<FriendRequest>();
     public ICollection<Friendship> Friends { get; set; }
     public ICollection<ChatMessage> ChatMessages { get; set; }
     public ICollection<UserPreferences> UserPreferences { get; set; } 
     public ICollection<SupportTicket> SupportTicket { get; set; } 
-    public ICollection<FAQ> CreatedFAQS { get; set; }
+    public ICollection<FAQ> CreatedFAQs { get; set; }
     public ICollection<UserPreferences> AssignedTicket { get; set; }
     public ICollection<CustomList>? CustomLists { get; set; } = new HashSet<CustomList>();
     public ICollection<DownloadList>? DownloadLists { get; set; } = new HashSet<DownloadList>();
@@ -28,7 +34,6 @@ public class User : IdentityUser
     public ICollection<Payment> Payments { get; set; }
     public ICollection<Notification> Notifications { get; set; }
     public ICollection<ActivityLog> Logs { get; set; }
-    public ICollection<History> Histories { get; set; }
     public ICollection<WatchRoom> HostedRooms { get; set; }
     public ICollection<WatchRoomUser> JoinedRooms { get; set; }
 }

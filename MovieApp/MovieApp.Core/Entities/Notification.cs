@@ -1,5 +1,7 @@
-﻿namespace MovieApp.Core.Entities;
-public class Notification
+﻿using MovieApp.Core.Entities.Base;
+
+namespace MovieApp.Core.Entities;
+public class Notification : BaseEntity
 {
 	public string UserId { get; set; }
 	public User User { get; set; }

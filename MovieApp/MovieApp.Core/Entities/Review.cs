@@ -13,16 +13,17 @@ public class Review : BaseEntity
 
     public string? UserId { get; set; }
     public User? User { get; set; }
+
     public int? RatingId { get; set; }
     public Rating? Rating { get; set; }
 
     public DateTime? ReviewDate { get; set; }
 
+    public int LikeCount { get; set; } = 0;
+    public int DislikeCount { get; set; } = 0;
+
     public int? ParentReviewId { get; set; }
     public Review? ParentReview { get; set; }
     public ICollection<Review>? Replies { get; set; }
-
-    public int LikeCount { get; set; } = 0;
-    public int DislikeCount { get; set; } = 0;
 
 }
