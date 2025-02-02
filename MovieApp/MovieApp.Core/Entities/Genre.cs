@@ -7,5 +7,4 @@ public  class Genre : BaseEntity
     public string Name { get; set; }
     public ICollection<MovieGenre>? Movies { get; set; } 
     public ICollection<SerieGenre>? Series { get; set; }
-    public ICollection<UserPreferences> UserPreferences { get; set; }
 }

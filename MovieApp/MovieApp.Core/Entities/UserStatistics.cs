@@ -32,5 +32,19 @@ public class UserStatistics : BaseEntity
     public Dictionary<string, int> MonthlyActivity { get; set; }
 
     public DateTime LastActivity { get; set; }
+
+    public int TotalLikes { get; set; } 
+    public int TotalDislikes { get; set; } 
+    public Dictionary<int, int> MovieLikes { get; set; } 
+    public Dictionary<int, int> SerieLikes { get; set; }
+
+    public int TotalFriends { get; set; } 
+    public int TotalFriendRequestsSent { get; set; } 
+    public int TotalFriendRequestsReceived { get; set; }
+
+    public int AverageWatchTimePerDay { get; set; } 
+    public int AverageWatchTimePerWeek { get; set; } 
+    public int LongestWatchSession { get; set; } 
+    public DateTime MostActiveDay { get; set; } 
 }
 

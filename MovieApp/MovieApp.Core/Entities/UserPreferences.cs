@@ -1,5 +1,4 @@
-﻿using System;
-using MovieApp.Core.Entities.Base;
+﻿using MovieApp.Core.Entities.Base;
 namespace MovieApp.Core.Entities;
 public class UserPreferences : BaseEntity 
 {

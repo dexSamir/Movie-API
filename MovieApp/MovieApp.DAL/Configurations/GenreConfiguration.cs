@@ -31,11 +31,6 @@ public class GenreConfiguration : IEntityTypeConfiguration<Genre>
             .HasForeignKey(sg => sg.GenreId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        builder.HasMany(g => g.UserPreferences)
-            .WithOne(up => up.Genre)
-            .HasForeignKey(up => up.GenreId)
-            .OnDelete(DeleteBehavior.Cascade);  
-
         builder.HasIndex(g => g.Name)
             .IsUnique();
     }

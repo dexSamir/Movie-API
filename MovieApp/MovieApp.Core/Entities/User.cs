@@ -10,8 +10,8 @@ public class User : IdentityUser
     public DateTime BirthDate { get; set; }
     public bool IsVisible { get; set; }
 
-    public int UserStatisticsId { get; set; }
-    public UserStatistics Stats { get; set; }
+    public int? UserStatisticsId { get; set; }
+    public UserStatistics? Stats { get; set; }
 
     public int LikedMoviesCount { get; set; } = 0;
     public int DislikedMoviesCount { get; set; } = 0;
@@ -19,12 +19,12 @@ public class User : IdentityUser
     public ICollection<Rating>? Ratings { get; set; } = new HashSet<Rating>();
     public ICollection<FriendRequest> ReceivedRequests { get; set; } = new HashSet<FriendRequest>();
     public ICollection<FriendRequest> SentRequests { get; set; } = new HashSet<FriendRequest>();
-    public ICollection<Friendship> Friends { get; set; }
-    public ICollection<ChatMessage> ChatMessages { get; set; }
+    public ICollection<Friendship>? Friends { get; set; }
+    public ICollection<ChatMessage>? ChatMessages { get; set; }
     public ICollection<UserPreferences> UserPreferences { get; set; } 
-    public ICollection<SupportTicket> SupportTicket { get; set; } 
-    public ICollection<FAQ> CreatedFAQs { get; set; }
-    public ICollection<UserPreferences> AssignedTicket { get; set; }
+    public ICollection<SupportTicket>? SupportTickets { get; set; } 
+    public ICollection<FAQ>? CreatedFAQs { get; set; }
+    public ICollection<SupportTicket> AssignedTickets { get; set; }
     public ICollection<CustomList>? CustomLists { get; set; } = new HashSet<CustomList>();
     public ICollection<DownloadList>? DownloadLists { get; set; } = new HashSet<DownloadList>();
     public ICollection<Review>? Reviews { get; set; } = new HashSet<Review>();

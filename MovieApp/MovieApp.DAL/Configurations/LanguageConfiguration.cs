@@ -26,6 +26,11 @@ public class LanguageConfiguration : IEntityTypeConfiguration<Language>
             .HasForeignKey(a => a.LanguageId)
             .OnDelete(DeleteBehavior.Cascade);
 
+        builder.HasMany(l => l.Subtitles)
+            .WithOne(a => a.Language)
+            .HasForeignKey(a => a.LanguageId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Property(x => x.CreatedTime)
             .IsRequired()
             .HasColumnType("timestamp");
