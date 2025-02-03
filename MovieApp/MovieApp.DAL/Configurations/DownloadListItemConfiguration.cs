@@ -11,7 +11,7 @@ public class DownloadListItemConfiguration : IEntityTypeConfiguration<DownloadLi
 
         builder.Property(dli => dli.DownloadDate)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
 
         builder.Property(dli => dli.DownloadQuality)
             .IsRequired()

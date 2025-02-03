@@ -13,11 +13,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
 {
     readonly AppDbContext _context;
     protected DbSet<T> Table => _context.Set<T>();
-    readonly IHttpContextAccessor _http;
 
-    public GenericRepository(AppDbContext context, IHttpContextAccessor http)
+    public GenericRepository(AppDbContext context)
     {
-        _http = http; 
         _context = context; 
     }
 
@@ -66,16 +64,16 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task<int> SaveAsync()
         => await _context.SaveChangesAsync();
 
-    public string GetCurrentUserId()
-        => _http.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
+    //public string GetCurrentUserId()
+    //    => _http.HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier).Value;
 
-    public async Task<User?> GetCurrentUserAsync()
-    {
-        string userId = GetCurrentUserId();
-        if (string.IsNullOrWhiteSpace(userId))
-            return null;
-        return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId); 
-    }
+    //public async Task<User?> GetCurrentUserAsync()
+    //{
+    //    string userId = GetCurrentUserId();
+    //    if (string.IsNullOrWhiteSpace(userId))
+    //        return null;
+    //    return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId); 
+    //}
 
     public async Task<int> GetFilteredCount(Expression<Func<T, bool>> expression)
         => await Table.Where(expression).CountAsync(); 

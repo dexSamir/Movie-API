@@ -30,7 +30,7 @@ public class FAQConfiguration : IEntityTypeConfiguration<FAQ>
             .IsRequired();
 
         builder.HasOne(f => f.CreatedBy)
-            .WithMany(u => u.CreatedFAQS)
+            .WithMany(u => u.CreatedFAQs)
             .HasForeignKey(f => f.CreatedById)
             .OnDelete(DeleteBehavior.Restrict);
 

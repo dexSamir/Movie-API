@@ -18,7 +18,7 @@ public class FriendRequestConfiguration : IEntityTypeConfiguration<FriendRequest
 
         builder.Property(fr => fr.SentAt)
                 .IsRequired()
-                .HasColumnType("datetime");
+                .HasColumnType("timestamp");
 
         builder.HasOne(fr => fr.Sender)
             .WithMany(u=> u.SentRequests)  

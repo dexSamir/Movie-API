@@ -1,28 +1,28 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.DAL/Context/AppDbContext.cs">
+    <Files>
+      <File FileName="MovieApp.DAL/Context/AppDbContext.cs" Line="77" Column="54" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MovieApp">
-            <Node name="MovieApp.Core" expanded="True">
-              <Node name="Entities" expanded="True">
-                <Node name="Relational" expanded="True" />
+          <Node name="MovieApp" expanded="True">
+            <Node name="MovieApp.BL" expanded="True" />
+            <Node name="MovieApp.DAL">
+              <Node name="Context">
+                <Node name="AppDbContext.cs" selected="True" />
               </Node>
-              <Node name="Helpers" expanded="True" />
-            </Node>
-            <Node name="MovieApp.DAL" expanded="True">
-              <Node name="Configurations" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
 </Properties>

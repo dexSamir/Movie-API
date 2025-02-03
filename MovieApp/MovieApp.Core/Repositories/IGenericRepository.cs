@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq.Expressions;
-using MovieApp.Core.Entities;
+﻿using System.Linq.Expressions;
 using MovieApp.Core.Entities.Base;
 
 namespace MovieApp.Core.Repositories;
@@ -17,8 +15,8 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task<bool> RemoveAsync(int id);
     void Remove(T entity);
     Task<int> SaveAsync();
-    string GetCurrentUserId();
-    Task<User?> GetCurrentUserAsync();
+    //string GetCurrentUserId();
+    //Task<User?> GetCurrentUserAsync();
     Task <int> GetFilteredCount(Expression<Func<T, bool>> expression); 
     Task<ICollection<T>> GetFilteredList(Expression<Func<T, bool>> expression); 
 }

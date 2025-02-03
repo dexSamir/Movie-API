@@ -1,14 +1,15 @@
 ﻿using System;
 using MovieApp.BL.DTOs.DirectorDtos;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.Core.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
 public class DirectorService : IDirectorService
 {
-    readonly IDirectorService _service;
-    public DirectorService(IDirectorService service)
+    readonly IDirectorRepository _repo;
+    public DirectorService(IDirectorRepository repo)
     {
-        _service = service;
+        _repo = repo;
     }
 
     public Task<int> CreateAsync(DirectorCreateDto dto)

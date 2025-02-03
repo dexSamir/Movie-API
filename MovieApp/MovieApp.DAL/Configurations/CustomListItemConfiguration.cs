@@ -11,7 +11,7 @@ public class CustomListItemConfiguration : IEntityTypeConfiguration<CustomListIt
 
         builder.Property(cli => cli.AddedDate)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
 
         builder.HasOne(cli => cli.CustomList)
             .WithMany(cl => cl.ListItems)

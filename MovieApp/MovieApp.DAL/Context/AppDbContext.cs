@@ -4,7 +4,6 @@ using MovieApp.Core.Entities;
 using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.DAL.Context;
-
 public class AppDbContext : IdentityDbContext<User> 
 {
     // Relational
@@ -75,7 +74,7 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<UserStatistics> UserStatistics { get; set; }
 
 
-    public AppDbContext(DbContextOptions options) : base(options)
+    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
     }
     protected override void OnModelCreating(ModelBuilder builder)

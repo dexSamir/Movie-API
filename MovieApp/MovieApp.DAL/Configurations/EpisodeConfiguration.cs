@@ -51,11 +51,6 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
             .HasForeignKey(e => e.SeasonId)
             .OnDelete(DeleteBehavior.Cascade); 
 
-        builder.HasMany(e => e.Histories)
-            .WithOne(h => h.Episode)
-            .HasForeignKey(h => h.EpisodeId)
-            .OnDelete(DeleteBehavior.Cascade); 
-
         builder.HasMany(e => e.Reviews)
             .WithOne(r => r.Episode)
             .HasForeignKey(r => r.EpisodeId)

@@ -35,7 +35,7 @@ public class WatchRoomInviteConfiguration : IEntityTypeConfiguration<WatchRoomIn
 
         builder.Property(wri => wri.CreatedAt)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
 
         builder.HasOne(wri => wri.Inviter)
             .WithMany()

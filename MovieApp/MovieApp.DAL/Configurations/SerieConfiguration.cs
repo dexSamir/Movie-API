@@ -9,6 +9,13 @@ public class SerieConfiguration : IEntityTypeConfiguration<Serie>
     {
         builder.HasKey(s => s.Id);
 
+        builder.Property(r => r.CreatedTime)
+            .IsRequired()
+            .HasColumnType("timestamp");
+
+        builder.Property(r => r.UpdatedTime)
+            .HasColumnType("timestamp");
+
         builder.Property(s => s.Title)
             .IsRequired()
             .HasMaxLength(150); 

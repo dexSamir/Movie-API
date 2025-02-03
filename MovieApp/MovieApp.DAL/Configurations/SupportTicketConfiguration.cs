@@ -18,9 +18,6 @@ public class SupportTicketConfiguration : IEntityTypeConfiguration<SupportTicket
             .IsRequired()
             .HasMaxLength(1000);
 
-        builder.Property(st => st.ResolvedAt)
-            .IsRequired(false);  
-
         builder.HasOne(st => st.User)  
             .WithMany(u => u.SupportTickets)  
             .HasForeignKey(st => st.UserId)
@@ -29,7 +26,18 @@ public class SupportTicketConfiguration : IEntityTypeConfiguration<SupportTicket
         builder.HasOne(st => st.AssignedUser)
             .WithMany(u => u.AssignedTickets)
             .HasForeignKey(st => st.AssignedUserId)
-            .OnDelete(DeleteBehavior.SetNull); 
+            .OnDelete(DeleteBehavior.SetNull);
+
+        builder.Property(st => st.ResolvedAt)
+            .IsRequired()
+            .HasColumnType("timestamp");
+
+        builder.Property(x => x.CreatedTime)
+            .IsRequired()
+            .HasColumnType("timestamp");
+
+        builder.Property(x => x.UpdatedTime)
+            .HasColumnType("timestamp");
 
         builder.Property(st => st.Status)
             .HasConversion(

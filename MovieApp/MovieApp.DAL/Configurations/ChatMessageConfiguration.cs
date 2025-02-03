@@ -15,7 +15,7 @@ public class ChatMessageConfiguration : IEntityTypeConfiguration<ChatMessage>
 
         builder.Property(cm => cm.SentAt)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
 
         builder.HasOne(cm => cm.WatchRoom)
             .WithMany(wr => wr.ChatMessages)

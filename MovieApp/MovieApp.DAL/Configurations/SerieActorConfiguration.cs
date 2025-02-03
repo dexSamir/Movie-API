@@ -23,6 +23,7 @@ public class SerieActorConfiguration : IEntityTypeConfiguration<SerieActor>
             .WithMany(s => s.Actors)
             .HasForeignKey(sa => sa.SerieId)
             .OnDelete(DeleteBehavior.Cascade);
+
     }
 }
 

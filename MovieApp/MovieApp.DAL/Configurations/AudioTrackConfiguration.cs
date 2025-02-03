@@ -31,7 +31,7 @@ public class AudioTrackConfiguration : IEntityTypeConfiguration<AudioTrack>
         builder.Property(x => x.UpdatedTime)
             .HasColumnType("timestamp");
 
-        builder.HasIndex(a => new { a.MovieId, a.SeriesId, a.LanguageId })
+        builder.HasIndex(a => new { a.MovieId, a.SerieId, a.LanguageId })
                .IsUnique();
     }
 }

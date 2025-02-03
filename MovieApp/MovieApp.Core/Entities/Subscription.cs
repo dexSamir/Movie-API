@@ -4,7 +4,7 @@ public class Subscription : BaseEntity
 {
     public DateTime EndTime { get; set; }
     public DateTime StartTime { get; set; }
-    public bool IsActive => EndTime > DateTime.UtcNow;
+    public bool IsActive { get; set; }
 
     public int PlanId { get; set; }
     public Plan Plan { get; set; }

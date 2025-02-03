@@ -22,7 +22,7 @@ public class ActivityLogConfiguration : IEntityTypeConfiguration<ActivityLog>
 
         builder.Property(x => x.LogDate)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
 
         builder.HasOne(x => x.User)
             .WithMany(x => x.Logs)

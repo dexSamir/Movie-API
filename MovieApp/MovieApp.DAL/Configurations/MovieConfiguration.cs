@@ -59,7 +59,7 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
 
         builder.HasMany(x => x.MovieSubtitles)
             .WithOne(x => x.Movie)
-            .HasForeignKey(x => x.Movie);
+            .HasForeignKey(x => x.MovieId);
 
         // one-to-many
         builder.HasMany(x => x.Ratings)

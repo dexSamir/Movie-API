@@ -21,11 +21,6 @@ public class HistoryConfiguration : IEntityTypeConfiguration<History>
         builder.HasIndex(h => h.SerieId);
         builder.HasIndex(h => h.EpisodeId);
 
-        builder.HasOne(h => h.User)
-            .WithMany(u => u.Histories)
-            .HasForeignKey(h => h.UserId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(h => h.Movie)
             .WithMany()
             .HasForeignKey(h => h.MovieId)
@@ -42,7 +37,7 @@ public class HistoryConfiguration : IEntityTypeConfiguration<History>
             .OnDelete(DeleteBehavior.SetNull);
         builder.Property(h => h.WatchedAt)
             .IsRequired()
-            .HasColumnType("datetime");
+            .HasColumnType("timestamp");
 
         builder.Property(h => h.StoppedAt)
             .IsRequired(false) 
