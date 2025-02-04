@@ -6,6 +6,7 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
 {
     Task<IEnumerable<T>> GetAllAsync(bool asNoTrack = true, params string[] includes);
     Task<IEnumerable<T>> GetAllAsync(params string[] includes);
+    Task<int> CountAsync(int[] ids);
 
     Task<T?> GetByIdAsync(int id, bool asNoTrack = true, params string[] includes);
     Task<T?> GetByIdAsync(int id, params string[] includes);

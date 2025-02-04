@@ -3,6 +3,5 @@
 namespace MovieApp.Core.Repositories;
 public interface IGenreRepository : IGenericRepository<Genre>
 {
-	
 }
 

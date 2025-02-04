@@ -1,39 +1,38 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.DAL/Repositories/GenericRepository.cs">
-    <Files>
-      <File FileName="MovieApp.API/Controllers/GenresController.cs" Line="46" Column="1" />
-      <File FileName="MovieApp.BL/Services/Interfaces/IGenreService.cs" Line="14" Column="16" />
-      <File FileName="MovieApp.BL/Services/Implements/GenreService.cs" Line="88" Column="47" />
-      <File FileName="MovieApp.DAL/Repositories/GenericRepository.cs" Line="104" Column="23" />
-    </Files>
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MovieApp">
-            <Node name="MovieApp.API">
+            <Node name="MovieApp.API" expanded="True">
               <Node name="Controllers" expanded="True" />
             </Node>
-            <Node name="MovieApp.BL">
+            <Node name="MovieApp.BL" expanded="True">
               <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True" />
-                <Node name="Interfaces" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="MovieApp.Core" expanded="True">
+              <Node name="Repositories" expanded="True">
+                <Node name="IGenericRepository.cs" selected="True" />
               </Node>
             </Node>
             <Node name="MovieApp.DAL" expanded="True">
-              <Node name="Repositories" expanded="True">
-                <Node name="GenericRepository.cs" selected="True" />
-              </Node>
+              <Node name="Migrations" expanded="True" />
+              <Node name="Repositories" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/GenreService.cs" relfile="MovieApp.BL/Services/Implements/GenreService.cs" line="87" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
 </Properties>

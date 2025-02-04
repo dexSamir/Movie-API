@@ -30,10 +30,16 @@ public class GenresController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateRange(params GenreCreateDto[] dtos)
+    public async Task<IActionResult> CreateRange(IEnumerable<GenreCreateDto> dtos)
     {
         await _service.CreateRangeAsync(dtos); 
         return Ok();
+    }
+
+    [HttpPut("{id}")]
+    public async Task<IActionResult> Update(int id, GenreUpdateDto dto)
+    {
+        return Ok(await _service.UpdateAsync(id, dto));
     }
 
     [HttpDelete("{id}")]
@@ -52,13 +58,18 @@ public class GenresController : ControllerBase
         return Ok(await _service.ReverseDeleteAsync(id));
     }
     [HttpDelete("{ids}")]
-    public async Task<IActionResult> DeleteRange(params int[] ids)
+    public async Task<IActionResult> DeleteRange([FromRoute] string ids)
     {
         return Ok(await _service.DeleteRangeAsync(ids));
     }
     [HttpDelete("{ids}")]
-    public async Task<IActionResult> SoftDeleteRangeAsync(params int[] ids)
+    public async Task<IActionResult> SoftDeleteRange([FromRoute] string ids)
     {
         return Ok(await _service.SoftDeleteRangeAsync(ids));
+    }
+    [HttpDelete("{ids}")]
+    public async Task<IActionResult> ReverseSoftDeleteRange([FromRoute] string ids)
+    {
+        return Ok(await _service.ReverseDeleteRangeAsync(ids));
     }
 }

@@ -21,6 +21,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task AddRangeAsync(IEnumerable<T> entities)
         => await Table.AddRangeAsync(entities);
 
+    public async Task<int> CountAsync(int[] ids)
+        => await Table.CountAsync(x=> ids.Contains(x.Id));
+
     public async Task<IEnumerable<T>> GetAllAsync(params string[] includes)
         => await GetAllAsync(true, includes);
 
@@ -164,5 +167,6 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
         foreach (var entity in entities) entity.IsDeleted = false;
         Table.UpdateRange(entities);
     }
+
 }
 

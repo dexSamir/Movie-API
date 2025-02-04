@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MovieApp.DAL")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+44c4d516e4d5d07f019dfdf13b92123f17003070")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+457c322da3ce04718b6c63fd79ddd68bb2e581f0")]
 [assembly: System.Reflection.AssemblyProductAttribute("MovieApp.DAL")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MovieApp.DAL")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
