@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using System.Reflection.Emit;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Entities.Base;
@@ -80,7 +81,17 @@ public class AppDbContext : IdentityDbContext<User>
     }
     protected override void OnModelCreating(ModelBuilder builder)
     {
-        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly); 
+        builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly);
+        foreach (var entity in builder.Model.GetEntityTypes())
+        {
+            var dateTimeProperties = entity.GetProperties()
+                .Where(p => p.ClrType == typeof(DateTime) || p.ClrType == typeof(DateTime?));
+
+            foreach (var property in dateTimeProperties)
+            {
+                property.SetColumnType("timestamp with time zone");
+            }
+        }
         base.OnModelCreating(builder);
     }
     public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)

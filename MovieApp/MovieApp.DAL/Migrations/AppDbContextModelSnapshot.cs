@@ -168,7 +168,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -177,10 +177,10 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("LogDate")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -207,10 +207,10 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(2000)");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("text");
@@ -234,7 +234,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -253,7 +253,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("AnalyticsDate")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("AnalyticsType")
                         .HasColumnType("integer");
@@ -262,7 +262,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("decimal(4,2)");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -337,7 +337,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -376,7 +376,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -394,7 +394,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -421,7 +421,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(500)
@@ -446,14 +446,14 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("SentAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("SystemMessage")
                         .HasMaxLength(1000)
                         .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -484,7 +484,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -503,7 +503,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -526,10 +526,10 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("AddedDate")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("CustomListId")
                         .HasColumnType("integer");
@@ -547,7 +547,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -573,10 +573,10 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(2000)");
 
                     b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ImageUrl")
                         .HasMaxLength(500)
@@ -601,7 +601,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -617,7 +617,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -626,7 +626,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -648,10 +648,10 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("DownloadDate")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("DownloadListId")
                         .HasColumnType("integer");
@@ -677,7 +677,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -699,7 +699,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -734,7 +734,7 @@ namespace MovieApp.DAL.Migrations
                         .HasDefaultValue(0);
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("SeasonId")
                         .HasColumnType("integer");
@@ -746,7 +746,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -774,7 +774,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -789,7 +789,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -807,7 +807,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -824,13 +824,13 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("SentAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("Status")
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -854,7 +854,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("FriendId")
                         .IsRequired()
@@ -867,7 +867,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -892,7 +892,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -907,7 +907,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -926,7 +926,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("EpisodeId")
                         .HasColumnType("integer");
@@ -950,14 +950,14 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("int");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("WatchedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("WatchedDuration")
                         .HasColumnType("int");
@@ -990,7 +990,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(10)");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Icon")
                         .IsRequired()
@@ -1009,7 +1009,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(100)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -1028,7 +1028,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int?>("EpisodeId")
                         .HasColumnType("integer");
@@ -1049,7 +1049,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1084,7 +1084,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1119,7 +1119,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTime>("ReleaseDate")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -1131,7 +1131,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -1199,7 +1199,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1219,10 +1219,10 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(1000)");
 
                     b.Property<DateTime>("SendDate")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1247,7 +1247,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1256,7 +1256,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("PaymentDate")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PaymentMethod")
                         .IsRequired()
@@ -1270,7 +1270,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1333,7 +1333,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("EpisodeId")
                         .HasColumnType("integer");
@@ -1354,7 +1354,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .HasColumnType("text");
@@ -1649,7 +1649,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1679,7 +1679,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(150)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -1699,7 +1699,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1732,7 +1732,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(500)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -1754,7 +1754,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("EndTime")
                         .HasColumnType("timestamp with time zone");
@@ -1777,7 +1777,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1803,7 +1803,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -1815,7 +1815,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -1838,7 +1838,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -1852,7 +1852,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime>("ResolvedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Status")
                         .IsRequired()
@@ -1864,7 +1864,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(255)");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -1888,14 +1888,14 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("BirthDate")
-                        .HasColumnType("date");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("DislikedMoviesCount")
                         .HasColumnType("integer");
@@ -1959,7 +1959,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("boolean");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
@@ -1995,7 +1995,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<int>("GenreId")
                         .HasColumnType("integer");
@@ -2012,7 +2012,7 @@ namespace MovieApp.DAL.Migrations
                         .HasDefaultValue(1);
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -2045,7 +2045,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DailyActivity")
                         .IsRequired()
@@ -2155,7 +2155,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -2190,7 +2190,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("uuid");
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("EndedAt")
                         .HasColumnType("timestamp with time zone");
@@ -2223,7 +2223,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
@@ -2250,10 +2250,10 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("InviteeId")
                         .IsRequired()
@@ -2274,7 +2274,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<Guid>("WatchRoomId")
                         .HasColumnType("uuid");
@@ -2299,7 +2299,7 @@ namespace MovieApp.DAL.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime>("CreatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
@@ -2311,7 +2311,7 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<DateTime?>("UpdatedTime")
-                        .HasColumnType("timestamp");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UserId")
                         .IsRequired()

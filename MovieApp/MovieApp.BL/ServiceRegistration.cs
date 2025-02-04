@@ -9,7 +9,15 @@ public static class ServiceRegistration
 	public static IServiceCollection AddServices(this IServiceCollection services)
 	{
 		services.AddScoped<IDirectorService, DirectorService>();
-		return services; 
+		services.AddScoped<IGenreService, GenreService>();
+
+
+        return services; 
 	}
+    public static IServiceCollection AddAutoMapper(this IServiceCollection services)
+    {
+        services.AddAutoMapper(typeof(ServiceRegistration));
+        return services;
+    }
 }
 

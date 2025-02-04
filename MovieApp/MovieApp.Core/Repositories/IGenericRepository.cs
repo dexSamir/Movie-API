@@ -19,11 +19,23 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task<bool> IsExistAsync(Expression<Func<T, bool>> expression);
     Task<bool> IsExistAsync(int id);
     Task AddAsync(T entity);
-    Task AddRangeAsync(params T[] entities); 
+    Task AddRangeAsync(IEnumerable<T> entities);
+
     Task DeleteAsync(int id);
     Task SoftDeleteAsync(int id);
-    Task DeleteAndSaveAsync(int id);
+    Task ReverseSoftDeleteAsync(int id);
+    Task DeleteRangeAsync(params int[] ids);
+    Task SoftDeleteRangeAsync(params int[] ids);
+    Task ReverseSoftDeleteRangeAsync(params int[] ids);
+
+    void DeleteRange(params T[] entities);
+    void SoftDeleteRange(params T[] entities);
+    void ReverseSoftDeleteRange(params T[] entities);
     void Delete(T entity);
+    void SoftDelete(T entity);
+    void ReverseSoftDelete(T entity);
+
+    Task DeleteAndSaveAsync(int id);
     Task<int> SaveAsync();
     //string GetCurrentUserId();
     //Task<User?> GetCurrentUserAsync();

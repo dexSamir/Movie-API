@@ -18,7 +18,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task AddAsync(T entity)
         => await Table.AddAsync(entity); 
 
-    public async Task AddRangeAsync(params T[] entities)
+    public async Task AddRangeAsync(IEnumerable<T> entities)
         => await Table.AddRangeAsync(entities);
 
     public async Task<IEnumerable<T>> GetAllAsync(params string[] includes)

@@ -23,7 +23,7 @@ public class Program
             opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
         builder.Services.AddRepositories();
         builder.Services.AddServices();
-
+        builder.Services.AddAutoMapper(); 
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

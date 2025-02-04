@@ -16,6 +16,8 @@
     <None Remove="DTOs\" />
     <None Remove="DTOs\DirectorDtos\" />
     <None Remove="Profiles\" />
+    <None Remove="DTOs\GenreDtos\" />
+    <None Remove="Exceptions\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -24,5 +26,11 @@
     <Folder Include="DTOs\" />
     <Folder Include="DTOs\DirectorDtos\" />
     <Folder Include="Profiles\" />
+    <Folder Include="DTOs\GenreDtos\" />
+    <Folder Include="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="13.0.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
   </ItemGroup>
 </Project>

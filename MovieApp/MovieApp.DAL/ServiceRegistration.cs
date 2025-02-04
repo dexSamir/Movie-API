@@ -9,7 +9,8 @@ public static class ServiceRegistration
 	public static IServiceCollection AddRepositories(this IServiceCollection services)
 	{
 		services.AddScoped<IDirectorRepository, DirectorRepository>();
-		return services; 
+		services.AddScoped<IGenreRepository, GenreRepository>();
+        return services; 
 	}
 }
 
