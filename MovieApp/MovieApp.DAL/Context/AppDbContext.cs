@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.Core.Entities;
+using MovieApp.Core.Entities.Base;
 using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.DAL.Context;
@@ -81,6 +82,16 @@ public class AppDbContext : IdentityDbContext<User>
     {
         builder.ApplyConfigurationsFromAssembly(typeof(AppDbContext).Assembly); 
         base.OnModelCreating(builder);
+    }
+    public override Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
+    {
+        var entries = ChangeTracker.Entries<BaseEntity>();
+
+        foreach (var entry in entries)
+            if (entry.State == EntityState.Modified)
+                entry.Entity.UpdatedTime = DateTime.UtcNow;
+
+        return base.SaveChangesAsync(cancellationToken);
     }
 }
 

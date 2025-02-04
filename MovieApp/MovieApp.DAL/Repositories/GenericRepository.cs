@@ -1,9 +1,5 @@
-﻿using System;
-using System.Linq.Expressions;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
+﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
-using MovieApp.Core.Entities;
 using MovieApp.Core.Entities.Base;
 using MovieApp.Core.Repositories;
 using MovieApp.DAL.Context;
@@ -25,23 +21,34 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task AddRangeAsync(params T[] entities)
         => await Table.AddRangeAsync(entities);
 
-    public IQueryable<T> GetAll(params string[] includes)
+    public async Task<IEnumerable<T>> GetAllAsync(params string[] includes)
     {
-        var query = Table.AsQueryable();
-        foreach (var include in includes)
-            query = query.Include(include);
-        return query;
+        return await GetAllAsync(true, includes);
     }
 
-    public async Task<T?> GetByIdAsync(int id)
-        => await Table.FindAsync(id);
-
-    public async Task<T?> GetByFilter(Expression<Func<T, bool>> expression)
-        => await Table.FirstOrDefaultAsync(expression);
-
-    public IQueryable<T> GetWhere(Expression<Func<T, bool>> expression)
+    public async Task<IEnumerable<T>> GetAllAsync(bool asNoTrack = true, params string[] includes)
     {
-        throw new NotImplementedException();
+        return await _includeAndTracking(Table, asNoTrack, includes).ToListAsync();
+    }
+
+    public async Task<T?> GetByIdAsync(int id, bool asNoTrack = true, params string[] includes)
+    {
+        return await _includeAndTracking(Table, asNoTrack, includes).FirstOrDefaultAsync(x => x.Id == id); 
+    }
+
+    public async Task<T?> GetByFilter(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes)
+    {
+        return await _includeAndTracking(Table, asNoTrack, includes).FirstOrDefaultAsync(expression);
+    }
+
+    public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes)
+    {
+        return await _includeAndTracking(Table.Where(expression), asNoTrack, includes).ToListAsync();
+    }
+
+    public async Task<T?> GetFirstAsync(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes)
+    {
+        return await _includeAndTracking(Table.Where(expression), asNoTrack, includes).FirstOrDefaultAsync();
     }
 
     public async Task<bool> IsExistAsync(Expression<Func<T, bool>> expression)
@@ -50,15 +57,20 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task<bool> IsExistAsync(int id)
         => await Table.AnyAsync(x => x.Id == id);
 
-    public async Task<bool> RemoveAsync(int id)
+    public async Task DeleteAsync(int id)
     {
-        int result = await Table.Where(x => x.Id == id).ExecuteDeleteAsync();
-        return result > 0; 
+        var entity = await GetByIdAsync(id);
+        Table.Remove(entity!);
     }
 
-    public void Remove(T entity)
+    public void Delete(T entity)
     {
         Table.Remove(entity); 
+    }
+
+    public async Task DeleteAndSaveAsync(int id)
+    {
+        await Table.Where(x => x.Id == id).ExecuteDeleteAsync();
     }
 
     public async Task<int> SaveAsync()
@@ -75,10 +87,28 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     //    return await _context.Users.FirstOrDefaultAsync(x => x.Id == userId); 
     //}
 
-    public async Task<int> GetFilteredCount(Expression<Func<T, bool>> expression)
-        => await Table.Where(expression).CountAsync(); 
+    IQueryable<T> _includeAndTracking(IQueryable<T> query, bool asNoTrack, params string[] includes)
+    {
+        if (includes is not null && includes.Length > 0)
+        {
+            query = _checkIncludes(query, includes);
+            if (asNoTrack)
+                query = query.AsNoTrackingWithIdentityResolution();
+        }
+        else
+            if (asNoTrack)
+                query = query.AsNoTracking();
 
-    public async Task<ICollection<T>> GetFilteredList(Expression<Func<T, bool>> expression)
-        => await Table.Where(expression).ToListAsync(); 
+        return query; 
+    }
+
+    IQueryable<T> _checkIncludes(IQueryable<T> query, params string[] includes)
+    {
+            foreach (var include in includes)
+                query = query.Include(include);
+
+        return query; 
+    }
+
 }
 
