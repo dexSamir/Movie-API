@@ -5,7 +5,7 @@ using MovieApp.Core.Repositories;
 using MovieApp.DAL.Context;
 
 namespace MovieApp.DAL.Repositories;
-public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, new() 
+public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, new()
 {
     readonly AppDbContext _context;
     protected DbSet<T> Table => _context.Set<T>();
@@ -22,34 +22,28 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
         => await Table.AddRangeAsync(entities);
 
     public async Task<IEnumerable<T>> GetAllAsync(params string[] includes)
-    {
-        return await GetAllAsync(true, includes);
-    }
+        => await GetAllAsync(true, includes);
 
     public async Task<IEnumerable<T>> GetAllAsync(bool asNoTrack = true, params string[] includes)
-    {
-        return await _includeAndTracking(Table, asNoTrack, includes).ToListAsync();
-    }
+        => await _includeAndTracking(Table, asNoTrack, includes).ToListAsync();
 
     public async Task<T?> GetByIdAsync(int id, bool asNoTrack = true, params string[] includes)
-    {
-        return await _includeAndTracking(Table, asNoTrack, includes).FirstOrDefaultAsync(x => x.Id == id); 
-    }
+        => await _includeAndTracking(Table, asNoTrack, includes).FirstOrDefaultAsync(x => x.Id == id);
 
-    public async Task<T?> GetByFilter(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes)
-    {
-        return await _includeAndTracking(Table, asNoTrack, includes).FirstOrDefaultAsync(expression);
-    }
+    public async Task<T?> GetByIdAsync(int id, params string[] includes)
+        => await GetByIdAsync(id, true, includes);
 
     public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes)
-    {
-        return await _includeAndTracking(Table.Where(expression), asNoTrack, includes).ToListAsync();
-    }
+        => await _includeAndTracking(Table.Where(expression), asNoTrack, includes).ToListAsync();
+
+    public async Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> expression, params string[] includes)
+        => await GetWhereAsync(expression, true, includes);
 
     public async Task<T?> GetFirstAsync(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes)
-    {
-        return await _includeAndTracking(Table.Where(expression), asNoTrack, includes).FirstOrDefaultAsync();
-    }
+        => await _includeAndTracking(Table.Where(expression), asNoTrack, includes).FirstOrDefaultAsync();
+
+    public async Task<T?> GetFirstAsync(Expression<Func<T, bool>> expression, params string[] includes)
+        => await GetFirstAsync(expression, true, includes);
 
     public async Task<bool> IsExistAsync(Expression<Func<T, bool>> expression)
         => await Table.AnyAsync(expression);
@@ -59,7 +53,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
 
     public async Task DeleteAsync(int id)
     {
-        var entity = await GetByIdAsync(id);
+        var entity = await GetByIdAsync(id, false);
         Table.Remove(entity!);
     }
 
@@ -110,5 +104,65 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
         return query; 
     }
 
+    public async Task SoftDeleteAsync(int id)
+    {
+        var entity = await GetByIdAsync(id, false);
+        entity!.IsDeleted = true; 
+    }
+
+    public void SoftDelete(T entity)
+    {
+        entity.IsDeleted = true; 
+    }
+    public async Task ReverseSoftDeleteAsync(int id)
+    {
+        var entity = await GetByIdAsync(id, false);
+        entity!.IsDeleted = false;
+    }
+
+    public void ReverseSoftDelete(T entity)
+    {
+        entity.IsDeleted = false;
+    }
+
+    public async Task DeleteRangeAsync(params int[] ids)
+    {
+        var entities = await Table.Where(x => ids.Contains(x.Id)).ToListAsync();
+        if (entities.Any()) Table.RemoveRange(entities);
+    }
+
+    public async Task SoftDeleteRangeAsync(params int[] ids)
+    {
+        var entities = await Table.Where(x => ids.Contains(x.Id)).ToListAsync();
+        if (entities.Any())
+        {
+            foreach (var entity in entities) entity.IsDeleted = true;
+            Table.UpdateRange(entities);
+        }
+    }
+
+    public async Task ReverseSoftDeleteRangeAsync(params int[] ids)
+    {
+        var entities = await Table.Where(x => ids.Contains(x.Id)).ToListAsync();
+        foreach (var entity in entities) entity.IsDeleted = false;
+        Table.UpdateRange(entities);
+    }
+
+    public void DeleteRange(params T[] entities)
+    {
+        Table.RemoveRange(entities); 
+    }
+
+    public void SoftDeleteRange(params T[] entities)
+    {
+        foreach (var entity in entities) entity.IsDeleted = true;
+        Table.UpdateRange(entities);
+    }
+
+    public void ReverseSoftDeleteRange(params T[] entities)
+    {
+        foreach (var entity in entities) entity.IsDeleted = false;
+        Table.UpdateRange(entities);
+    }
 }
 

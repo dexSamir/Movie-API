@@ -21,6 +21,7 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task AddAsync(T entity);
     Task AddRangeAsync(params T[] entities); 
     Task DeleteAsync(int id);
+    Task SoftDeleteAsync(int id);
     Task DeleteAndSaveAsync(int id);
     void Delete(T entity);
     Task<int> SaveAsync();
