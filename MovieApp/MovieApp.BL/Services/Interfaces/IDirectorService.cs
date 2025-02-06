@@ -5,10 +5,18 @@ namespace MovieApp.BL.Services.Interfaces;
 public interface IDirectorService
 {
     Task<int> CreateAsync(DirectorCreateDto dto);
-    Task CreateRangeAsync(params DirectorCreateDto[] dtos);
-    Task UpdateAsync(DirectorUpdateDto dto, int? id);
-    Task<bool> DeleteAsync(int? id);
-    Task<IEnumerable<DirectoryGetDto>> GetAllAsync();
-    Task<DirectoryGetDto> GetById(int? id);
+    Task CreateRangeAsync(IEnumerable<DirectorCreateDto> dtos);
+    Task<bool> UpdateAsync(DirectorUpdateDto dto, int id);
+    Task<IEnumerable<DirectorGetDto>> GetAllAsync();
+    Task<DirectorGetDto> GetByIdAsync(int id);
+
+    Task<bool> DeleteAsync(int id);
+    Task<bool> DeleteRangeAsync(string ids);
+
+    Task<bool> SoftDeleteAsync(int id);
+    Task<bool> SoftDeleteRangeAsync(string ids);
+
+    Task<bool> ReverseDeleteAsync(int id);
+    Task<bool> ReverseDeleteRangeAsync(string ids);
 }
 

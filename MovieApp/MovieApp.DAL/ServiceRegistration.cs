@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using MovieApp.Core.Repositories;
 using MovieApp.DAL.Repositories;
 

@@ -7,7 +7,6 @@ public class GenreGetDto
     public string Name { get; set; }
     public DateTime CreatedTime { get; set; }
     public DateTime? UpdatedTime { get; set; }
-    public bool IsVisible { get; set; }
     public bool IsDeleted { get; set; }
 }
 

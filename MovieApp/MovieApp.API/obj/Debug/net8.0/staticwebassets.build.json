@@ -1,12 +1,20 @@
 {
   "Version": 1,
-  "Hash": "peuRXWXygV+X8hBq3aEtkuIP3op5OkDr+8HRXeKy5/Q=",
+  "Hash": "RG+KhYVEA+nUPrtHvOhTMj5nBOz7avsXNF5TvITXUNU=",
   "Source": "MovieApp.API",
   "BasePath": "_content/MovieApp.API",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "MovieApp.API/wwwroot",
+      "Source": "MovieApp.API",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "Pattern": "**"
+    }
+  ],
   "Assets": [
     {
       "Identity": "/Users/samirhebibov/.nuget/packages/microsoft.aspnetcore.components.quickgrid/8.0.11/staticwebassets/Microsoft.AspNetCore.Components.QuickGrid.bundle.scp.css",
@@ -64,6 +72,44 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/obj/Debug/net8.0/scopedcss/bundle/MovieApp.API.styles.css"
+    },
+    {
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/ojnjhxed.vnb.jpg",
+      "SourceId": "MovieApp.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "RelativePath": "imgs/directors/ojnjhxed.vnb.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/imgs/directors/ojnjhxed.vnb.jpg"
+    },
+    {
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/q3misym0.rtv.jpg",
+      "SourceId": "MovieApp.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "RelativePath": "imgs/directors/q3misym0.rtv.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/imgs/directors/q3misym0.rtv.jpg"
     }
   ]
 }

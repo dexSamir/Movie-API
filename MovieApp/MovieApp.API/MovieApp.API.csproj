@@ -23,11 +23,19 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
+    <Folder Include="wwwroot\" />
+    <Folder Include="wwwroot\imgs\" />
+    <Folder Include="wwwroot\imgs\directors\" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\MovieApp.BL\MovieApp.BL.csproj">
       <GlobalPropertiesToRemove></GlobalPropertiesToRemove>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\" />
+    <Content Remove="wwwroot\imgs\" />
+    <Content Remove="wwwroot\imgs\directors\" />
   </ItemGroup>
 </Project>
