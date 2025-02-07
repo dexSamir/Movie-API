@@ -1,8 +1,6 @@
-﻿using System.IO;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.DirectorDtos;
-using MovieApp.BL.DTOs.GenreDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Exceptions.Image;
 using MovieApp.BL.Extensions;
@@ -15,7 +13,6 @@ public class DirectorService : IDirectorService
 {
     readonly IMapper _mapper; 
     readonly IDirectorRepository _repo;
-    private readonly string _imageFolderPath = Path.Combine("wwwroot", "images", "directors");
     public DirectorService(IDirectorRepository repo, IMapper mapper)
     {
         _mapper = mapper; 
@@ -55,7 +52,6 @@ public class DirectorService : IDirectorService
 
     public async Task<int> CreateAsync(DirectorCreateDto dto)
     {
-
         var director = _mapper.Map<Director>(dto);
         director.CreatedTime = DateTime.UtcNow;
         director.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
@@ -66,6 +62,27 @@ public class DirectorService : IDirectorService
         await _repo.AddAsync(director);
         await _repo.SaveAsync();
         return director.Id; 
+    }
+
+    public async Task<IEnumerable<int>> CreateRangeAsync(IEnumerable<DirectorCreateDto> dtos)
+    {
+        var directors = new List<Director>();
+
+        foreach (var dto in dtos)
+        {
+            var director = _mapper.Map<Director>(dto);
+            director.CreatedTime = DateTime.UtcNow;
+            director.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
+                ? defaultImage
+                : await ProcessImageAsync(dto.ImageUrl);
+
+            directors.Add(director);
+        }
+
+        await _repo.AddRangeAsync(directors);
+        await _repo.SaveAsync();
+
+        return directors.Select(d => d.Id).ToList();
     }
 
     public async Task<bool> UpdateAsync(DirectorUpdateDto dto, int id)

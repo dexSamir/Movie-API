@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieApp.Core.Entities;
 
 namespace MovieApp.DAL.Configurations;
@@ -22,9 +23,16 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
         builder.Property(d => d.ImageUrl)
             .HasMaxLength(500);
 
-        builder.Property(d => d.BirthDate)
-            .IsRequired(false)
+        var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+            d => d.ToDateTime(TimeOnly.MinValue),
+            dt => DateOnly.FromDateTime(dt)
+        );
+
+        builder.Property(x => x.BirthDate)
+            .IsRequired()
+            .HasConversion(dateOnlyConverter)
             .HasColumnType("date");
+
 
         builder.Property(d => d.Biography)
             .HasMaxLength(2000);

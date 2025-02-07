@@ -8,7 +8,7 @@ public class Actor : BaseEntity
     public string Surname { get; set; }
     public string Biography { get; set; }
     public string? ImageUrl { get; set; }
-    public DateTime BirthDate { get; set; }
+    public DateOnly BirthDate { get; set; }
     public ICollection<MovieActor>? Movies { get; set; } = new HashSet<MovieActor>();
     public ICollection<SerieActor>? Series{ get; set; } = new HashSet<SerieActor>();
 }

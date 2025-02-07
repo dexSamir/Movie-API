@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieApp.Core.Entities;
 
 namespace MovieApp.DAL.Configurations;
@@ -33,8 +34,14 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
         builder.Property(e => e.EpisodeNumber)
             .IsRequired();
 
-        builder.Property(e => e.ReleaseDate)
+        var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+            d => d.ToDateTime(TimeOnly.MinValue),
+            dt => DateOnly.FromDateTime(dt)
+        );
+
+        builder.Property(x => x.ReleaseDate)
             .IsRequired()
+            .HasConversion(dateOnlyConverter)
             .HasColumnType("date");
 
         builder.Property(e => e.LikeCount)

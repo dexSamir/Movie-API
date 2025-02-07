@@ -11,7 +11,7 @@ public class DirectorGetDto
     public string Name { get; set; }
     public string? ImageUrl { get; set; }
     public string Surname { get; set; }
-    public DateTime? BirthDate { get; set; }
+    public DateOnly? BirthDate { get; set; }
     public string? Biography { get; set; }
     public int MoviesCount { get; set; }
     public int SeriesCount { get; set; }

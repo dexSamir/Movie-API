@@ -8,7 +8,7 @@ public class Episode : BaseEntity
     public string Description { get; set; }
     public int Duration { get; set; }
     public int EpisodeNumber { get; set; }
-    public DateTime ReleaseDate { get; set; }
+    public DateOnly ReleaseDate { get; set; }
 
     public int LikeCount { get; set; } = 0;
     public int DislikeCount { get; set; } = 0;

@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/amwcsoi5.hzv.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/amwcsoi5.hzv.jpg"
+    },
+    {
       "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/ojnjhxed.vnb.jpg",
       "PackagePath": "staticwebassets/imgs/directors/ojnjhxed.vnb.jpg"
     },

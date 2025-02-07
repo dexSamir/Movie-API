@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.DirectorDtos;
+using MovieApp.BL.Services.Implements;
 using MovieApp.BL.Services.Interfaces;
 
 namespace MovieApp.API.Controllers;
@@ -27,6 +28,12 @@ public class DirectorsController : ControllerBase
     public async Task<IActionResult> Create(DirectorCreateDto dto)
     {
         return Ok(await _service.CreateAsync(dto));
+    }
+
+    [HttpPost]
+    public async Task<IActionResult> CreateRange([FromBody] IEnumerable<DirectorCreateDto> dtos)
+    {
+        return Ok(await _service.CreateRangeAsync(dtos));
     }
 
     [HttpPatch("{id}")]

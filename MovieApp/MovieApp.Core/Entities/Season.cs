@@ -7,6 +7,6 @@ public class Season : BaseEntity
     public int SeasonNumber { get; set; }
     public int SerieId { get; set; }
     public Serie Serie { get; set; }
-    public DateTime ReleaseDate { get; set; }
+    public DateOnly ReleaseDate { get; set; }
     public ICollection<Episode>? Episodes { get; set; } = new HashSet<Episode>();
 }

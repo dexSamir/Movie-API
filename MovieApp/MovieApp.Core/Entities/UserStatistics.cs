@@ -45,6 +45,6 @@ public class UserStatistics : BaseEntity
     public int AverageWatchTimePerDay { get; set; } 
     public int AverageWatchTimePerWeek { get; set; } 
     public int LongestWatchSession { get; set; } 
-    public DateTime MostActiveDay { get; set; } 
+    public DateOnly MostActiveDay { get; set; } 
 }
 

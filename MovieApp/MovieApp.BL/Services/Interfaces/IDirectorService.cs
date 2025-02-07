@@ -1,10 +1,10 @@
-﻿using System;
-using MovieApp.BL.DTOs.DirectorDtos;
+﻿using MovieApp.BL.DTOs.DirectorDtos;
 
 namespace MovieApp.BL.Services.Interfaces;
 public interface IDirectorService
 {
     Task<int> CreateAsync(DirectorCreateDto dto);
+    Task<IEnumerable<int>> CreateRangeAsync(IEnumerable<DirectorCreateDto> dtos);
     Task<bool> UpdateAsync(DirectorUpdateDto dto, int id);
     Task<IEnumerable<DirectorGetDto>> GetAllAsync();
     Task<DirectorGetDto> GetByIdAsync(int id);

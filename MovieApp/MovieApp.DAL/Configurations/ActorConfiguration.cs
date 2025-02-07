@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieApp.Core.Entities;
 
 namespace MovieApp.DAL.Configurations;
@@ -23,8 +24,14 @@ public class ActorConfiguration : IEntityTypeConfiguration<Actor>
         builder.Property(x => x.Biography)
             .HasMaxLength(2000);
 
+        var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+            d => d.ToDateTime(TimeOnly.MinValue), 
+            dt => DateOnly.FromDateTime(dt)        
+        );
+
         builder.Property(x => x.BirthDate)
             .IsRequired()
+            .HasConversion(dateOnlyConverter) 
             .HasColumnType("date");
 
         builder.Property(x => x.CreatedTime)

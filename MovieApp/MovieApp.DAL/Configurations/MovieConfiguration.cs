@@ -1,6 +1,7 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieApp.Core.Entities;
 
 namespace MovieApp.DAL.Configurations;
@@ -26,8 +27,14 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(x => x.Duration)
             .IsRequired();
 
+        var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(
+            d => d.ToDateTime(TimeOnly.MinValue),
+            dt => DateOnly.FromDateTime(dt)
+        );
+
         builder.Property(x => x.ReleaseDate)
             .IsRequired()
+            .HasConversion(dateOnlyConverter)
             .HasColumnType("date");
 
         builder.Property(x => x.CreatedTime)
