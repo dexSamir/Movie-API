@@ -8,7 +8,8 @@ public class DirectorProfile : Profile
 	public DirectorProfile()
 	{
 		CreateMap<DirectorCreateDto, Director>();
-		CreateMap<DirectorUpdateDto, Director>();
+		CreateMap<DirectorUpdateDto, Director>()
+			.ForAllMembers(x=> x.Condition((src, dest, srcMember) => srcMember != null));
 		CreateMap<Director, DirectorGetDto>(); 
     }
 }

@@ -68,7 +68,19 @@ public class GenreService : IGenreService
     public async Task<IEnumerable<GenreGetDto>> GetAllAsync()
     {
         var genres = await _repo.GetAllAsync();
-        return _mapper.Map<IEnumerable<GenreGetDto>>(genres); 
+        var datas = _mapper.Map<IEnumerable<GenreGetDto>>(genres);
+
+        foreach (var dto in datas)
+        {
+            var genre = genres.FirstOrDefault(x => x.Id == dto.Id);
+            if(genre != null)
+            {
+                dto.MovieCount = genre.Movies?.Count ?? 0; 
+                dto.SerieCount = genre.Series?.Count ?? 0;
+            }
+        }
+
+        return datas;
     }
 
     public async Task<GenreGetDto> GetByIdAsync(int id)
@@ -77,7 +89,10 @@ public class GenreService : IGenreService
         if (genre == null)
             throw new NotFoundException<Genre>();
 
-        return _mapper.Map<GenreGetDto>(genre);
+        var data = _mapper.Map<GenreGetDto>(genre);
+        data.SerieCount = genre.Series?.Count ?? 0;
+        data.MovieCount = genre.Movies?.Count ?? 0;
+        return data;
     }
 
     public async Task<bool> ReverseDeleteAsync(int id)

@@ -2,6 +2,7 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.DirectorDtos;
+using MovieApp.BL.DTOs.GenreDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Exceptions.Image;
 using MovieApp.BL.Extensions;
@@ -14,6 +15,7 @@ public class DirectorService : IDirectorService
 {
     readonly IMapper _mapper; 
     readonly IDirectorRepository _repo;
+    private readonly string _imageFolderPath = Path.Combine("wwwroot", "images", "directors");
     public DirectorService(IDirectorRepository repo, IMapper mapper)
     {
         _mapper = mapper; 
@@ -25,16 +27,30 @@ public class DirectorService : IDirectorService
     public async Task<IEnumerable<DirectorGetDto>> GetAllAsync()
     {
         var directors = await _repo.GetAllAsync();
-        return _mapper.Map<IEnumerable<DirectorGetDto>>(directors);
+        var datas = _mapper.Map<IEnumerable<DirectorGetDto>>(directors);
+
+        foreach (var dto in datas)
+        {
+            var director = directors.FirstOrDefault(d => d.Id == dto.Id);
+            if (director != null)
+            {
+                dto.MoviesCount = director.Movies?.Count ?? 0;
+                dto.MoviesCount = director.Series?.Count ?? 0;
+            }
+        }
+        return datas; 
     }
 
     public async Task<DirectorGetDto> GetByIdAsync(int id)
     {
         var director = await _repo.GetByIdAsync(id);
         if (director == null)
-            throw new NotFoundException<Genre>();
+            throw new NotFoundException<Director>();
 
-        return _mapper.Map<DirectorGetDto>(director);
+        var data = _mapper.Map<DirectorGetDto>(director);
+        data.SeriesCount = director.Series?.Count ?? 0;
+        data.MoviesCount = director.Movies?.Count ?? 0;
+        return data;
     }
 
     public async Task<int> CreateAsync(DirectorCreateDto dto)
@@ -50,23 +66,6 @@ public class DirectorService : IDirectorService
         await _repo.AddAsync(director);
         await _repo.SaveAsync();
         return director.Id; 
-    }
-
-    public async Task CreateRangeAsync(IEnumerable<DirectorCreateDto> dtos)
-    {
-        var datas = _mapper.Map<IEnumerable<Director>>(dtos);
-        foreach (var data in datas)
-            data.CreatedTime = DateTime.UtcNow;
-
-        foreach (var (dto, director) in dtos.Zip(datas))
-        {
-            director.CreatedTime = DateTime.UtcNow;
-            director.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
-                ? defaultImage
-                : await ProcessImageAsync(dto.ImageUrl);
-        }
-        await _repo.AddRangeAsync(datas);
-        await _repo.SaveAsync();
     }
 
     public async Task<bool> UpdateAsync(DirectorUpdateDto dto, int id)

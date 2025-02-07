@@ -1,19 +1,31 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.Core/Entities/Director.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Services/Implements/DirectorService.cs">
     <Files>
-      <File FileName="MovieApp.Core/Entities/Director.cs" Line="12" Column="76" />
+      <File FileName="MovieApp.API/Controllers/DirectorsController.cs" Line="33" Column="50" />
+      <File FileName="MovieApp.BL/Services/Implements/DirectorService.cs" Line="84" Column="10" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
-        <State name="__root__" />
+        <State name="__root__">
+          <Node name="MovieApp" expanded="True">
+            <Node name="MovieApp.BL">
+              <Node name="Services" expanded="True">
+                <Node name="Implements" expanded="True">
+                  <Node name="DirectorService.cs" selected="True" />
+                </Node>
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+            </Node>
+          </Node>
+        </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
 </Properties>

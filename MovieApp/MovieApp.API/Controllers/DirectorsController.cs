@@ -29,13 +29,6 @@ public class DirectorsController : ControllerBase
         return Ok(await _service.CreateAsync(dto));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateRange( IEnumerable<DirectorCreateDto> dtos)
-    {
-        await _service.CreateRangeAsync(dtos);
-        return Ok();
-    }
-
     [HttpPatch("{id}")]
     public async Task<IActionResult> Update(int id, DirectorUpdateDto dto)
     {
