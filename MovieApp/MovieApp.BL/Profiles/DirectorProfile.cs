@@ -7,8 +7,11 @@ public class DirectorProfile : Profile
 {
 	public DirectorProfile()
 	{
-		CreateMap<DirectorCreateDto, Director>();
-		CreateMap<DirectorUpdateDto, Director>()
+		CreateMap<DirectorCreateDto, Director>()
+			.ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => DateOnly.Parse(src.BirthDate)));
+
+        CreateMap<DirectorUpdateDto, Director>()
+            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => DateOnly.Parse(src.BirthDate)))
 			.ForAllMembers(x=> x.Condition((src, dest, srcMember) => srcMember != null));
 		CreateMap<Director, DirectorGetDto>(); 
     }

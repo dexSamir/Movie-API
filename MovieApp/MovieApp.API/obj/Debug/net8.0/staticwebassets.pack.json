@@ -1,16 +1,24 @@
 {
   "Files": [
     {
-      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/amwcsoi5.hzv.jpg",
-      "PackagePath": "staticwebassets/imgs/directors/amwcsoi5.hzv.jpg"
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/3owmtilp.oec.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/3owmtilp.oec.jpg"
     },
     {
-      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/ojnjhxed.vnb.jpg",
-      "PackagePath": "staticwebassets/imgs/directors/ojnjhxed.vnb.jpg"
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/e2sskgjj.u0x.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/e2sskgjj.u0x.jpg"
     },
     {
-      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/q3misym0.rtv.jpg",
-      "PackagePath": "staticwebassets/imgs/directors/q3misym0.rtv.jpg"
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/fc1n0a1k.1dw.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/fc1n0a1k.1dw.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/st3ey5vp.lzd.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/st3ey5vp.lzd.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/yc0zmcwa.bgo.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/yc0zmcwa.bgo.jpg"
     },
     {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.MovieApp.API.Microsoft.AspNetCore.StaticWebAssets.props",

@@ -64,27 +64,6 @@ public class DirectorService : IDirectorService
         return director.Id; 
     }
 
-    public async Task<IEnumerable<int>> CreateRangeAsync(IEnumerable<DirectorCreateDto> dtos)
-    {
-        var directors = new List<Director>();
-
-        foreach (var dto in dtos)
-        {
-            var director = _mapper.Map<Director>(dto);
-            director.CreatedTime = DateTime.UtcNow;
-            director.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
-                ? defaultImage
-                : await ProcessImageAsync(dto.ImageUrl);
-
-            directors.Add(director);
-        }
-
-        await _repo.AddRangeAsync(directors);
-        await _repo.SaveAsync();
-
-        return directors.Select(d => d.Id).ToList();
-    }
-
     public async Task<bool> UpdateAsync(DirectorUpdateDto dto, int id)
     {
         var data = await _repo.GetByIdAsync(id, false);
@@ -196,8 +175,8 @@ public class DirectorService : IDirectorService
         if (!image.IsValidType("image"))
             throw new UnsupportedFileTypeException();
 
-        if (!image.IsValidSize(5))
-            throw new UnsupportedFileSizeException(5);
+        if (!image.IsValidSize(15))
+            throw new UnsupportedFileSizeException(15);
 
         return await image.UploadAsync("wwwroot", "imgs", "directors");
     }

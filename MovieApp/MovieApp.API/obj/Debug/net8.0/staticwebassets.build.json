@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "Zf2nNAitcrALaZmEJ/1kLusBbtl5Z+yZl1r6H8xmDZs=",
+  "Hash": "veRQJY2WNbAzqmYsskAGCYw6jCenm+AjMZ3fDdnBZZc=",
   "Source": "MovieApp.API",
   "BasePath": "_content/MovieApp.API",
   "Mode": "Default",
@@ -74,12 +74,12 @@
       "OriginalItemSpec": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/obj/Debug/net8.0/scopedcss/bundle/MovieApp.API.styles.css"
     },
     {
-      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/amwcsoi5.hzv.jpg",
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/3owmtilp.oec.jpg",
       "SourceId": "MovieApp.API",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
       "BasePath": "_content/MovieApp.API",
-      "RelativePath": "imgs/directors/amwcsoi5.hzv.jpg",
+      "RelativePath": "imgs/directors/3owmtilp.oec.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -90,15 +90,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/imgs/directors/amwcsoi5.hzv.jpg"
+      "OriginalItemSpec": "wwwroot/imgs/directors/3owmtilp.oec.jpg"
     },
     {
-      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/ojnjhxed.vnb.jpg",
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/e2sskgjj.u0x.jpg",
       "SourceId": "MovieApp.API",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
       "BasePath": "_content/MovieApp.API",
-      "RelativePath": "imgs/directors/ojnjhxed.vnb.jpg",
+      "RelativePath": "imgs/directors/e2sskgjj.u0x.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -109,15 +109,15 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/imgs/directors/ojnjhxed.vnb.jpg"
+      "OriginalItemSpec": "wwwroot/imgs/directors/e2sskgjj.u0x.jpg"
     },
     {
-      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/q3misym0.rtv.jpg",
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/fc1n0a1k.1dw.jpg",
       "SourceId": "MovieApp.API",
       "SourceType": "Discovered",
       "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
       "BasePath": "_content/MovieApp.API",
-      "RelativePath": "imgs/directors/q3misym0.rtv.jpg",
+      "RelativePath": "imgs/directors/fc1n0a1k.1dw.jpg",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -128,7 +128,45 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot/imgs/directors/q3misym0.rtv.jpg"
+      "OriginalItemSpec": "wwwroot/imgs/directors/fc1n0a1k.1dw.jpg"
+    },
+    {
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/st3ey5vp.lzd.jpg",
+      "SourceId": "MovieApp.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "RelativePath": "imgs/directors/st3ey5vp.lzd.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/imgs/directors/st3ey5vp.lzd.jpg"
+    },
+    {
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/yc0zmcwa.bgo.jpg",
+      "SourceId": "MovieApp.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "RelativePath": "imgs/directors/yc0zmcwa.bgo.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/imgs/directors/yc0zmcwa.bgo.jpg"
     }
   ]
 }
