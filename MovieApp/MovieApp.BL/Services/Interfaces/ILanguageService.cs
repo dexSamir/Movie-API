@@ -13,7 +13,6 @@ public interface ILanguageService
 
     Task<bool> DeleteAsync(int id);
     Task<bool> DeleteAsync(string code);
-
     Task<bool> DeleteRangeAsync(string idsOrCodes);
 
     Task<bool> SoftDeleteAsync(int id);
