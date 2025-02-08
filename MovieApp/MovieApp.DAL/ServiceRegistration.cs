@@ -10,6 +10,7 @@ public static class ServiceRegistration
 		services.AddScoped<IDirectorRepository, DirectorRepository>();
 		services.AddScoped<IGenreRepository, GenreRepository>();
 		services.AddScoped<IActorRepository, ActorRepository>();
+		services.AddScoped<ILanguageRepository, LanguageRepository>();
 
         return services; 
 	}

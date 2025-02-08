@@ -12,6 +12,7 @@ public static class ServiceRegistration
 		services.AddScoped<IDirectorService, DirectorService>();
 		services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IActorService, ActorService>();
+        services.AddScoped<ILanguageService, LanguageService>();
 
 
         services.AddScoped<IFileService, FileService>();
