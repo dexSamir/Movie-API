@@ -20,6 +20,11 @@
     <None Remove="Exceptions\" />
     <None Remove="Extensions\" />
     <None Remove="Exceptions\Image\" />
+    <None Remove="DTOs\ActorDtos\" />
+    <None Remove="ExternalServices\" />
+    <None Remove="ExternalServices\Implements\" />
+    <None Remove="ExternalServices\Interfaces\" />
+    <None Remove="Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -32,6 +37,11 @@
     <Folder Include="Exceptions\" />
     <Folder Include="Extensions\" />
     <Folder Include="Exceptions\Image\" />
+    <Folder Include="DTOs\ActorDtos\" />
+    <Folder Include="ExternalServices\" />
+    <Folder Include="ExternalServices\Implements\" />
+    <Folder Include="ExternalServices\Interfaces\" />
+    <Folder Include="Utilities\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />

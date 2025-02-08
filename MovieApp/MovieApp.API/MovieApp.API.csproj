@@ -26,6 +26,7 @@
     <Folder Include="wwwroot\" />
     <Folder Include="wwwroot\imgs\" />
     <Folder Include="wwwroot\imgs\directors\" />
+    <Folder Include="wwwroot\imgs\actors\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -37,5 +38,6 @@
     <Content Remove="wwwroot\" />
     <Content Remove="wwwroot\imgs\" />
     <Content Remove="wwwroot\imgs\directors\" />
+    <Content Remove="wwwroot\imgs\actors\" />
   </ItemGroup>
 </Project>

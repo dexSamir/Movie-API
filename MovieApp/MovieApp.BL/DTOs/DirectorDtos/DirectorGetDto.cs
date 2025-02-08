@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.AspNetCore.Http;
+﻿
 
 namespace MovieApp.BL.DTOs.DirectorDtos;
 public class DirectorGetDto

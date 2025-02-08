@@ -2,6 +2,7 @@
 using MovieApp.BL.DTOs.GenreDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -58,7 +59,7 @@ public class GenreService : IGenreService
 
     public async Task<bool> DeleteRangeAsync(string ids)
     {
-        var idArray = ParseIds(ids);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureGenresExist(idArray);
 
         await _repo.DeleteRangeAsync(idArray);
@@ -105,7 +106,7 @@ public class GenreService : IGenreService
 
     public async Task<bool> ReverseDeleteRangeAsync(string ids)
     {
-        var idArray = ParseIds(ids);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureGenresExist(idArray);
 
         await _repo.ReverseSoftDeleteRangeAsync(idArray);
@@ -126,15 +127,13 @@ public class GenreService : IGenreService
 
     public async Task<bool> SoftDeleteRangeAsync(string ids)
     {
-        var idArray = ParseIds(ids);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureGenresExist(idArray);
 
         await _repo.SoftDeleteRangeAsync(idArray);
         return idArray.Length == await _repo.SaveAsync();
     }
 
-    private static int[] ParseIds(string ids) =>
-        ids.Split(',').Select(int.Parse).ToArray();
 
     private async Task EnsureGenreExists(int id)
     {

@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.DirectorDtos;
 using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Exceptions.Image;
 using MovieApp.BL.Extensions;
+using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -13,8 +13,10 @@ public class DirectorService : IDirectorService
 {
     readonly IMapper _mapper; 
     readonly IDirectorRepository _repo;
-    public DirectorService(IDirectorRepository repo, IMapper mapper)
+    private readonly IFileService _fileService;
+    public DirectorService(IDirectorRepository repo, IMapper mapper, IFileService fileService)
     {
+        _fileService = fileService;
         _mapper = mapper; 
         _repo = repo;
     }
@@ -23,7 +25,7 @@ public class DirectorService : IDirectorService
 
     public async Task<IEnumerable<DirectorGetDto>> GetAllAsync()
     {
-        var directors = await _repo.GetAllAsync();
+        var directors = await _repo.GetAllAsync("Movies", "Series");
         var datas = _mapper.Map<IEnumerable<DirectorGetDto>>(directors);
 
         foreach (var dto in datas)
@@ -40,7 +42,7 @@ public class DirectorService : IDirectorService
 
     public async Task<DirectorGetDto> GetByIdAsync(int id)
     {
-        var director = await _repo.GetByIdAsync(id);
+        var director = await _repo.GetByIdAsync(id, "Movies", "Series");
         if (director == null)
             throw new NotFoundException<Director>();
 
@@ -56,7 +58,7 @@ public class DirectorService : IDirectorService
         director.CreatedTime = DateTime.UtcNow;
         director.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
             ? defaultImage
-            : await ProcessImageAsync(dto.ImageUrl);
+            : await _fileService.ProcessImageAsync(dto.ImageUrl, "directors");
 
 
         await _repo.AddAsync(director);
@@ -73,8 +75,8 @@ public class DirectorService : IDirectorService
         _mapper.Map(dto, data);
         if (dto.ImageUrl != null)
         {
-            await DeleteImageIfNotDefault(data.ImageUrl);
-            data.ImageUrl = await ProcessImageAsync(dto.ImageUrl);
+            await _fileService.DeleteImageIfNotDefault(data.ImageUrl,"directors");
+            data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "directors");
         }
 
         data.UpdatedTime = DateTime.UtcNow;
@@ -98,7 +100,7 @@ public class DirectorService : IDirectorService
 
     public async Task<bool> DeleteRangeAsync(string ids)
     {
-        var idArray = ParseIds(ids);
+        var idArray = FileHelper.ParseIds(ids);
         if (idArray.Length == 0)
             throw new ArgumentException("No valid IDs provided");
 
@@ -108,7 +110,7 @@ public class DirectorService : IDirectorService
         {
             var data = await _repo.GetByIdAsync(id, false);
             if (data != null)
-                await DeleteImageIfNotDefault(data.ImageUrl);
+                await _fileService.DeleteImageIfNotDefault(data.ImageUrl, "directors");
         }
 
         await _repo.DeleteRangeAsync(idArray);
@@ -125,7 +127,7 @@ public class DirectorService : IDirectorService
 
     public async Task<bool> ReverseDeleteRangeAsync(string ids)
     {
-        var idArray = ParseIds(ids);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureDirectorExist(idArray);
 
         await _repo.ReverseSoftDeleteRangeAsync(idArray);
@@ -144,18 +146,13 @@ public class DirectorService : IDirectorService
 
     public async Task<bool> SoftDeleteRangeAsync(string ids)
     {
-        var idArray = ParseIds(ids);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureDirectorExist(idArray);
 
         await _repo.SoftDeleteRangeAsync(idArray);
         return idArray.Length == await _repo.SaveAsync();
     }
 
-
-
-
-    private static int[] ParseIds(string ids) =>
-        ids.Split(',').Select(int.Parse).ToArray();
 
     private async Task EnsureDirectorExists(int id)
     {
@@ -169,25 +166,7 @@ public class DirectorService : IDirectorService
         if (existingCount != ids.Length)
             throw new NotFoundException<Director>();
     }
-
-    private async Task<string> ProcessImageAsync(IFormFile image)
-    {
-        if (!image.IsValidType("image"))
-            throw new UnsupportedFileTypeException();
-
-        if (!image.IsValidSize(15))
-            throw new UnsupportedFileSizeException(15);
-
-        return await image.UploadAsync("wwwroot", "imgs", "directors");
-    }
-
-    private async Task DeleteImageIfNotDefault(string imageUrl)
-    {
-        if (!string.IsNullOrEmpty(imageUrl) && imageUrl != defaultImage)
-        {
-            string filePath = Path.Combine("wwwroot", "imgs", "directors", imageUrl);
-            FileExtension.DeleteFile(filePath);
-        }
-    }
 }
+
+
 

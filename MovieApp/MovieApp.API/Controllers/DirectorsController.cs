@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.DirectorDtos;
-using MovieApp.BL.Services.Implements;
 using MovieApp.BL.Services.Interfaces;
 
 namespace MovieApp.API.Controllers;

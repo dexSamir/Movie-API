@@ -11,9 +11,14 @@ public class DirectorProfile : Profile
 			.ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => DateOnly.Parse(src.BirthDate)));
 
         CreateMap<DirectorUpdateDto, Director>()
-            .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => DateOnly.Parse(src.BirthDate)))
-			.ForAllMembers(x=> x.Condition((src, dest, srcMember) => srcMember != null));
-		CreateMap<Director, DirectorGetDto>(); 
+             .ForMember(dest => dest.BirthDate, opt => opt.MapFrom((src, dest) =>
+                 string.IsNullOrWhiteSpace(src.BirthDate) ? dest.BirthDate : DateOnly.Parse(src.BirthDate)
+             ))
+             .ForAllMembers(opt => opt.Condition((src, dest, srcMember) =>
+                 srcMember != null && (srcMember is not string || !string.IsNullOrWhiteSpace(srcMember.ToString()))
+             ));
+
+        CreateMap<Director, DirectorGetDto>(); 
     }
 }
 
