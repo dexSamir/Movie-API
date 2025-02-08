@@ -3,7 +3,7 @@ namespace MovieApp.Core.Entities;
 public class User : IdentityUser
 {
     public string Name { get; set; }
-    public string Surname { get; set; }
+    public string? Surname { get; set; }
     public DateTime CreatedTime { get; set; }
     public DateTime? UpdatedTime { get; set; }
     public bool IsDeleted { get; set; }

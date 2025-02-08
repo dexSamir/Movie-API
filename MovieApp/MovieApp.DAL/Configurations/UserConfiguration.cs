@@ -15,7 +15,6 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                .HasMaxLength(100); 
 
         builder.Property(u => u.Surname)
-               .IsRequired()
                .HasMaxLength(100);
 
         var dateOnlyConverter = new ValueConverter<DateOnly, DateTime>(

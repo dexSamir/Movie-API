@@ -5,7 +5,7 @@ namespace MovieApp.Core.Entities;
 public class Actor : BaseEntity
 {
     public string Name { get; set; }
-    public string Surname { get; set; }
+    public string? Surname { get; set; }
     public string Biography { get; set; }
     public string? ImageUrl { get; set; }
     public DateOnly BirthDate { get; set; }

@@ -16,7 +16,6 @@ public class DirectorConfiguration : IEntityTypeConfiguration<Director>
             .IsUnicode(true);
 
         builder.Property(d => d.Surname)
-            .IsRequired()
             .HasMaxLength(50)
             .IsUnicode(true);
 

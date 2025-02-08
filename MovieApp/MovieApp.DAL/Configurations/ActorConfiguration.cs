@@ -18,7 +18,6 @@ public class ActorConfiguration : IEntityTypeConfiguration<Actor>
 
         builder.Property(x => x.Surname)
             .IsUnicode(true)
-            .IsRequired()
             .HasMaxLength(50);
 
         builder.Property(x => x.Biography)

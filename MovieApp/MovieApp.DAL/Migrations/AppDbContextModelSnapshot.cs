@@ -222,7 +222,6 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
                         .HasColumnType("character varying(50)");
@@ -571,7 +570,6 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("character varying(50)");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasMaxLength(50)
                         .IsUnicode(true)
                         .HasColumnType("character varying(50)");
@@ -1858,7 +1856,6 @@ namespace MovieApp.DAL.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Surname")
-                        .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("character varying(100)");
 
