@@ -26,9 +26,9 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task DeleteAsync(int id);
     Task SoftDeleteAsync(int id);
     Task ReverseSoftDeleteAsync(int id);
-    Task DeleteRangeAsync(params int[] ids);
-    Task SoftDeleteRangeAsync(params int[] ids);
-    Task ReverseSoftDeleteRangeAsync(params int[] ids);
+    Task DeleteRangeAsync(int[] ids);
+    Task SoftDeleteRangeAsync(int[] ids);
+    Task ReverseSoftDeleteRangeAsync(int[] ids);
 
     void DeleteRange(params T[] entities);
     void SoftDeleteRange(params T[] entities);

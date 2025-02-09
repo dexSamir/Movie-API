@@ -62,12 +62,6 @@ public class LanguageService : ILanguageService
         return await UpdateLanguageAsync(dto, language);
     }
 
-    public async Task<bool> UpdateAsync(LanguageUpdateDto dto, string code)
-    {
-        var language = await GetLanguageByCodeAsync(code, false);
-        return await UpdateLanguageAsync(dto, language);
-    }
-
     public async Task<bool> DeleteAsync(int id)
     {
         var language = await GetLanguageByIdAsync(id, false);
@@ -153,11 +147,11 @@ public class LanguageService : ILanguageService
         return await _repo.SaveAsync() > 0;
     }
 
-    private async Task<bool> ToggleSoftDeleteRangeAsync(string idsOrCodes, bool reverse)
+    private async Task<bool> ToggleSoftDeleteRangeAsync(string ids, bool reverse)
     {
-        var idArray = FileHelper.ParseIds(idsOrCodes);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureLanguagesExist(idArray);
-
+        
         if (reverse) await _repo.ReverseSoftDeleteRangeAsync(idArray);
         else await _repo.SoftDeleteRangeAsync(idArray);
 

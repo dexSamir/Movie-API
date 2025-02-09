@@ -1,4 +1,5 @@
-﻿namespace MovieApp.BL.Utilities;
+﻿
+namespace MovieApp.BL.Utilities;
 public static class FileHelper
 {
     public static int[] ParseIds(string ids) =>

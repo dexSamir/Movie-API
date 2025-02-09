@@ -24,7 +24,7 @@ public class LanguagesController : ControllerBase
         return Ok(await _service.GetByIdAsync(id));
     }
 
-    [HttpGet("by-code/{code}")]
+    [HttpGet("code/{code}")]
     public async Task<IActionResult> GetByCode(string code)
     {
         return Ok(await _service.GetByCodeAsync(code));
@@ -36,16 +36,10 @@ public class LanguagesController : ControllerBase
         return Ok(await _service.CreateAsync(dto));
     }
 
-    [HttpPatch("update/{id}")]
+    [HttpPatch("{id}")]
     public async Task<IActionResult> Update(int id, LanguageUpdateDto dto)
     {
         return Ok(await _service.UpdateAsync(dto, id));
-    }
-
-    [HttpPatch("update/by-code/{code}")]
-    public async Task<IActionResult> UpdateByCode(string code, LanguageUpdateDto dto)
-    {
-        return Ok(await _service.UpdateAsync(dto, code));
     }
 
     [HttpDelete("{id}")]
@@ -54,49 +48,49 @@ public class LanguagesController : ControllerBase
         return Ok(await _service.DeleteAsync(id));
     }
 
-    [HttpDelete("delete/by-code/{code}")]
+    [HttpDelete("code/{code}")]
     public async Task<IActionResult> DeleteByCode(string code)
     {
         return Ok(await _service.DeleteAsync(code));
     }
 
-    [HttpDelete("soft-delete/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> SoftDelete(int id)
     {
         return Ok(await _service.SoftDeleteAsync(id));
     }
 
-    [HttpDelete("soft-delete/by-code/{code}")]
+    [HttpDelete("code/{code}")]
     public async Task<IActionResult> SoftDeleteByCode(string code)
     {
         return Ok(await _service.SoftDeleteAsync(code));
     }
 
-    [HttpDelete("reverse-soft-delete/{id}")]
+    [HttpDelete("{id}")]
     public async Task<IActionResult> ReverseSoftDelete(int id)
     {
         return Ok(await _service.ReverseDeleteAsync(id));
     }
 
-    [HttpDelete("reverse-soft-delete/by-code/{code}")]
+    [HttpDelete("code/{code}")]
     public async Task<IActionResult> ReverseSoftDeleteByCode(string code)
     {
         return Ok(await _service.ReverseDeleteAsync(code));
     }
 
-    [HttpDelete("delete-range/{ids}")]
+    [HttpDelete("{ids}")]
     public async Task<IActionResult> DeleteRange([FromRoute] string ids)
     {
         return Ok(await _service.DeleteRangeAsync(ids));
     }
 
-    [HttpDelete("soft-delete-range/{ids}")]
+    [HttpDelete("{ids}")]
     public async Task<IActionResult> SoftDeleteRange([FromRoute] string ids)
     {
         return Ok(await _service.SoftDeleteRangeAsync(ids));
     }
 
-    [HttpDelete("reverse-soft-delete-range/{ids}")]
+    [HttpDelete("{ids}")]
     public async Task<IActionResult> ReverseSoftDeleteRange([FromRoute] string ids)
     {
         return Ok(await _service.ReverseDeleteRangeAsync(ids));
