@@ -26,6 +26,7 @@
     <None Remove="ExternalServices\Interfaces\" />
     <None Remove="Utilities\" />
     <None Remove="DTOs\LanguageDtos\" />
+    <None Remove="DTOs\MovieDtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -44,6 +45,7 @@
     <Folder Include="ExternalServices\Interfaces\" />
     <Folder Include="Utilities\" />
     <Folder Include="DTOs\LanguageDtos\" />
+    <Folder Include="DTOs\MovieDtos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
