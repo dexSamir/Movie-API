@@ -8,8 +8,12 @@ public class LanguageProfile : Profile
 	public LanguageProfile()
 	{
         CreateMap<LanguageCreateDto, Language>();
-        CreateMap<LanguageUpdateDto, Language>();
+        CreateMap<LanguageUpdateDto, Language>()
+            .ForAllMembers(opt => opt.Condition((src, dest, srcMember) =>
+                srcMember != null && (srcMember is not string || !string.IsNullOrWhiteSpace(srcMember.ToString()))
+            ));
         CreateMap<Language, LanguageGetDto>();
+            
     }
 }
 

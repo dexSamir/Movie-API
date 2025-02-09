@@ -13,12 +13,14 @@ public class LanguageConfiguration : IEntityTypeConfiguration<Language>
 
         builder.Property(l => l.Code)
             .IsRequired()
-            .HasMaxLength(10); 
+            .HasMaxLength(10);
 
         builder.Property(l => l.Name)
             .IsRequired()
-            .HasMaxLength(100); 
+            .HasMaxLength(100);
+
         builder.Property(l => l.Icon)
+            .IsRequired(false)
             .HasMaxLength(200); 
 
         builder.HasMany(l => l.AudioTracks)
