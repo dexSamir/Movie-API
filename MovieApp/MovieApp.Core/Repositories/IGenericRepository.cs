@@ -9,6 +9,7 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task<int> CountAsync(int[] ids);
 
     Task<T?> GetByIdAsync(int id, bool asNoTrack = true, params string[] includes);
+    Task<IEnumerable<T>> GetByIdsAsync(int[] ids, bool asNoTrack = true, params string[] includes);
     Task<T?> GetByIdAsync(int id, params string[] includes);
 
     Task<IEnumerable<T>> GetWhereAsync(Expression<Func<T, bool>> expression, bool asNoTrack = true, params string[] includes);

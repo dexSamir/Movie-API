@@ -33,6 +33,13 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task<T?> GetByIdAsync(int id, bool asNoTrack = true, params string[] includes)
         => await _includeAndTracking(Table, asNoTrack, includes).FirstOrDefaultAsync(x => x.Id == id);
 
+    public async Task<IEnumerable<T>> GetByIdsAsync(int[] ids, bool asNoTrack = true, params string[] includes)
+    {
+        var query = Table.Where(l => ids.Contains(l.Id)); 
+        query = _includeAndTracking(query, asNoTrack, includes);
+        return await query.ToListAsync(); 
+    }
+
     public async Task<T?> GetByIdAsync(int id, params string[] includes)
         => await GetByIdAsync(id, true, includes);
 

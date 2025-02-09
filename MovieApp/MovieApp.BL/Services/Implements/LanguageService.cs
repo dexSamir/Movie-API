@@ -1,8 +1,12 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
+using MovieApp.BL.DTOs.ActorDtos;
 using MovieApp.BL.DTOs.LanguageDtos;
 using MovieApp.BL.Exceptions.Common;
+using MovieApp.BL.Extensions;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -20,7 +24,25 @@ public class LanguageService : ILanguageService
         _mapper = mapper;
     }
 
-    private const string defaultImage = "imgs/actors/default.png";
+    private const string defaultImage = "imgs/languages/default.png";
+
+    public async Task<IEnumerable<LanguageGetDto>> GetAllAsync()
+    {
+        var languages = await _repo.GetAllAsync("Subtitles", "AudioTracks");
+        return _mapper.Map<IEnumerable<LanguageGetDto>>(languages);
+    }
+
+    public async Task<LanguageGetDto> GetByCodeAsync(string code)
+    {
+        var language = await GetLanguageByCodeAsync(code);
+        return _mapper.Map<LanguageGetDto>(language);
+    }
+
+    public async Task<LanguageGetDto> GetByIdAsync(int id)
+    {
+        var language = await GetLanguageByIdAsync(id);
+        return _mapper.Map<LanguageGetDto>(language);
+    }
 
     public async Task<string> CreateAsync(LanguageCreateDto dto)
     {
@@ -29,83 +51,181 @@ public class LanguageService : ILanguageService
 
         var language = _mapper.Map<Language>(dto);
         language.CreatedTime = DateTime.UtcNow;
-        language.Icon = dto.Icon == null || dto.Icon.Length == 0
-            ? defaultImage
-            : await _fileService.ProcessImageAsync(dto.Icon, "languages");
+        language.Icon = await ProcessImageAsync(dto.Icon);
 
         await _repo.AddAsync(language);
         await _repo.SaveAsync();
         return language.Code; 
     }
 
-    public Task<bool> DeleteAsync(int id)
+    public async Task<bool> UpdateAsync(LanguageUpdateDto dto, int id)
     {
-        throw new NotImplementedException();
+        var language = await GetLanguageByIdAsync(id, false);
+        return await UpdateLanguageAsync(dto, language);
     }
 
-    public Task<bool> DeleteAsync(string code)
+    public async Task<bool> UpdateAsync(LanguageUpdateDto dto, string code)
     {
-        throw new NotImplementedException();
+        var language = await GetLanguageByCodeAsync(code, false);
+        return await UpdateLanguageAsync(dto, language);
     }
 
-    public Task<bool> DeleteRangeAsync(string idsOrCodes)
+    public async Task<bool> DeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var language = await GetLanguageByIdAsync(id, false);
+        return await DeleteLanguageAsync(language);
     }
 
-    public Task<IEnumerable<LanguageGetDto>> GetAllAsync()
+    public async Task<bool> DeleteAsync(string code)
     {
-        throw new NotImplementedException();
+        var language = await GetLanguageByCodeAsync(code, false);
+        return await DeleteLanguageAsync(language);
     }
 
-    public Task<LanguageGetDto> GetByCodeAsync(int id)
+    public async Task<bool> DeleteRangeAsync(string idsOrCodes)
     {
-        throw new NotImplementedException();
+        var idArray = FileHelper.ParseIds(idsOrCodes);
+        await EnsureLanguagesExist(idArray);
+
+        var languages = await _repo.GetByIdsAsync(idArray);
+        foreach (var language in languages)
+            await _fileService.DeleteImageIfNotDefault(language.Icon, "languages");
+
+        await _repo.DeleteRangeAsync(idArray);
+        return idArray.Length == await _repo.SaveAsync();
     }
 
-    public Task<LanguageGetDto> GetByIdAsync(int id)
+    public async Task<bool> ReverseDeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        await EnsureLanguageExists(id);
+
+        await _repo.ReverseSoftDeleteAsync(id);
+        return await _repo.SaveAsync() > 0;
     }
 
-    public Task<bool> ReverseDeleteAsync(int id)
+    public async Task<bool> ReverseDeleteAsync(string code)
     {
-        throw new NotImplementedException();
+        var data = await _repo.GetFirstAsync(x => x.Code == code && !x.IsDeleted, false);
+        if (data == null)
+            throw new NotFoundException<Language>();
+
+        _repo.ReverseSoftDelete(data);
+        return await _repo.SaveAsync() > 0;
     }
 
-    public Task<bool> ReverseDeleteAsync(string code)
+    public async Task<bool> ReverseDeleteRangeAsync(string idsOrCodes)
     {
-        throw new NotImplementedException();
+        var idArray = FileHelper.ParseIds(idsOrCodes);
+        await EnsureLanguageExist(idArray);
+
+        await _repo.ReverseSoftDeleteRangeAsync(idArray);
+        return idArray.Length == await _repo.SaveAsync();
     }
 
-    public Task<bool> ReverseDeleteRangeAsync(string idsOrCodes)
+    public async Task<bool> SoftDeleteAsync(int id)
     {
-        throw new NotImplementedException();
+        var data = await _repo.GetFirstAsync(x => x.Id == id && !x.IsDeleted, false);
+        if (data == null)
+            throw new NotFoundException<Language>();
+
+        _repo.SoftDelete(data);
+        return await _repo.SaveAsync() > 0;
     }
 
-    public Task<bool> SoftDeleteAsync(int id)
+    public async Task<bool> SoftDeleteAsync(string code)
     {
-        throw new NotImplementedException();
+
+        var data = await _repo.GetFirstAsync(x => x.Code == code && !x.IsDeleted, false);
+        if (data == null)
+            throw new NotFoundException<Language>();
+
+        _repo.SoftDelete(data);
+        return await _repo.SaveAsync() > 0;
     }
 
-    public Task<bool> SoftDeleteAsync(string code)
+    public async Task<bool> SoftDeleteRangeAsync(string idsOrCodes)
     {
-        throw new NotImplementedException();
+        var idArray = FileHelper.ParseIds(idsOrCodes);
+        await EnsureLanguageExist(idArray);
+
+        await _repo.SoftDeleteRangeAsync(idArray);
+        return idArray.Length == await _repo.SaveAsync();
     }
 
-    public Task<bool> SoftDeleteRangeAsync(string idsOrCodes)
+
+
+    private async Task<Language> GetLanguageByIdAsync(int id, bool trackChanges = true)
     {
-        throw new NotImplementedException();
+        var language = await _repo.GetByIdAsync(id, trackChanges);
+        return language ?? throw new NotFoundException<Language>();
     }
 
-    public Task<bool> UpdateAsync(LanguageUpdateDto dto, int id)
+    private async Task<Language> GetLanguageByCodeAsync(string code, bool trackChanges = true)
     {
-        throw new NotImplementedException();
+        var language = await _repo.GetFirstAsync(x => x.Code == code, trackChanges);
+        return language ?? throw new NotFoundException<Language>();
     }
 
-    public Task<bool> UpdateAsync(LanguageUpdateDto dto, string code)
+    private async Task<bool> UpdateLanguageAsync(LanguageUpdateDto dto, Language language)
     {
-        throw new NotImplementedException();
+        _mapper.Map(dto, language);
+
+        if (dto.Icon != null)
+        {
+            await _fileService.DeleteImageIfNotDefault(language.Icon, "languages");
+            language.Icon = await _fileService.ProcessImageAsync(dto.Icon, "languages");
+        }
+
+        language.UpdatedTime = DateTime.UtcNow;
+        return await _repo.SaveAsync() > 0;
+    }
+
+    private async Task<bool> DeleteLanguageAsync(Language language)
+    {
+        await _fileService.DeleteImageIfNotDefault(language.Icon, "languages");
+        _repo.Delete(language);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    private async Task<bool> ToggleSoftDeleteAsync(int id, bool reverse)
+    {
+        var language = await GetLanguageByIdAsync(id, false);
+        if (reverse) _repo.ReverseSoftDelete(language);
+        else _repo.SoftDelete(language);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    private async Task<bool> ToggleSoftDeleteAsync(string code, bool reverse)
+    {
+        var language = await GetLanguageByCodeAsync(code, false);
+        if (reverse) _repo.ReverseSoftDelete(language);
+        else _repo.SoftDelete(language);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    private async Task<bool> ToggleSoftDeleteRangeAsync(string idsOrCodes, bool reverse)
+    {
+        var idArray = FileHelper.ParseIds(idsOrCodes);
+        await EnsureLanguagesExist(idArray);
+
+        if (reverse) await _repo.ReverseSoftDeleteRangeAsync(idArray);
+        else await _repo.SoftDeleteRangeAsync(idArray);
+
+        return idArray.Length == await _repo.SaveAsync();
+    }
+
+    private async Task EnsureLanguagesExist(int[] ids)
+    {
+        var existingCount = await _repo.CountAsync(ids);
+        if (existingCount != ids.Length)
+            throw new NotFoundException<Language>();
+    }
+
+    private async Task<string> ProcessImageAsync(IFormFile icon)
+    {
+        return (icon == null || icon.Length == 0)
+            ? defaultImage
+            : await _fileService.ProcessImageAsync(icon, "languages");
     }
 }
 

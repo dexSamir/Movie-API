@@ -3,13 +3,13 @@
 namespace MovieApp.BL.Services.Interfaces;
 public interface ILanguageService
 {
-    Task<int> CreateAsync(LanguageCreateDto dto);
+    Task<string> CreateAsync(LanguageCreateDto dto);
     Task<bool> UpdateAsync(LanguageUpdateDto dto, int id);
     Task<bool> UpdateAsync(LanguageUpdateDto dto, string code);
     Task<IEnumerable<LanguageGetDto>> GetAllAsync();
 
     Task<LanguageGetDto> GetByIdAsync(int id);
-    Task<LanguageGetDto> GetByCodeAsync(int id);
+    Task<LanguageGetDto> GetByCodeAsync(string code);
 
     Task<bool> DeleteAsync(int id);
     Task<bool> DeleteAsync(string code);
