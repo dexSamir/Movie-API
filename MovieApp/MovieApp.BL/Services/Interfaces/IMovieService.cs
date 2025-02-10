@@ -1,4 +1,5 @@
-﻿using MovieApp.BL.DTOs.MovieDtos;
+﻿using Microsoft.AspNetCore.Http;
+using MovieApp.BL.DTOs.MovieDtos;
 namespace MovieApp.BL.Services.Interfaces;
 public interface IMovieService
 {
@@ -18,6 +19,11 @@ public interface IMovieService
 
     Task<int> CreateAsync(MovieCreateDto dto); 
 	Task<bool> UpdateAsync(MovieUpdateDto dto);
+
+    Task<bool> AddTrailerAsync(int movieId, IFormFile trailerFile);
+    Task<bool> AddPosterAsync(int movieId, IFormFile posterFile); 
+    Task<bool> UpdatePosterUrlAsync(int movieId, IFormFile posterUrl);
+    Task<bool> UpdateTrailerUrlAsync(int movieId, IFormFile trailerUrl);
 
     Task<bool> RateMovieAsync(int userId, int movieId, double rating);
     Task<bool> AddReviewAsync(int userId, int movieId, string comment);
@@ -42,10 +48,8 @@ public interface IMovieService
     Task<string> GetMovieDownloadUrlAsync(int movieId);
     Task<bool> ShareMovieAsync(int movieId, string socialMediaPlatform);
 
-    Task<bool> UpdatePosterUrlAsync(int movieId, string posterUrl);
-    Task<bool> UpdateTrailerUrlAsync(int movieId, string trailerUrl);
-    Task<bool> SubscribeToMovieNotificationsAsync(int userId, int movieId);
 
+    Task<bool> SubscribeToMovieNotificationsAsync(int userId, int movieId);
     Task<bool> NotifyUsersAboutNewMovieAsync(int movieId);
     Task<bool> UnsubscribeFromMovieNotificationsAsync(int userId, int movieId);
 
@@ -81,5 +85,6 @@ public interface IMovieService
 
     Task<bool> IsUserWatchingAsync(int userId, int movieId);
 
+    Task<bool> UpdateAverageRatingAsync(int movieId); 
 }
 

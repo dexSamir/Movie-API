@@ -4,6 +4,7 @@ using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.Core.Entities;
+using MovieApp.Core.Entities.Relational;
 using MovieApp.Core.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
@@ -147,6 +148,7 @@ public class MovieService : IMovieService
             movies.OrderByDescending(x => x.ReleaseDate);
         return _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
     }
+
     public async Task<IEnumerable<MovieGetDto>> SortByRatingAsync(bool ascending = true)
     {
         var movies = await _repo.GetAllAsync(_includeProperties);
@@ -158,6 +160,30 @@ public class MovieService : IMovieService
             movies.OrderBy(x => x.AvgRating) :
             movies.OrderByDescending(x => x.AvgRating);
         return _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
+    }
+
+    public async Task<int> CreateAsync(MovieCreateDto dto)
+    {
+        var movie = _mapper.Map<Movie>(dto);
+
+        if (dto.ActorIds != null && dto.ActorIds.Any())
+            movie.Actors = dto.ActorIds.Select(actorId => new MovieActor { ActorId = actorId }).ToList();
+
+        if (dto.SubtitleIds != null && dto.SubtitleIds.Any())
+            movie.MovieSubtitles = dto.SubtitleIds.Select(subtitleId => new MovieSubtitle { SubtitleId = subtitleId }).ToList();
+
+        if (dto.GenreIds != null && dto.GenreIds.Any())
+            movie.Genres = dto.GenreIds.Select(genreId => new MovieGenre { GenreId = genreId }).ToList();
+
+        if (dto.AudioTrackIds != null && dto.AudioTrackIds.Any())
+            movie.AudioTracks = dto.AudioTrackIds.Select(audioTrackId => new AudioTrack { Id = audioTrackId }).ToList();
+
+        movie.PosterUrl = null;
+        movie.TrailerUrl = null;
+
+        await _repo.AddAsync(movie);
+        await _repo.SaveAsync();
+        return movie.Id;
     }
 }
 
