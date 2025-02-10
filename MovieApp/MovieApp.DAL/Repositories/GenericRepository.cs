@@ -21,6 +21,12 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task AddRangeAsync(IEnumerable<T> entities)
         => await Table.AddRangeAsync(entities);
 
+    public async Task<bool> UpdatePropertyAsync(T entity, Expression<Func<T, object>> property, object value)
+    {
+        Table.Entry(entity).Property(property).CurrentValue = value;
+        return await _context.SaveChangesAsync() > 0;
+    }
+
     public async Task<int> CountAsync(int[] ids)
         => await Table.CountAsync(x=> ids.Contains(x.Id));
 

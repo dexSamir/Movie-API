@@ -50,6 +50,10 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
         builder.Property(x => x.DislikeCount)
             .HasDefaultValue(0);
 
+        builder.Property(x => x.AvgRating)
+            .HasColumnType("decimal(3,1)") 
+            .HasDefaultValue(0)             
+            .IsRequired();
         builder.HasOne(x => x.Director)
             .WithMany(x => x.Movies)
             .HasForeignKey(x => x.DirectorId)

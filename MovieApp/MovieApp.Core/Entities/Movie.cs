@@ -13,7 +13,7 @@ public class Movie : BaseEntity
 
     public int? DirectorId { get; set; }
     public Director? Director { get; set; }
-
+    public double AvgRating { get; set; }
     public int LikeCount { get; set; } = 0;
     public int DislikeCount { get; set; } = 0;
 

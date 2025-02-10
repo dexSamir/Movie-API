@@ -7,7 +7,7 @@ public class MovieCreateDto
     public string? TrailerUrl { get; set; }
     public int Duration { get; set; }  
     public DateOnly ReleaseDate { get; set; }
-    public int? DirectorId { get; set; }
+    public int DirectorId { get; set; }
 
     public ICollection<int>? ActorIds { get; set; }
     public ICollection<int>? SubtitleIds { get; set; }

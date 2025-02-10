@@ -23,6 +23,8 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task AddAsync(T entity);
     Task AddRangeAsync(IEnumerable<T> entities);
 
+    Task<bool> UpdatePropertyAsync(T entity, Expression<Func<T, object>> property, object value);
+
     Task DeleteAsync(int id);
     Task SoftDeleteAsync(int id);
     Task ReverseSoftDeleteAsync(int id);
