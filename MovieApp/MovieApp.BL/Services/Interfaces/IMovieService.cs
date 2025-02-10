@@ -21,7 +21,7 @@ public interface IMovieService
 
     Task<bool> RateMovieAsync(int userId, int movieId, double rating);
     Task<bool> AddReviewAsync(int userId, int movieId, string comment);
-    Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
+    //Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
     Task<double> GetAverageRatingAsync(int movieId);
 
     Task<IEnumerable<MovieGetDto>> GetRecommendationsAsync(int userId);
@@ -75,7 +75,7 @@ public interface IMovieService
     Task<bool> StartWatchingAsync(int userId, int movieId);
     Task<bool> UpdateWatchProgressAsync(int userId, int movieId, TimeSpan currentTime);
     Task<bool> FinishWatchingAsync(int userId, int movieId);
-    Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
+    //Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
     Task<bool> PauseMovieAsync(int userId, int movieId, TimeSpan pausedAt);
     Task<bool> ResumeWatchingAsync(int userId, int movieId);
 

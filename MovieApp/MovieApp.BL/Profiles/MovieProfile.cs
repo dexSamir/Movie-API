@@ -9,8 +9,8 @@ public class MovieProfile : Profile
 	{
 		CreateMap<MovieCreateDto, Movie>();
         CreateMap<MovieUpdateDto, Movie>();
-        CreateMap<Movie, MovieGetDto>();
-
+        CreateMap<Movie, MovieGetDto>()
+            .AfterMap((src, dest) => dest.DirectorName = src.Director?.Name ?? "");
     }
 }
 
