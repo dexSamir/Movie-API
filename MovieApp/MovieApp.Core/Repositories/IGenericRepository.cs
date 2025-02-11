@@ -21,6 +21,7 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task<bool> IsExistAsync(Expression<Func<T, bool>> expression);
     Task<bool> IsExistAsync(int id);
     Task AddAsync(T entity);
+    void UpdateAsync(T entity);
     Task AddRangeAsync(IEnumerable<T> entities);
 
     Task<bool> UpdatePropertyAsync(T entity, Expression<Func<T, object>> property, object value);

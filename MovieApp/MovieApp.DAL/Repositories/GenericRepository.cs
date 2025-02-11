@@ -16,7 +16,10 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     }
 
     public async Task AddAsync(T entity)
-        => await Table.AddAsync(entity); 
+        => await Table.AddAsync(entity);
+
+    public void UpdateAsync(T entity)
+       => Table.Update(entity); 
 
     public async Task AddRangeAsync(IEnumerable<T> entities)
         => await Table.AddRangeAsync(entities);

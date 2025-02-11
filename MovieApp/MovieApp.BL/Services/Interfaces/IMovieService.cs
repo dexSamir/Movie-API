@@ -17,8 +17,9 @@ public interface IMovieService
     Task<IEnumerable<MovieGetDto>> SortByReleaseDateAsync(bool ascending = true);
     Task<IEnumerable<MovieGetDto>> SortByRatingAsync(bool ascending = true);
 
-    Task<int> CreateAsync(MovieCreateDto dto); 
-	Task<bool> UpdateAsync(MovieUpdateDto dto);
+    Task<int> CreateAsync(MovieCreateDto dto);
+    Task<IEnumerable<int>> CreateRangeAsync(IEnumerable<MovieCreateDto> dtos); 
+    Task<bool> UpdateAsync(MovieUpdateDto dto, int movieId);
 
     Task<bool> AddTrailerAsync(int movieId, IFormFile trailerFile);
     Task<bool> AddPosterAsync(int movieId, IFormFile posterFile); 
@@ -47,7 +48,6 @@ public interface IMovieService
 
     Task<string> GetMovieDownloadUrlAsync(int movieId);
     Task<bool> ShareMovieAsync(int movieId, string socialMediaPlatform);
-
 
     Task<bool> SubscribeToMovieNotificationsAsync(int userId, int movieId);
     Task<bool> NotifyUsersAboutNewMovieAsync(int movieId);
