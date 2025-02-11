@@ -1,13 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.IO;
-using AutoMapper;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Exceptions.Image;
 using MovieApp.BL.Extensions;
+using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.Core.Entities;
-using MovieApp.Core.Entities.Relational;
 using MovieApp.Core.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
@@ -16,6 +14,7 @@ public class MovieService : IMovieService
     readonly IMovieRepository _repo;
     readonly IActorRepository _actRepo;
     readonly IMapper _mapper;
+    private readonly IFileService _fileService;
 
     private readonly string[] _includeProperties =
     {
@@ -23,9 +22,10 @@ public class MovieService : IMovieService
         "Reviews", "Rentals", "AudioTracks", "Recommendations"
     };
 
-    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo)
+    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService)
     {
         _actRepo = actRepo;
+        _fileService = fileService; 
         _mapper = mapper;
         _repo = repo;
     }
@@ -154,21 +154,26 @@ public class MovieService : IMovieService
 
 
     //UPDATE AND CREATES
+    public async Task<bool> UpdateAverageRatingAsync(int movieId)
+    {
+        var movie = await _repo.GetByIdAsync(movieId, "Ratings");
+
+        if (movie == null)
+            throw new NotFoundException<Movie>();
+
+        var newRating = movie.AvgRating = movie.Ratings.Any() ? movie.Ratings.Average(r => r.Score) : 0;
+
+        return await _repo.UpdatePropertyAsync(movie, x => x.AvgRating, newRating);
+    }
+
     public async Task<int> CreateAsync(MovieCreateDto dto)
     {
         var movie = _mapper.Map<Movie>(dto);
 
-        if (dto.ActorIds != null && dto.ActorIds.Any())
-            movie.Actors = dto.ActorIds.Select(actorId => new MovieActor { ActorId = actorId }).ToList();
-
-        if (dto.SubtitleIds != null && dto.SubtitleIds.Any())
-            movie.MovieSubtitles = dto.SubtitleIds.Select(subtitleId => new MovieSubtitle { SubtitleId = subtitleId }).ToList();
-
-        if (dto.GenreIds != null && dto.GenreIds.Any())
-            movie.Genres = dto.GenreIds.Select(genreId => new MovieGenre { GenreId = genreId }).ToList();
-
-        if (dto.AudioTrackIds != null && dto.AudioTrackIds.Any())
-            movie.AudioTracks = dto.AudioTrackIds.Select(audioTrackId => new AudioTrack { Id = audioTrackId }).ToList();
+        movie.Actors = dto.ActorIds.ToMovieActors();
+        movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
+        movie.Genres = dto.GenreIds.ToMovieGenres();
+        movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
 
         await _repo.AddAsync(movie);
         await _repo.SaveAsync();
@@ -183,21 +188,12 @@ public class MovieService : IMovieService
 
         var movies = _mapper.Map<IEnumerable<Movie>>(dtos);
 
-        foreach (var movie in movies)
+        foreach (var (dto, movie) in dtos.Zip(movies))
         {
-            var dto = dtos.First(d => d.Title == movie.Title); 
-
-            if (dto.ActorIds != null && dto.ActorIds.Any())
-                movie.Actors = dto.ActorIds.Select(actorId => new MovieActor { ActorId = actorId }).ToList();
-
-            if (dto.SubtitleIds != null && dto.SubtitleIds.Any())
-                movie.MovieSubtitles = dto.SubtitleIds.Select(subtitleId => new MovieSubtitle { SubtitleId = subtitleId }).ToList();
-
-            if (dto.GenreIds != null && dto.GenreIds.Any())
-                movie.Genres = dto.GenreIds.Select(genreId => new MovieGenre { GenreId = genreId }).ToList();
-
-            if (dto.AudioTrackIds != null && dto.AudioTrackIds.Any())
-                movie.AudioTracks = dto.AudioTrackIds.Select(audioTrackId => new AudioTrack { Id = audioTrackId }).ToList();
+            movie.Actors = dto.ActorIds.ToMovieActors();
+            movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
+            movie.Genres = dto.GenreIds.ToMovieGenres();
+            movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
         }
 
         await _repo.AddRangeAsync(movies);
@@ -214,66 +210,28 @@ public class MovieService : IMovieService
 
         _mapper.Map(dto, movie);
 
-        if (dto.ActorIds != null && dto.ActorIds.Any())
-            movie.Actors = dto.ActorIds.Select(actorId => new MovieActor { ActorId = actorId }).ToList();
 
-        if (dto.SubtitleIds != null && dto.SubtitleIds.Any())
-            movie.MovieSubtitles = dto.SubtitleIds.Select(subtitleId => new MovieSubtitle { SubtitleId = subtitleId }).ToList();
+        movie.Actors = dto.ActorIds.ToMovieActors();
+        movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
+        movie.Genres = dto.GenreIds.ToMovieGenres();
+        movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
 
-        if (dto.GenreIds != null && dto.GenreIds.Any())
-            movie.Genres = dto.GenreIds.Select(genreId => new MovieGenre { GenreId = genreId }).ToList();
-
-        if (dto.AudioTrackIds != null && dto.AudioTrackIds.Any())
-            movie.AudioTracks = dto.AudioTrackIds.Select(audioTrackId => new AudioTrack { Id = audioTrackId }).ToList();
-
-        if (dto.PosterFile != null)
-        {
-            if (!dto.PosterFile.IsValidType("image/"))
-                throw new UnsupportedFileTypeException("Poster must be an image file.");
-
-            if (!dto.PosterFile.IsValidSize(50)) 
-                throw new ValidationException("Poster file size must be less than 50 MB.");
-
-            if (!string.IsNullOrEmpty(movie.PosterUrl))
-            {
-                var oldPosterPath = Path.Combine("wwwroot", "imgs", "movies", "posters", movie.PosterUrl);
-                FileExtension.DeleteFile(oldPosterPath);
-            }
-
-            movie.PosterUrl = await dto.PosterFile.UploadAsync("wwwroot", "imgs", "movies", "posters");
-        }
-
-        if (dto.TrailerFile != null)
-        {
-            if (!dto.TrailerFile.IsValidType("video/"))
-                throw new ValidationException("Trailer must be a video file.");
-
-            if (!dto.TrailerFile.IsValidSize(1024)) 
-                throw new ValidationException("Trailer file size must be less than 1 GB.");
-
-            if (!string.IsNullOrEmpty(movie.TrailerUrl))
-            {
-                var oldTrailerPath = Path.Combine("wwwroot", "imgs", "movies", "trailers", movie.TrailerUrl);
-                FileExtension.DeleteFile(oldTrailerPath);
-            }
-
-            movie.TrailerUrl = await dto.TrailerFile.UploadAsync("wwwroot", "imgs", "movies", "trailers");
-        }
+        movie.PosterUrl = await _fileService.ProcessImageAsync(dto.PosterFile, "movies/posters", "image/", 50, movie.PosterUrl);
+        movie.TrailerUrl = await _fileService.ProcessImageAsync(dto.TrailerFile, "movies/trailers", "video/", 1024, movie.TrailerUrl);
 
         _repo.UpdateAsync(movie);
         return await _repo.SaveAsync() > 0;
     }
 
-    public async Task<bool> UpdateAverageRatingAsync(int movieId)
+    public async Task<bool> AddTrailerAsync(int movieId, IFormFile trailerFile)
     {
-        var movie = await _repo.GetByIdAsync(movieId, "Ratings");
-
-        if (movie == null)
+        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
+        if(movie == null)
             throw new NotFoundException<Movie>();
 
-        var newRating = movie.AvgRating = movie.Ratings.Any() ? movie.Ratings.Average(r => r.Score) : 0;
+        movie.TrailerUrl = await _fileService.ProcessImageAsync(trailerFile, "movies/trailers", "video/", 1024, movie.TrailerUrl);
 
-        return await _repo.UpdatePropertyAsync(movie, x => x.AvgRating, newRating);
+        _repo.UpdateAsync(movie);
     }
 }
 

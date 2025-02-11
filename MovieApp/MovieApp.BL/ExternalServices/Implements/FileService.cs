@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 using MovieApp.BL.Exceptions.Image;
 using MovieApp.BL.Extensions;
 using MovieApp.BL.ExternalServices.Interfaces;
@@ -6,15 +7,21 @@ using MovieApp.BL.ExternalServices.Interfaces;
 namespace MovieApp.BL.ExternalServices.Implements;
 public class FileService : IFileService
 {
-    public async Task<string> ProcessImageAsync(IFormFile image, string folder)
+    public async Task<string> ProcessImageAsync(IFormFile? file, string? existingFilePath, string directory, string fileType, int maxSize)
     {
-        if (!image.IsValidType("image"))
-            throw new UnsupportedFileTypeException();
+        if (file == null)
+            return existingFilePath;
 
-        if (!image.IsValidSize(15))
-            throw new UnsupportedFileSizeException(15);
+        if (!file.IsValidType(fileType))
+            throw new UnsupportedFileTypeException($"File must be of type {fileType}.");
 
-        return await image.UploadAsync("wwwroot", "imgs", folder);
+        if (!file.IsValidSize(maxSize))
+            throw new ValidationException($"File size must be less than {maxSize} MB.");
+
+        if (!string.IsNullOrEmpty(existingFilePath))
+            FileExtension.DeleteFile(Path.Combine("wwwroot", directory, existingFilePath));
+
+        return await file.UploadAsync("wwwroot", directory);
     }
 
     

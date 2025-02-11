@@ -58,8 +58,8 @@ public class ActorService : IActorService
         var actor = _mapper.Map<Actor>(dto);
         actor.CreatedTime = DateTime.UtcNow;
         actor.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
-            ? defaultImage
-            : await _fileService.ProcessImageAsync(dto.ImageUrl, "actors");
+        ? defaultImage
+            : await _fileService.ProcessImageAsync(dto.ImageUrl, "actors", "image/", 15);
 
 
         await _repo.AddAsync(actor);
@@ -75,10 +75,7 @@ public class ActorService : IActorService
 
         _mapper.Map(dto, data);
         if (dto.ImageUrl != null)
-        {
-            await _fileService.DeleteImageIfNotDefault(data.ImageUrl, "actors");
-            data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "actors");
-        }
+            data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "actors" , "image/", 15, data.ImageUrl);
 
         data.UpdatedTime = DateTime.UtcNow;
         return await _repo.SaveAsync() > 0;
