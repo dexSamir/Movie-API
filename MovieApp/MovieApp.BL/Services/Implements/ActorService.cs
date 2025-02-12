@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
 using MovieApp.BL.DTOs.ActorDtos;
 using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Extensions;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
+using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -14,10 +14,12 @@ public class ActorService : IActorService
 
     readonly IMapper _mapper;
     readonly IActorRepository _repo;
+    readonly ICacheService _cache;
     private readonly IFileService _fileService;
-    public ActorService(IActorRepository repo, IMapper mapper, IFileService fileService)
+    public ActorService(IActorRepository repo, IMapper mapper, IFileService fileService, ICacheService cache)
     {
         _fileService = fileService;
+        _cache = cache; 
         _mapper = mapper;
         _repo = repo;
     }
@@ -26,31 +28,35 @@ public class ActorService : IActorService
 
     public async Task<IEnumerable<ActorGetDto>> GetAllAsync()
     {
-        var actors = await _repo.GetAllAsync("Movies", "Series");
-        var datas = _mapper.Map<IEnumerable<ActorGetDto>>(actors);
-
-        foreach (var dto in datas)
+        return await _cache.GetOrSetAsync("all_actors", async () =>
         {
-            var actor = actors.FirstOrDefault(d => d.Id == dto.Id);
-            if (actor != null)
+            var actors = await _repo.GetAllAsync("Movies", "Series");
+            return _mapper.Map<IEnumerable<ActorGetDto>>(actors).Select(dto =>
             {
-                dto.MoviesCount = actor.Movies?.Count ?? 0;
-                dto.MoviesCount = actor.Series?.Count ?? 0;
-            }
-        }
-        return datas;
+                var actor = actors.FirstOrDefault(d => d.Id == dto.Id);
+                if (actor != null)
+                {
+                    dto.MoviesCount = actor.Movies?.Count ?? 0;
+                    dto.SeriesCount = actor.Series?.Count ?? 0;
+                }
+                return dto;
+            });
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<ActorGetDto> GetByIdAsync(int id)
     {
-        var actor = await _repo.GetByIdAsync(id, "Movies", "Series");
-        if (actor == null)
-            throw new NotFoundException<Actor>();
+        return await _cache.GetOrSetAsync($"actor_{id}", async () =>
+        {
+            var actor = await _repo.GetByIdAsync(id, "Movies", "Series");
+            if (actor == null)
+                throw new NotFoundException<Actor>();
 
-        var data = _mapper.Map<ActorGetDto>(actor);
-        data.SeriesCount = actor.Series?.Count ?? 0;
-        data.MoviesCount = actor.Movies?.Count ?? 0;
-        return data;
+            var data = _mapper.Map<ActorGetDto>(actor);
+            data.SeriesCount = actor.Series?.Count ?? 0;
+            data.MoviesCount = actor.Movies?.Count ?? 0;
+            return data;
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<int> CreateAsync(ActorCreateDto dto)
@@ -58,12 +64,14 @@ public class ActorService : IActorService
         var actor = _mapper.Map<Actor>(dto);
         actor.CreatedTime = DateTime.UtcNow;
         actor.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
-        ? defaultImage
+            ? defaultImage
             : await _fileService.ProcessImageAsync(dto.ImageUrl, "actors", "image/", 15);
-
 
         await _repo.AddAsync(actor);
         await _repo.SaveAsync();
+
+        await _cache.RemoveAsync("all_actors");
+
         return actor.Id;
     }
 
@@ -75,87 +83,64 @@ public class ActorService : IActorService
 
         _mapper.Map(dto, data);
         if (dto.ImageUrl != null)
-            data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "actors" , "image/", 15, data.ImageUrl);
+            data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "actors", "image/", 15, data.ImageUrl);
 
         data.UpdatedTime = DateTime.UtcNow;
-        return await _repo.SaveAsync() > 0;
+        bool updated = await _repo.SaveAsync() > 0;
+
+        if (updated)
+            await RemoveActorCacheAsync(id);
+
+        return updated;
     }
 
-    public async Task<bool> DeleteAsync(int id)
+    private async Task RemoveActorCacheAsync(int id)
     {
-        var data = await _repo.GetByIdAsync(id, false);
-        if (data == null)
-            throw new NotFoundException<Actor>();
-
-        if (!string.IsNullOrEmpty(data.ImageUrl) && data.ImageUrl != defaultImage)
-        {
-            string filePath = Path.Combine("wwwroot", "imgs", "actors", data.ImageUrl);
-            FileExtension.DeleteFile(filePath);
-        }
-        await _repo.DeleteAsync(id);
-        return await _repo.SaveAsync() > 0;
+        await _cache.RemoveAsync($"actor_{id}");
+        await _cache.RemoveAsync("all_actors");
     }
 
-    public async Task<bool> DeleteRangeAsync(string ids)
+    //DELETE
+    public async Task<bool> DeleteAsync(string ids, EDeleteType deleteType)
     {
         var idArray = FileHelper.ParseIds(ids);
         if (idArray.Length == 0)
-            throw new ArgumentException("No valid IDs provided");
+            throw new ArgumentException("Hec bir id daxil edilmiyib!");
 
         await EnsureActorExist(idArray);
 
-        foreach (var id in idArray)
+        if (deleteType == EDeleteType.Hard)
         {
-            var data = await _repo.GetByIdAsync(id, false);
-            if (data != null)
-                await _fileService.DeleteImageIfNotDefault(data.ImageUrl, "actors");
+            foreach (var id in idArray)
+            {
+                var data = await _repo.GetByIdAsync(id, false);
+                if (data != null && !string.IsNullOrEmpty(data.ImageUrl) && data.ImageUrl != defaultImage)
+                    await _fileService.DeleteImageIfNotDefault(data.ImageUrl, "actors");
+            }
         }
 
-        await _repo.DeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
+        switch (deleteType)
+        {
+            case EDeleteType.Soft:
+                await _repo.SoftDeleteRangeAsync(idArray);
+                break;
+            case EDeleteType.Hard:
+                await _repo.DeleteRangeAsync(idArray);
+                break;
+            case EDeleteType.Reverse:
+                await _repo.ReverseSoftDeleteRangeAsync(idArray);
+                break;
+        }
 
-    public async Task<bool> ReverseDeleteAsync(int id)
-    {
-        await EnsureActorExists(id);
+        bool success = idArray.Length == await _repo.SaveAsync();
 
-        await _repo.ReverseSoftDeleteAsync(id);
-        return await _repo.SaveAsync() > 0;
-    }
+        if (success)
+        {
+            foreach (var id in idArray)
+                await RemoveActorCacheAsync(id);
+        }
 
-    public async Task<bool> ReverseDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureActorExist(idArray);
-
-        await _repo.ReverseSoftDeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
-    public async Task<bool> SoftDeleteAsync(int id)
-    {
-        var data = await _repo.GetFirstAsync(x => x.Id == id && !x.IsDeleted, false);
-        if (data == null)
-            throw new NotFoundException<Actor>();
-
-        _repo.SoftDelete(data);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> SoftDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureActorExist(idArray);
-
-        await _repo.SoftDeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
-
-    private async Task EnsureActorExists(int id)
-    {
-        if (!await _repo.IsExistAsync(id))
-            throw new NotFoundException<Actor>();
+        return success;
     }
 
     private async Task EnsureActorExist(int[] ids)

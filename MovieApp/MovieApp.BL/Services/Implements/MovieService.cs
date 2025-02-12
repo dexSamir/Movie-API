@@ -1,15 +1,13 @@
-﻿using System.IO;
-using System.Text.Json;
+﻿using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.Caching.Distributed;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
-using MovieApp.BL.ExternalServices.Implements;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
+using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -57,15 +55,14 @@ public class MovieService : IMovieService
         }, TimeSpan.FromMinutes(5));
     }
 
-    public async Task<IEnumerable<MovieGetDto>> GetByGenre(string genre)
-    {
-        return await _cache.GetOrSetAsync($"movies_by_genre_{genre}", async () =>
-        {
-            var movies = await _repo.GetWhereAsync(x => x.Genres.Any(y => y.Genre.Name == genre), _includeProperties);
-            if (!movies.Any()) throw new NotFoundException<Movie>();
-            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
-        }, TimeSpan.FromMinutes(5));
-    }
+    public Task<IEnumerable<MovieGetDto>> GetByGenre(string genre)
+        => FilterAsync(x => x.Genres.Any(y => y.Genre.Name == genre), $"movies_by_genre_{genre}");
+
+    public Task<IEnumerable<MovieGetDto>> GetByDirectorAsync(int directorId)
+        => FilterAsync(x => x.DirectorId == directorId, $"movies_by_director_{directorId}");
+
+    public Task<IEnumerable<MovieGetDto>> GetByActorAsync(int actorId)
+        => FilterAsync(x => x.Actors.Any(y => y.ActorId == actorId), $"movies_by_actor_id_{actorId}");
 
     public async Task<IEnumerable<MovieGetDto>> GetByRating(double rating)
     {
@@ -86,26 +83,6 @@ public class MovieService : IMovieService
         return _mapper.Map<IEnumerable<MovieGetDto>>(datas);
     }
 
-    public async Task<IEnumerable<MovieGetDto>> GetByDirectorAsync(int directorId)
-    {
-        return await _cache.GetOrSetAsync($"movies_by_direcotor_id_{directorId}", async () =>
-        {
-            var movies = await _repo.GetWhereAsync(x => x.DirectorId == directorId, _includeProperties);
-            if (!movies.Any()) throw new NotFoundException<Movie>();
-            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
-        }, TimeSpan.FromMinutes(5));
-    }
-
-    public async Task<IEnumerable<MovieGetDto>> GetByActorAsync(int actorId)
-    {
-        return await _cache.GetOrSetAsync($"movies_by_actor_id_{actorId}", async () =>
-        {
-            var movies = await _repo.GetWhereAsync(x => x.Actors.Any(y => y.ActorId == actorId), _includeProperties);
-            if (!movies.Any()) throw new NotFoundException<Movie>();
-            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
-        }, TimeSpan.FromMinutes(5));
-    }
-
     public async Task<IEnumerable<MovieGetDto>> GetByDurationRangeAsync(int minDuration, int maxDuration)
     {
         var datas = await _repo.GetWhereAsync(x => x.Duration >= minDuration && x.Duration <= maxDuration, _includeProperties);
@@ -122,59 +99,14 @@ public class MovieService : IMovieService
         return _mapper.Map<IEnumerable<MovieGetDto>>(datas);
     }
 
-    public async Task<IEnumerable<MovieGetDto>> SortByTitleAsync(bool ascending = true)
-    {
-        var cacheKey = $"movies_sorted_by_title_{ascending}";
-        var cachedData = await _cache.GetStringAsync(cacheKey);
-        if (!string.IsNullOrEmpty(cachedData))
-            return JsonSerializer.Deserialize<IEnumerable<MovieGetDto>>(cachedData);
+    public Task<IEnumerable<MovieGetDto>> SortByTitleAsync(bool ascending = true)
+        => FilterSortAsync(x => x.Title, $"movies_sorted_by_title_{ascending}", ascending);
 
-        var movies = await _repo.GetAllAsync(_includeProperties);
-        var sortedMovies = ascending ? movies.OrderBy(x => x.Title) : movies.OrderByDescending(x => x.Title);
-        var mappedMovies = _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
+    public Task<IEnumerable<MovieGetDto>> SortByReleaseDateAsync(bool ascending = true)
+        => FilterSortAsync(x => x.ReleaseDate, $"movies_sorted_by_release_date_{ascending}", ascending);
 
-        await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(mappedMovies), new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-        });
-        return mappedMovies;
-    }
-
-    public async Task<IEnumerable<MovieGetDto>> SortByReleaseDateAsync(bool ascending = true)
-    {
-        var cacheKey = $"movies_sorted_by_release_date_{ascending}";
-        var cachedData = await _cache.GetStringAsync(cacheKey);
-        if (!string.IsNullOrEmpty(cachedData))
-            return JsonSerializer.Deserialize<IEnumerable<MovieGetDto>>(cachedData);
-
-        var movies = await _repo.GetAllAsync(_includeProperties);
-        var sortedMovies = ascending ? movies.OrderBy(x => x.ReleaseDate) : movies.OrderByDescending(x => x.ReleaseDate);
-        var mappedMovies = _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
-
-        await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(mappedMovies), new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-        });
-        return mappedMovies;
-    }
-
-    public async Task<IEnumerable<MovieGetDto>> SortByRatingAsync(bool ascending = true)
-    {
-        var cacheKey = $"movies_sorted_by_rating_{ascending}";
-        var cachedData = await _cache.GetStringAsync(cacheKey);
-        if (!string.IsNullOrEmpty(cachedData))
-            return JsonSerializer.Deserialize<IEnumerable<MovieGetDto>>(cachedData);
-
-        var movies = await _repo.GetAllAsync(_includeProperties);
-        var sortedMovies = ascending ? movies.OrderBy(x => x.AvgRating) : movies.OrderByDescending(x => x.AvgRating);
-        var mappedMovies = _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
-
-        await _cache.SetStringAsync(cacheKey, JsonSerializer.Serialize(mappedMovies), new DistributedCacheEntryOptions
-        {
-            AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(5)
-        });
-        return mappedMovies;
-    }
+    public Task<IEnumerable<MovieGetDto>> SortByRatingAsync(bool ascending = true)
+        => FilterSortAsync(x => x.AvgRating, $"movies_sorted_by_rating_{ascending}", ascending);
 
     public async Task<double> GetAverageRatingAsync(int movieId)
     {
@@ -183,6 +115,31 @@ public class MovieService : IMovieService
             throw new NotFoundException<Movie>();
 
         return movie.AvgRating; 
+    }
+
+    //Yuxaridaki methodlar ucun umumi bir method
+    public async Task<IEnumerable<MovieGetDto>> FilterAsync(Expression<Func<Movie, bool>> predicate, string cacheKey)
+    {
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movies = await _repo.GetWhereAsync(predicate, _includeProperties);
+            if (!movies.Any()) throw new NotFoundException<Movie>();
+            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+        }, TimeSpan.FromMinutes(5));
+    }
+    public async Task<IEnumerable<MovieGetDto>> FilterSortAsync<TKey>( Func<Movie, TKey> predicate, string cacheKey, bool ascending = true)
+    {
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movies = await _repo.GetAllAsync(_includeProperties);
+            if (!movies.Any()) throw new NotFoundException<Movie>();
+
+            var sortedMovies = ascending
+                ? movies.OrderBy(predicate)
+                : movies.OrderByDescending(predicate);
+
+            return _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
+        }, TimeSpan.FromMinutes(5));
     }
 
 
@@ -308,146 +265,60 @@ public class MovieService : IMovieService
 
 
     //DELETE
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var data = await _repo.GetByIdAsync(id, false);
-        if (data == null)
-            throw new NotFoundException<Movie>();
-
-        await _fileService.DeleteImageIfNotDefault(data.PosterUrl, "movies/posters");
-        await _fileService.DeleteImageIfNotDefault(data.TrailerUrl, "movies/trailers");
-
-        await _repo.DeleteAsync(id);
-        bool deleted = await _repo.SaveAsync() > 0;
-
-        if (deleted)
-        {
-            await _cache.RemoveAsync($"movie_{id}");
-            await _cache.RemoveAsync("all_movies");
-        }
-
-        return deleted;
-    }
-
-    public async Task<bool> DeleteRangeAsync(string ids)
+    public async Task<bool> DeleteAsync(string ids, EDeleteType deleteType)
     {
         var idArray = FileHelper.ParseIds(ids);
         if (idArray.Length == 0)
-            throw new ArgumentException("No valid IDs provided");
+            throw new ArgumentException("Hec bir id daxil edilmiyib.");
 
         await EnsureMovieExist(idArray);
 
-        foreach (var id in idArray)
-        {
-            var data = await _repo.GetByIdAsync(id, false);
-            if (data != null)
-            {
-                await _fileService.DeleteImageIfNotDefault(data.TrailerUrl, "movies/trailers");
-                await _fileService.DeleteImageIfNotDefault(data.PosterUrl, "movies/posters");
-            }
-        }
-        await _repo.DeleteRangeAsync(idArray);
-        bool deleted = idArray.Length == await _repo.SaveAsync();
-
-        if (deleted)
+        if (deleteType == EDeleteType.Hard)
         {
             foreach (var id in idArray)
             {
-                await _cache.RemoveAsync($"movie_{id}");
+                var data = await _repo.GetByIdAsync(id, false);
+                if (data != null)
+                {
+                    await _fileService.DeleteImageIfNotDefault(data.PosterUrl, "movies/posters");
+                    await _fileService.DeleteImageIfNotDefault(data.TrailerUrl, "movies/trailers");
+                }
             }
-            await _cache.RemoveAsync("all_movies");
         }
 
-        return deleted;
-    }
-
-    public async Task<bool> ReverseDeleteAsync(int id)
-    {
-        await EnsureMovieExists(id);
-        await _repo.ReverseSoftDeleteAsync(id);
-        bool restored = await _repo.SaveAsync() > 0;
-
-        if (restored)
+        switch (deleteType)
         {
-            await _cache.RemoveAsync($"movie_{id}");
-            await _cache.RemoveAsync("all_movies");
+            case EDeleteType.Soft:
+                await _repo.SoftDeleteRangeAsync(idArray);
+                break;
+            case EDeleteType.Hard:
+                await _repo.DeleteRangeAsync(idArray);
+                break;
+            case EDeleteType.Reverse:
+                await _repo.ReverseSoftDeleteRangeAsync(idArray);
+                break;
         }
 
-        return restored;
-    }
+        bool success = idArray.Length == await _repo.SaveAsync();
 
-    public async Task<bool> ReverseDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureMovieExist(idArray);
-
-        await _repo.ReverseSoftDeleteRangeAsync(idArray);
-        bool restored = idArray.Length == await _repo.SaveAsync();
-
-        if (restored)
+        if (success)
         {
             foreach (var id in idArray)
-            {
                 await _cache.RemoveAsync($"movie_{id}");
-            }
+
             await _cache.RemoveAsync("all_movies");
         }
 
-        return restored;
-    }
-
-    public async Task<bool> SoftDeleteAsync(int id)
-    {
-        var data = await _repo.GetFirstAsync(x => x.Id == id && !x.IsDeleted, false);
-        if (data == null)
-            throw new NotFoundException<Movie>();
-
-        _repo.SoftDelete(data);
-        bool deleted = await _repo.SaveAsync() > 0;
-
-        if (deleted)
-        {
-            await _cache.RemoveAsync($"movie_{id}");
-            await _cache.RemoveAsync("all_movies");
-        }
-
-        return deleted;
-    }
-
-    public async Task<bool> SoftDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureMovieExist(idArray);
-
-        await _repo.SoftDeleteRangeAsync(idArray);
-        bool deleted = idArray.Length == await _repo.SaveAsync();
-
-        if (deleted)
-        {
-            foreach (var id in idArray)
-            {
-                await _cache.RemoveAsync($"movie_{id}");
-            }
-            await _cache.RemoveAsync("all_movies");
-        }
-
-        return deleted;
+        return success;
     }
 
     //PRIVATE DELETE
-    private async Task EnsureMovieExists(int id)
-    {
-        if (!await _repo.IsExistAsync(id))
-            throw new NotFoundException<Movie>();
-    }
-
     private async Task EnsureMovieExist(int[] ids)
     {
         var existingCount = await _repo.CountAsync(ids);
         if (existingCount != ids.Length)
             throw new NotFoundException<Movie>();
     }
-
 
 }
 

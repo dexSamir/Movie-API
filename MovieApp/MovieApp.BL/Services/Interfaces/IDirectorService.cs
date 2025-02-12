@@ -1,4 +1,5 @@
 ﻿using MovieApp.BL.DTOs.DirectorDtos;
+using MovieApp.BL.Utilities.Enums;
 
 namespace MovieApp.BL.Services.Interfaces;
 public interface IDirectorService
@@ -8,13 +9,6 @@ public interface IDirectorService
     Task<IEnumerable<DirectorGetDto>> GetAllAsync();
     Task<DirectorGetDto> GetByIdAsync(int id);
 
-    Task<bool> DeleteAsync(int id);
-    Task<bool> DeleteRangeAsync(string ids);
-
-    Task<bool> SoftDeleteAsync(int id);
-    Task<bool> SoftDeleteRangeAsync(string ids);
-
-    Task<bool> ReverseDeleteAsync(int id);
-    Task<bool> ReverseDeleteRangeAsync(string ids);
+    Task<bool> DeleteAsync(string ids, EDeleteType deleteType);
 }
 

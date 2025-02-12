@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.Utilities.Enums;
+
 namespace MovieApp.BL.Services.Interfaces;
 public interface IMovieService
 {
@@ -65,14 +67,7 @@ public interface IMovieService
     Task<bool> AddToWatchHistoryAsync(int userId, int movieId);
     Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync(int userId);
 
-    Task<bool> DeleteAsync(int id);
-    Task<bool> DeleteRangeAsync(string ids);
-
-    Task<bool> SoftDeleteAsync(int id);
-    Task<bool> SoftDeleteRangeAsync(string ids);
-
-    Task<bool> ReverseDeleteAsync(int id);
-    Task<bool> ReverseDeleteRangeAsync(string ids);
+    Task<bool> DeleteAsync(string ids, EDeleteType deleteType); 
 
     Task<bool> StartWatchingAsync(int userId, int movieId);
     Task<bool> UpdateWatchProgressAsync(int userId, int movieId, TimeSpan currentTime);

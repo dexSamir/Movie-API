@@ -1,55 +1,73 @@
 ﻿using AutoMapper;
 using MovieApp.BL.DTOs.DirectorDtos;
 using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Extensions;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
+using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
+
 public class DirectorService : IDirectorService
 {
-    readonly IMapper _mapper; 
+    readonly IMapper _mapper;
     readonly IDirectorRepository _repo;
-    private readonly IFileService _fileService;
-    public DirectorService(IDirectorRepository repo, IMapper mapper, IFileService fileService)
+    readonly ICacheService _cache;
+    readonly IFileService _fileService;
+
+    const string defaultImage = "imgs/directors/default.png";
+    const string CacheKeyPrefix = "director_";
+    const string AllDirectorsCacheKey = "all_directors";
+
+    public DirectorService(IDirectorRepository repo, IMapper mapper, IFileService fileService, ICacheService cache)
     {
+        _cache = cache;
         _fileService = fileService;
-        _mapper = mapper; 
+        _mapper = mapper;
         _repo = repo;
     }
 
-    private const string defaultImage = "imgs/directors/default.png";
-
     public async Task<IEnumerable<DirectorGetDto>> GetAllAsync()
     {
-        var directors = await _repo.GetAllAsync("Movies", "Series");
-        var datas = _mapper.Map<IEnumerable<DirectorGetDto>>(directors);
-
-        foreach (var dto in datas)
+        var cachedData = await _cache.GetOrSetAsync(AllDirectorsCacheKey, async () =>
         {
-            var director = directors.FirstOrDefault(d => d.Id == dto.Id);
-            if (director != null)
+            var directors = await _repo.GetAllAsync("Movies", "Series");
+            var datas = _mapper.Map<IEnumerable<DirectorGetDto>>(directors);
+
+            foreach (var dto in datas)
             {
-                dto.MoviesCount = director.Movies?.Count ?? 0;
-                dto.MoviesCount = director.Series?.Count ?? 0;
+                var director = directors.FirstOrDefault(d => d.Id == dto.Id);
+                if (director != null)
+                {
+                    dto.MoviesCount = director.Movies?.Count ?? 0;
+                    dto.SeriesCount = director.Series?.Count ?? 0;
+                }
             }
-        }
-        return datas; 
+
+            return datas;
+        }, TimeSpan.FromMinutes(10));
+
+        return cachedData;
     }
 
     public async Task<DirectorGetDto> GetByIdAsync(int id)
     {
-        var director = await _repo.GetByIdAsync(id, "Movies", "Series");
-        if (director == null)
-            throw new NotFoundException<Director>();
+        var cacheKey = $"{CacheKeyPrefix}{id}";
+        var cachedData = await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var director = await _repo.GetByIdAsync(id, "Movies", "Series");
+            if (director == null)
+                throw new NotFoundException<Director>();
 
-        var data = _mapper.Map<DirectorGetDto>(director);
-        data.SeriesCount = director.Series?.Count ?? 0;
-        data.MoviesCount = director.Movies?.Count ?? 0;
-        return data;
+            var data = _mapper.Map<DirectorGetDto>(director);
+            data.MoviesCount = director.Movies?.Count ?? 0;
+            data.SeriesCount = director.Series?.Count ?? 0;
+            return data;
+        }, TimeSpan.FromMinutes(10));
+
+        return cachedData;
     }
 
     public async Task<int> CreateAsync(DirectorCreateDto dto)
@@ -58,47 +76,40 @@ public class DirectorService : IDirectorService
         director.CreatedTime = DateTime.UtcNow;
         director.ImageUrl = dto.ImageUrl == null || dto.ImageUrl.Length == 0
             ? defaultImage
-            : await _fileService.ProcessImageAsync(dto.ImageUrl, "directors");
-
+            : await _fileService.ProcessImageAsync(dto.ImageUrl, "directors", "image/" , 15);
 
         await _repo.AddAsync(director);
         await _repo.SaveAsync();
-        return director.Id; 
+
+        await _cache.RemoveAsync(AllDirectorsCacheKey);
+
+        return director.Id;
     }
 
     public async Task<bool> UpdateAsync(DirectorUpdateDto dto, int id)
     {
-        var data = await _repo.GetByIdAsync(id, false);
-        if (data == null)
+        var director = await _repo.GetByIdAsync(id, false);
+        if (director == null)
             throw new NotFoundException<Director>();
 
-        _mapper.Map(dto, data);
+        _mapper.Map(dto, director);
+
         if (dto.ImageUrl != null)
         {
-            await _fileService.DeleteImageIfNotDefault(data.ImageUrl,"directors");
-            data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "directors");
+            await _fileService.DeleteImageIfNotDefault(director.ImageUrl, "directors");
+            director.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "directors", "image/", 15);
         }
 
-        data.UpdatedTime = DateTime.UtcNow;
-        return await _repo.SaveAsync() > 0;
+        director.UpdatedTime = DateTime.UtcNow;
+        bool isUpdated = await _repo.SaveAsync() > 0;
+
+        if (isUpdated)
+            await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+
+        return isUpdated;
     }
 
-    public async Task<bool> DeleteAsync(int id)
-    {
-        var data = await _repo.GetByIdAsync(id, false);
-        if (data == null)
-            throw new NotFoundException<Director>();
-
-        if (!string.IsNullOrEmpty(data.ImageUrl) && data.ImageUrl != defaultImage)
-        {
-            string filePath = Path.Combine("wwwroot", "imgs", "directors", data.ImageUrl);
-            FileExtension.DeleteFile(filePath);
-        }
-        await _repo.DeleteAsync(id);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> DeleteRangeAsync(string ids)
+    public async Task<bool> DeleteAsync(string ids, EDeleteType deleteType)
     {
         var idArray = FileHelper.ParseIds(ids);
         if (idArray.Length == 0)
@@ -108,56 +119,37 @@ public class DirectorService : IDirectorService
 
         foreach (var id in idArray)
         {
-            var data = await _repo.GetByIdAsync(id, false);
-            if (data != null)
-                await _fileService.DeleteImageIfNotDefault(data.ImageUrl, "directors");
+            var director = await _repo.GetByIdAsync(id, false);
+            if (director != null)
+            {
+                if (deleteType == EDeleteType.Hard)
+                    await _fileService.DeleteImageIfNotDefault(director.ImageUrl, "directors");
+
+                await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+            }
         }
 
-        await _repo.DeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
+        bool success = false;
+        switch (deleteType)
+        {
+            case EDeleteType.Soft:
+                await _repo.SoftDeleteRangeAsync(idArray);
+                success = true;
+                break;
+            case EDeleteType.Hard:
+                await _repo.DeleteRangeAsync(idArray);
+                success = true;
+                break;
+            case EDeleteType.Reverse:
+                await _repo.ReverseSoftDeleteRangeAsync(idArray);
+                success = true;
+                break;
+        }
 
-    public async Task<bool> ReverseDeleteAsync(int id)
-    {
-        await EnsureDirectorExists(id);
+        if (success)
+            await _cache.RemoveAsync(AllDirectorsCacheKey);
 
-        await _repo.ReverseSoftDeleteAsync(id);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> ReverseDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureDirectorExist(idArray);
-
-        await _repo.ReverseSoftDeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
-    public async Task<bool> SoftDeleteAsync(int id)
-    {
-        var data = await _repo.GetFirstAsync(x => x.Id == id && !x.IsDeleted, false);
-        if (data == null)
-            throw new NotFoundException<Director>();
-
-        _repo.SoftDelete(data);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> SoftDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureDirectorExist(idArray);
-
-        await _repo.SoftDeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
-
-    private async Task EnsureDirectorExists(int id)
-    {
-        if (!await _repo.IsExistAsync(id))
-            throw new NotFoundException<Director>();
+        return success;
     }
 
     private async Task EnsureDirectorExist(int[] ids)
@@ -167,6 +159,3 @@ public class DirectorService : IDirectorService
             throw new NotFoundException<Director>();
     }
 }
-
-
-

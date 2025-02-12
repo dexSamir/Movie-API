@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.LanguageDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.ExternalServices.Interfaces;
@@ -9,37 +8,53 @@ using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
+
 public class LanguageService : ILanguageService
 {
     readonly ILanguageRepository _repo;
     readonly IMapper _mapper;
     private readonly IFileService _fileService;
+    private readonly ICacheService _cache;
 
-    public LanguageService(ILanguageRepository repo, IMapper mapper, IFileService fileService)
+    public LanguageService(ILanguageRepository repo, IMapper mapper, IFileService fileService, ICacheService cache)
     {
         _fileService = fileService;
         _repo = repo;
         _mapper = mapper;
+        _cache = cache;
     }
 
     private const string defaultImage = "imgs/languages/default.png";
 
+    private const string CacheKeyPrefix = "language_";
+
     public async Task<IEnumerable<LanguageGetDto>> GetAllAsync()
     {
-        var languages = await _repo.GetAllAsync("Subtitles", "AudioTracks");
-        return _mapper.Map<IEnumerable<LanguageGetDto>>(languages);
+        return await _cache.GetOrSetAsync("all_languages", async () =>
+        {
+            var languages = await _repo.GetAllAsync("Subtitles", "AudioTracks");
+            return _mapper.Map<IEnumerable<LanguageGetDto>>(languages);
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<LanguageGetDto> GetByCodeAsync(string code)
     {
-        var language = await GetLanguageByCodeAsync(code);
-        return _mapper.Map<LanguageGetDto>(language);
+        var cacheKey = $"{CacheKeyPrefix}{code}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var language = await GetLanguageByCodeAsync(code);
+            return _mapper.Map<LanguageGetDto>(language);
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<LanguageGetDto> GetByIdAsync(int id)
     {
-        var language = await GetLanguageByIdAsync(id);
-        return _mapper.Map<LanguageGetDto>(language);
+        var cacheKey = $"{CacheKeyPrefix}{id}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var language = await GetLanguageByIdAsync(id);
+            return _mapper.Map<LanguageGetDto>(language);
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<string> CreateAsync(LanguageCreateDto dto)
@@ -49,34 +64,53 @@ public class LanguageService : ILanguageService
 
         var language = _mapper.Map<Language>(dto);
         language.CreatedTime = DateTime.UtcNow;
-        language.Icon = await ProcessImageAsync(dto.Icon);
+        language.Icon = await _fileService.ProcessImageAsync(dto.Icon, "languages", "image/", 5);
 
         await _repo.AddAsync(language);
         await _repo.SaveAsync();
-        return language.Code; 
+
+        await _cache.RemoveAsync("all_languages");
+
+        return language.Code;
     }
 
     public async Task<bool> UpdateAsync(LanguageUpdateDto dto, int id)
     {
         var language = await GetLanguageByIdAsync(id, false);
-        return await UpdateLanguageAsync(dto, language);
+        var result = await UpdateLanguageAsync(dto, language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+
+        return result;
     }
 
     public async Task<bool> DeleteAsync(int id)
     {
         var language = await GetLanguageByIdAsync(id, false);
-        return await DeleteLanguageAsync(language);
+        var result = await DeleteLanguageAsync(language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+
+        await _cache.RemoveAsync("all_languages");
+
+        return result;
     }
 
     public async Task<bool> DeleteAsync(string code)
     {
         var language = await GetLanguageByCodeAsync(code, false);
-        return await DeleteLanguageAsync(language);
+        var result = await DeleteLanguageAsync(language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{code}");
+
+        await _cache.RemoveAsync("all_languages");
+
+        return result;
     }
 
-    public async Task<bool> DeleteRangeAsync(string idsOrCodes)
+    public async Task<bool> DeleteRangeAsync(string ids)
     {
-        var idArray = FileHelper.ParseIds(idsOrCodes);
+        var idArray = FileHelper.ParseIds(ids);
         await EnsureLanguagesExist(idArray);
 
         var languages = await _repo.GetByIdsAsync(idArray);
@@ -84,19 +118,92 @@ public class LanguageService : ILanguageService
             await _fileService.DeleteImageIfNotDefault(language.Icon, "languages");
 
         await _repo.DeleteRangeAsync(idArray);
+        var success = idArray.Length == await _repo.SaveAsync();
+
+        if (success)
+        {
+            foreach (var id in idArray)
+                await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+
+            await _cache.RemoveAsync("all_languages");
+        }
+
+        return success;
+    }
+
+    public async Task<bool> SoftDeleteAsync(int id)
+    {
+        var language = await GetLanguageByIdAsync(id, false);
+        _repo.SoftDelete(language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+        await _cache.RemoveAsync("all_languages");
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> SoftDeleteAsync(string code)
+    {
+        var language = await GetLanguageByCodeAsync(code, false);
+        _repo.SoftDelete(language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{code}");
+        await _cache.RemoveAsync("all_languages");
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> ReverseDeleteAsync(int id)
+    {
+        var language = await GetLanguageByIdAsync(id, false);
+        _repo.ReverseSoftDelete(language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+        await _cache.RemoveAsync("all_languages");
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> ReverseDeleteAsync(string code)
+    {
+        var language = await GetLanguageByCodeAsync(code, false);
+        _repo.ReverseSoftDelete(language);
+
+        await _cache.RemoveAsync($"{CacheKeyPrefix}{code}");
+        await _cache.RemoveAsync("all_languages");
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> SoftDeleteRangeAsync(string idsOrCodes)
+    {
+        var idArray = FileHelper.ParseIds(idsOrCodes);
+        await EnsureLanguagesExist(idArray);
+
+        await _repo.SoftDeleteRangeAsync(idArray);
+
+        foreach (var id in idArray)
+            await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
+
+        await _cache.RemoveAsync("all_languages");
+
         return idArray.Length == await _repo.SaveAsync();
     }
 
+    public async Task<bool> ReverseDeleteRangeAsync(string idsOrCodes)
+    {
+        var idArray = FileHelper.ParseIds(idsOrCodes);
+        await EnsureLanguagesExist(idArray);
 
-    public async Task<bool> ReverseDeleteAsync(int id) => await ToggleSoftDeleteAsync(id, true);
-    public async Task<bool> ReverseDeleteAsync(string code) => await ToggleSoftDeleteAsync(code, true);
-    public async Task<bool> ReverseDeleteRangeAsync(string idsOrCodes) => await ToggleSoftDeleteRangeAsync(idsOrCodes, true);
+        await _repo.ReverseSoftDeleteRangeAsync(idArray);
 
-    public async Task<bool> SoftDeleteAsync(int id) => await ToggleSoftDeleteAsync(id, false);
-    public async Task<bool> SoftDeleteAsync(string code) => await ToggleSoftDeleteAsync(code, false);
-    public async Task<bool> SoftDeleteRangeAsync(string idsOrCodes) => await ToggleSoftDeleteRangeAsync(idsOrCodes, false);
+        foreach (var id in idArray)
+            await _cache.RemoveAsync($"{CacheKeyPrefix}{id}");
 
+        await _cache.RemoveAsync("all_languages");
 
+        return idArray.Length == await _repo.SaveAsync();
+    }
 
     private async Task<Language> GetLanguageByIdAsync(int id, bool trackChanges = true)
     {
@@ -117,7 +224,7 @@ public class LanguageService : ILanguageService
         if (dto.Icon != null)
         {
             await _fileService.DeleteImageIfNotDefault(language.Icon, "languages");
-            language.Icon = await _fileService.ProcessImageAsync(dto.Icon, "languages");
+            language.Icon = await _fileService.ProcessImageAsync(dto.Icon, "languages", "image/", 5);
         }
 
         language.UpdatedTime = DateTime.UtcNow;
@@ -131,45 +238,10 @@ public class LanguageService : ILanguageService
         return await _repo.SaveAsync() > 0;
     }
 
-    private async Task<bool> ToggleSoftDeleteAsync(int id, bool reverse)
-    {
-        var language = await GetLanguageByIdAsync(id, false);
-        if (reverse) _repo.ReverseSoftDelete(language);
-        else _repo.SoftDelete(language);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    private async Task<bool> ToggleSoftDeleteAsync(string code, bool reverse)
-    {
-        var language = await GetLanguageByCodeAsync(code, false);
-        if (reverse) _repo.ReverseSoftDelete(language);
-        else _repo.SoftDelete(language);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    private async Task<bool> ToggleSoftDeleteRangeAsync(string ids, bool reverse)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureLanguagesExist(idArray);
-        
-        if (reverse) await _repo.ReverseSoftDeleteRangeAsync(idArray);
-        else await _repo.SoftDeleteRangeAsync(idArray);
-
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
     private async Task EnsureLanguagesExist(int[] ids)
     {
         var existingCount = await _repo.CountAsync(ids);
         if (existingCount != ids.Length)
             throw new NotFoundException<Language>();
     }
-
-    private async Task<string> ProcessImageAsync(IFormFile icon)
-    {
-        return (icon == null || icon.Length == 0)
-            ? defaultImage
-            : await _fileService.ProcessImageAsync(icon, "languages");
-    }
 }
-

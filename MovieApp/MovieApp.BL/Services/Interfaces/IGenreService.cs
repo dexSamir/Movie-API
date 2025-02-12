@@ -1,5 +1,5 @@
-﻿using Microsoft.VisualBasic;
-using MovieApp.BL.DTOs.GenreDtos;
+﻿using MovieApp.BL.DTOs.GenreDtos;
+using MovieApp.BL.Utilities.Enums;
 
 namespace MovieApp.BL.Services.Interfaces;
 public interface IGenreService
@@ -12,13 +12,6 @@ public interface IGenreService
 
     Task<bool> UpdateAsync(int id, GenreUpdateDto dto);
 
-    Task<bool> DeleteAsync(int id);
-    Task<bool> DeleteRangeAsync(string ids);
-
-    Task<bool> SoftDeleteAsync(int id);
-    Task<bool> SoftDeleteRangeAsync(string ids);
-
-    Task<bool> ReverseDeleteAsync(int id);
-    Task<bool> ReverseDeleteRangeAsync(string ids);
+    Task<bool> DeleteAsync(string ids, EDeleteType deleteType); 
 }
 

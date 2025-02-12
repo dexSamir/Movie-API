@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.ActorDtos;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities.Enums;
 
 namespace MovieApp.API.Controllers;
 [Route("api/[controller]/[action]")]
@@ -35,33 +36,33 @@ public class ActorsController : ControllerBase
     }
 
     [HttpDelete("{id}")]
-    public async Task<IActionResult> Delete(int id)
+    public async Task<IActionResult> Delete(string id)
     {
-        return Ok(await _service.DeleteAsync(id));
+        return Ok(await _service.DeleteAsync(id, EDeleteType.Hard));
     }
     [HttpDelete("{id}")]
-    public async Task<IActionResult> SoftDelete(int id)
+    public async Task<IActionResult> SoftDelete(string id)
     {
-        return Ok(await _service.SoftDeleteAsync(id));
+        return Ok(await _service.DeleteAsync(id, EDeleteType.Soft));
     }
     [HttpDelete("{id}")]
-    public async Task<IActionResult> ReverseSoftDelete(int id)
+    public async Task<IActionResult> ReverseSoftDelete(string id)
     {
-        return Ok(await _service.ReverseDeleteAsync(id));
+        return Ok(await _service.DeleteAsync(id, EDeleteType.Soft));
     }
     [HttpDelete("{ids}")]
     public async Task<IActionResult> DeleteRange([FromRoute] string ids)
     {
-        return Ok(await _service.DeleteRangeAsync(ids));
+        return Ok(await _service.DeleteAsync(ids, EDeleteType.Soft));
     }
     [HttpDelete("{ids}")]
     public async Task<IActionResult> SoftDeleteRange([FromRoute] string ids)
     {
-        return Ok(await _service.SoftDeleteRangeAsync(ids));
+        return Ok(await _service.DeleteAsync(ids, EDeleteType.Soft));
     }
     [HttpDelete("{ids}")]
     public async Task<IActionResult> ReverseSoftDeleteRange([FromRoute] string ids)
     {
-        return Ok(await _service.ReverseDeleteRangeAsync(ids));
+        return Ok(await _service.DeleteAsync(ids, EDeleteType.Soft));
     }
 }

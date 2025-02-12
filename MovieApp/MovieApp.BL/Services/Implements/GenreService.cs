@@ -1,20 +1,57 @@
 ﻿using AutoMapper;
 using MovieApp.BL.DTOs.GenreDtos;
 using MovieApp.BL.Exceptions.Common;
+using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
+using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
-namespace MovieApp.BL.Services.Implements;
 public class GenreService : IGenreService
 {
     readonly IGenreRepository _repo;
-    readonly IMapper _mapper; 
-    public GenreService(IGenreRepository repo, IMapper mapper)
+    readonly IMapper _mapper;
+    readonly ICacheService _cache;
+    public GenreService(IGenreRepository repo, IMapper mapper, ICacheService cache)
     {
-        _mapper = mapper; 
-        _repo = repo; 
+        _mapper = mapper;
+        _cache = cache;
+        _repo = repo;
+    }
+
+    public async Task<IEnumerable<GenreGetDto>> GetAllAsync()
+    {
+        var cacheKey = "all_genres";
+        var genres = await _cache.GetOrSetAsync(cacheKey, async () => await _repo.GetAllAsync(), TimeSpan.FromMinutes(5));
+
+        var datas = _mapper.Map<IEnumerable<GenreGetDto>>(genres);
+
+        foreach (var dto in datas)
+        {
+            var genre = genres.FirstOrDefault(x => x.Id == dto.Id);
+            if (genre != null)
+            {
+                dto.MovieCount = genre.Movies?.Count ?? 0;
+                dto.SerieCount = genre.Series?.Count ?? 0;
+            }
+        }
+
+        return datas;
+    }
+
+    public async Task<GenreGetDto> GetByIdAsync(int id)
+    {
+        var cacheKey = $"genre_{id}";
+        var genre = await _cache.GetOrSetAsync(cacheKey, async () => await _repo.GetByIdAsync(id), TimeSpan.FromMinutes(5));
+
+        if (genre == null)
+            throw new NotFoundException<Genre>();
+
+        var data = _mapper.Map<GenreGetDto>(genre);
+        data.SerieCount = genre.Series?.Count ?? 0;
+        data.MovieCount = genre.Movies?.Count ?? 0;
+        return data;
     }
 
     public async Task<int> CreateAsync(GenreCreateDto dto)
@@ -24,7 +61,10 @@ public class GenreService : IGenreService
 
         await _repo.AddAsync(data);
         await _repo.SaveAsync();
-        return data.Id; 
+
+        await _cache.RemoveAsync("all_genres");
+
+        return data.Id;
     }
 
     public async Task CreateRangeAsync(IEnumerable<GenreCreateDto> dtos)
@@ -34,7 +74,9 @@ public class GenreService : IGenreService
             data.CreatedTime = DateTime.UtcNow;
 
         await _repo.AddRangeAsync(datas);
-        await _repo.SaveAsync(); 
+        await _repo.SaveAsync();
+
+        await _cache.RemoveAsync("all_genres");
     }
 
     public async Task<bool> UpdateAsync(int id, GenreUpdateDto dto)
@@ -46,94 +88,54 @@ public class GenreService : IGenreService
 
         _mapper.Map(dto, data);
         data.UpdatedTime = DateTime.UtcNow;
-        return await _repo.SaveAsync() > 0; 
-    }
 
-    public async Task<bool> DeleteAsync(int id)
-    {
-        await EnsureGenreExists(id);
+        var success = await _repo.SaveAsync() > 0;
 
-        await _repo.DeleteAsync(id);
-        return await _repo.SaveAsync() > 0; 
-    }
-
-    public async Task<bool> DeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureGenresExist(idArray);
-
-        await _repo.DeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
-    public async Task<IEnumerable<GenreGetDto>> GetAllAsync()
-    {
-        var genres = await _repo.GetAllAsync();
-        var datas = _mapper.Map<IEnumerable<GenreGetDto>>(genres);
-
-        foreach (var dto in datas)
+        if (success)
         {
-            var genre = genres.FirstOrDefault(x => x.Id == dto.Id);
-            if(genre != null)
-            {
-                dto.MovieCount = genre.Movies?.Count ?? 0; 
-                dto.SerieCount = genre.Series?.Count ?? 0;
-            }
+            await _cache.RemoveAsync($"genre_{id}");
+
+            await _cache.RemoveAsync("all_genres");
         }
 
-        return datas;
+        return success;
     }
 
-    public async Task<GenreGetDto> GetByIdAsync(int id)
-    {
-        var genre = await _repo.GetByIdAsync(id);
-        if (genre == null)
-            throw new NotFoundException<Genre>();
 
-        var data = _mapper.Map<GenreGetDto>(genre);
-        data.SerieCount = genre.Series?.Count ?? 0;
-        data.MovieCount = genre.Movies?.Count ?? 0;
-        return data;
-    }
-
-    public async Task<bool> ReverseDeleteAsync(int id)
-    {
-        await EnsureGenreExists(id);
-
-        await _repo.ReverseSoftDeleteAsync(id);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> ReverseDeleteRangeAsync(string ids)
+    //DELETE
+    public async Task<bool> DeleteAsync(string ids, EDeleteType deleteType)
     {
         var idArray = FileHelper.ParseIds(ids);
+        if (idArray.Length == 0)
+            throw new ArgumentException("No valid IDs provided");
+
         await EnsureGenresExist(idArray);
 
-        await _repo.ReverseSoftDeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
+        switch (deleteType)
+        {
+            case EDeleteType.Soft:
+                await _repo.SoftDeleteRangeAsync(idArray);
+                break;
+            case EDeleteType.Hard:
+                await _repo.DeleteRangeAsync(idArray);
+                break;
+            case EDeleteType.Reverse:
+                await _repo.ReverseSoftDeleteRangeAsync(idArray);
+                break;
+        }
+
+        bool success = idArray.Length == await _repo.SaveAsync();
+
+        if (success)
+        {
+            foreach (var id in idArray)
+                await _cache.RemoveAsync($"genre_{id}");
+
+            await _cache.RemoveAsync("all_genres");
+        }
+
+        return success;
     }
-
-    public async Task<bool> SoftDeleteAsync(int id)
-    {
-        await EnsureGenreExists(id);
-
-        var data = await _repo.GetFirstAsync(x => x.Id == id && !x.IsDeleted, false);
-        if (data == null)
-            return false;
-
-        _repo.SoftDelete(data);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> SoftDeleteRangeAsync(string ids)
-    {
-        var idArray = FileHelper.ParseIds(ids);
-        await EnsureGenresExist(idArray);
-
-        await _repo.SoftDeleteRangeAsync(idArray);
-        return idArray.Length == await _repo.SaveAsync();
-    }
-
 
     private async Task EnsureGenreExists(int id)
     {
@@ -147,6 +149,4 @@ public class GenreService : IGenreService
         if (existingCount != ids.Length)
             throw new NotFoundException<Genre>();
     }
-
 }
-
