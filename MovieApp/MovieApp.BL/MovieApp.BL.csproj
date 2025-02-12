@@ -46,9 +46,11 @@
     <Folder Include="Utilities\" />
     <Folder Include="DTOs\LanguageDtos\" />
     <Folder Include="DTOs\MovieDtos\" />
+    <Folder Include="Utilities\Enums\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Caching.StackExchangeRedis" Version="8.0.11" />
   </ItemGroup>
 </Project>

@@ -21,8 +21,6 @@ public interface IMovieService
     Task<IEnumerable<int>> CreateRangeAsync(IEnumerable<MovieCreateDto> dtos); 
     Task<bool> UpdateAsync(MovieUpdateDto dto, int movieId);
 
-    Task<bool> AddTrailerAsync(int movieId, IFormFile trailerFile);
-    Task<bool> AddPosterAsync(int movieId, IFormFile posterFile); 
     Task<bool> UpdatePosterUrlAsync(int movieId, IFormFile posterUrl);
     Task<bool> UpdateTrailerUrlAsync(int movieId, IFormFile trailerUrl);
 

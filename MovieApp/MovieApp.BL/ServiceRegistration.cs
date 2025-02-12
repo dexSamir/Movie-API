@@ -16,6 +16,7 @@ public static class ServiceRegistration
 
 
         services.AddScoped<IFileService, FileService>();
+        services.AddDistributedMemoryCache(); 
         return services; 
 	}
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)

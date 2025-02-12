@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "GtL4kZKu7uItFnfgHxTUzvnK5PzqpjXfYNI8f3WtGvZmGWs+uziPy6lmi0TovVeZ9crRQPfCzQuufVsPENWZtA==",
+  "dgSpecHash": "6xGM328Ie8W6L030/tsYN4zUgr6KOZzHekF7X7kgF7saJOmRcCAeJe2WoE5w2H6DTn5cPGq76PlyNFcQhSzP7Q==",
   "success": true,
   "projectFilePath": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/MovieApp.BL.csproj",
   "expectedPackageFiles": [
@@ -18,6 +18,7 @@
     "/Users/samirhebibov/.nuget/packages/microsoft.entityframeworkcore.relational/8.0.11/microsoft.entityframeworkcore.relational.8.0.11.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/microsoft.extensions.caching.abstractions/8.0.0/microsoft.extensions.caching.abstractions.8.0.0.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/microsoft.extensions.caching.memory/8.0.1/microsoft.extensions.caching.memory.8.0.1.nupkg.sha512",
+    "/Users/samirhebibov/.nuget/packages/microsoft.extensions.caching.stackexchangeredis/8.0.11/microsoft.extensions.caching.stackexchangeredis.8.0.11.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/microsoft.extensions.configuration.abstractions/8.0.0/microsoft.extensions.configuration.abstractions.8.0.0.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/microsoft.extensions.dependencyinjection/8.0.1/microsoft.extensions.dependencyinjection.8.0.1.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/microsoft.extensions.dependencyinjection.abstractions/8.0.2/microsoft.extensions.dependencyinjection.abstractions.8.0.2.nupkg.sha512",
@@ -31,7 +32,10 @@
     "/Users/samirhebibov/.nuget/packages/microsoft.net.http.headers/2.3.0/microsoft.net.http.headers.2.3.0.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/npgsql/8.0.6/npgsql.8.0.6.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/npgsql.entityframeworkcore.postgresql/8.0.11/npgsql.entityframeworkcore.postgresql.8.0.11.nupkg.sha512",
+    "/Users/samirhebibov/.nuget/packages/pipelines.sockets.unofficial/2.2.8/pipelines.sockets.unofficial.2.2.8.nupkg.sha512",
+    "/Users/samirhebibov/.nuget/packages/stackexchange.redis/2.7.27/stackexchange.redis.2.7.27.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/system.buffers/4.6.0/system.buffers.4.6.0.nupkg.sha512",
+    "/Users/samirhebibov/.nuget/packages/system.io.pipelines/5.0.1/system.io.pipelines.5.0.1.nupkg.sha512",
     "/Users/samirhebibov/.nuget/packages/system.text.encodings.web/8.0.0/system.text.encodings.web.8.0.0.nupkg.sha512"
   ],
   "logs": []
