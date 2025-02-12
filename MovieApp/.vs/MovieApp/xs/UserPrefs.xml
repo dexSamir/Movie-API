@@ -1,36 +1,30 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Extensions/FileExtension.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Services/Implements/MovieService.cs">
     <Files>
-      <File FileName="MovieApp.BL/Services/Implements/MovieService.cs" Line="188" Column="1" />
-      <File FileName="MovieApp.BL/Services/Implements/ActorService.cs" Line="96" Column="48" />
-      <File FileName="MovieApp.BL/Services/Interfaces/IMovieService.cs" Line="21" Column="43" />
-      <File FileName="MovieApp.BL/Profiles/MovieProfile.cs" Line="21" Column="65" />
-      <File FileName="MovieApp.BL/Extensions/FileExtension.cs" Line="31" Column="6" />
+      <File FileName="MovieApp.BL/Services/Implements/MovieService.cs" Line="163" Column="1" />
+      <File FileName="MovieApp.BL/Services/Interfaces/IMovieService.cs" Line="30" Column="18" />
+      <File FileName="MovieApp.BL/Services/Implements/ActorService.cs" Line="62" Column="15" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MovieApp" expanded="True">
-            <Node name="MovieApp.BL">
-              <Node name="Extensions" expanded="True">
-                <Node name="FileExtension.cs" selected="True" />
-              </Node>
-              <Node name="Profiles" expanded="True" />
+          <Node name="MovieApp">
+            <Node name="MovieApp.BL" expanded="True">
               <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True" />
+                <Node name="Interfaces" expanded="True" />
               </Node>
             </Node>
-            <Node name="MovieApp.Core" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
 </Properties>

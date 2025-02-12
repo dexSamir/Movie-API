@@ -7,7 +7,7 @@ using MovieApp.BL.ExternalServices.Interfaces;
 namespace MovieApp.BL.ExternalServices.Implements;
 public class FileService : IFileService
 {
-    public async Task<string> ProcessImageAsync(IFormFile? file, string? existingFilePath, string directory, string fileType, int maxSize)
+    public async Task<string> ProcessImageAsync(IFormFile? file, string directory, string fileType, int maxSize, string? existingFilePath = null)
     {
         if (file == null)
             return existingFilePath;

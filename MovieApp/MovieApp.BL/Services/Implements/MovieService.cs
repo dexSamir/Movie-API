@@ -5,6 +5,7 @@ using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -152,6 +153,15 @@ public class MovieService : IMovieService
         return _mapper.Map<IEnumerable<MovieGetDto>>(sortedMovies);
     }
 
+    public async Task<double> GetAverageRatingAsync(int movieId)
+    {
+        var movie = await _repo.GetByIdAsync(movieId, "Actors", "MovieSubtitles", "Genres", "AudioTracks");
+        if (movie == null)
+            throw new NotFoundException<Movie>();
+
+        return movie.AvgRating; 
+    }
+
 
     //UPDATE AND CREATES
     public async Task<bool> UpdateAverageRatingAsync(int movieId)
@@ -223,15 +233,114 @@ public class MovieService : IMovieService
         return await _repo.SaveAsync() > 0;
     }
 
-    public async Task<bool> AddTrailerAsync(int movieId, IFormFile trailerFile)
+    public async Task<bool> UpdatePosterUrlAsync(int movieId, IFormFile posterFile)
     {
         var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
-        if(movie == null)
+        if (movie == null)
+            throw new NotFoundException<Movie>();
+
+        movie.PosterUrl = await _fileService.ProcessImageAsync(posterFile, "movies/posters", "image/", 15, movie.PosterUrl);
+
+        _repo.UpdateAsync(movie);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> UpdateTrailerUrlAsync(int movieId, IFormFile trailerFile)
+    {
+        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
+        if (movie == null)
             throw new NotFoundException<Movie>();
 
         movie.TrailerUrl = await _fileService.ProcessImageAsync(trailerFile, "movies/trailers", "video/", 1024, movie.TrailerUrl);
 
         _repo.UpdateAsync(movie);
+        return await _repo.SaveAsync() > 0;
+    }
+
+
+    //DELETE
+    public async Task<bool> DeleteAsync(int id)
+    {
+        var data = await _repo.GetByIdAsync(id, false);
+        if (data == null)
+            throw new NotFoundException<Movie>();
+
+        await _fileService.DeleteImageIfNotDefault(data.PosterUrl, "movies/posters");
+        await _fileService.DeleteImageIfNotDefault(data.TrailerUrl, "movies/trailers");
+
+        await _repo.DeleteAsync(id);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> DeleteRangeAsync(string ids)
+    {
+        var idArray = FileHelper.ParseIds(ids);
+        if (idArray.Length == 0)
+            throw new ArgumentException("No valid IDs provided");
+
+        await EnsureMovieExist(idArray);
+
+        foreach (var id in idArray)
+        {
+            var data = await _repo.GetByIdAsync(id, false);
+            if (data != null)
+            {
+                await _fileService.DeleteImageIfNotDefault(data.TrailerUrl, "movies/trailers");
+                await _fileService.DeleteImageIfNotDefault(data.PosterUrl, "movies/posters");
+            }
+        }
+        await _repo.DeleteRangeAsync(idArray);
+        return idArray.Length == await _repo.SaveAsync();
+    }
+
+    public async Task<bool> ReverseDeleteAsync(int id)
+    {
+        await EnsureMovieExists(id);
+
+        await _repo.ReverseSoftDeleteAsync(id);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> ReverseDeleteRangeAsync(string ids)
+    {
+        var idArray = FileHelper.ParseIds(ids);
+        await EnsureMovieExist(idArray);
+
+        await _repo.ReverseSoftDeleteRangeAsync(idArray);
+        return idArray.Length == await _repo.SaveAsync();
+    }
+
+    public async Task<bool> SoftDeleteAsync(int id)
+    {
+        var data = await _repo.GetFirstAsync(x => x.Id == id && !x.IsDeleted, false);
+        if (data == null)
+            throw new NotFoundException<Movie>();
+
+        _repo.SoftDelete(data);
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> SoftDeleteRangeAsync(string ids)
+    {
+        var idArray = FileHelper.ParseIds(ids);
+        await EnsureMovieExist(idArray);
+
+        await _repo.SoftDeleteRangeAsync(idArray);
+        return idArray.Length == await _repo.SaveAsync();
+    }
+
+
+    private async Task EnsureMovieExists(int id)
+    {
+        if (!await _repo.IsExistAsync(id))
+            throw new NotFoundException<Movie>();
+    }
+
+    private async Task EnsureMovieExist(int[] ids)
+    {
+        var existingCount = await _repo.CountAsync(ids);
+        if (existingCount != ids.Length)
+            throw new NotFoundException<Movie>();
     }
 }
 
