@@ -10,7 +10,9 @@ public class User : IdentityUser
     public bool IsDeleted { get; set; }
     public DateOnly BirthDate { get; set; }
     public bool IsVisible { get; set; }
+    public bool IsVerified { get; set; }
     public bool IsMale { get; set; }
+    public string ProfileUrl { get; set; }
 
     public int? UserStatisticsId { get; set; }
     public UserStatistics? Stats { get; set; }

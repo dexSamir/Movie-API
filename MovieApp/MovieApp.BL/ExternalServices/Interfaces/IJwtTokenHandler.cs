@@ -1,8 +1,8 @@
-﻿using System;
-namespace MovieApp.BL.ExternalServices.Interfaces
-{
-	public interface IJwtTokenHandler
-	{
-	}
-}
+﻿using MovieApp.Core.Entities;
 
+namespace MovieApp.BL.ExternalServices.Interfaces;
+
+public interface IJwtTokenHandler
+{
+    string CreateToken(User user, int hours);
+}

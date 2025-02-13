@@ -1,5 +1,5 @@
 ﻿namespace MovieApp.Core.Repositories;
-public interface IUserRepository
+public interface IUserRepository 
 {
 
 }
