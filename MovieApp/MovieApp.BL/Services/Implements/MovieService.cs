@@ -1,15 +1,18 @@
-﻿using System.Linq.Expressions;
+﻿using System;
+using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
+using MovieApp.BL.ExternalServices.Implements;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
 using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
+using StackExchange.Redis;
 
 namespace MovieApp.BL.Services.Implements;
 public class MovieService : IMovieService
@@ -75,29 +78,13 @@ public class MovieService : IMovieService
     }
 
     public async Task<IEnumerable<MovieGetDto>> GetByReleaseDateAsync(DateOnly releaseDate)
-    {
-        var datas = await _repo.GetWhereAsync(x => x.ReleaseDate >= releaseDate, _includeProperties);
-        if (!datas.Any())
-            throw new NotFoundException<Movie>();
-
-        return _mapper.Map<IEnumerable<MovieGetDto>>(datas);
-    }
+        => await FilterGetByAsync(x => x.ReleaseDate >= releaseDate);
 
     public async Task<IEnumerable<MovieGetDto>> GetByDurationRangeAsync(int minDuration, int maxDuration)
-    {
-        var datas = await _repo.GetWhereAsync(x => x.Duration >= minDuration && x.Duration <= maxDuration, _includeProperties);
-        if (!datas.Any())
-            throw new NotFoundException<Movie>();
-        return _mapper.Map<IEnumerable<MovieGetDto>>(datas);
-    }
+        => await FilterGetByAsync(x => x.Duration >= minDuration && x.Duration <= maxDuration);
 
     public async Task<IEnumerable<MovieGetDto>> GetByTitleAsync(string title)
-    {
-        var datas = await _repo.GetWhereAsync(x => x.Title.Contains(title), _includeProperties);
-        if (!datas.Any())
-            throw new NotFoundException<Movie>();
-        return _mapper.Map<IEnumerable<MovieGetDto>>(datas);
-    }
+        => await FilterGetByAsync(x => x.Title.Contains(title));
 
     public Task<IEnumerable<MovieGetDto>> SortByTitleAsync(bool ascending = true)
         => FilterSortAsync(x => x.Title, $"movies_sorted_by_title_{ascending}", ascending);
@@ -118,13 +105,17 @@ public class MovieService : IMovieService
     }
 
     //Yuxaridaki methodlar ucun umumi bir method
+    public async Task<IEnumerable<MovieGetDto>> FilterGetByAsync(Expression<Func<Movie, bool>> expression)
+    {
+        var movies = await _repo.GetWhereAsync(expression, _includeProperties);
+        if (!movies.Any()) throw new NotFoundException<Movie>();
+        return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+    }
     public async Task<IEnumerable<MovieGetDto>> FilterAsync(Expression<Func<Movie, bool>> predicate, string cacheKey)
     {
         return await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            var movies = await _repo.GetWhereAsync(predicate, _includeProperties);
-            if (!movies.Any()) throw new NotFoundException<Movie>();
-            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+            return await FilterGetByAsync(predicate); 
         }, TimeSpan.FromMinutes(5));
     }
     public async Task<IEnumerable<MovieGetDto>> FilterSortAsync<TKey>( Func<Movie, TKey> predicate, string cacheKey, bool ascending = true)
@@ -196,21 +187,17 @@ public class MovieService : IMovieService
 
     public async Task<bool> UpdateAsync(MovieUpdateDto dto, int movieId)
     {
-        var movie = await _repo.GetByIdAsync(movieId, "Actors", "MovieSubtitles", "Genres", "AudioTracks");
+        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
         if (movie == null)
             throw new NotFoundException<Movie>();
 
         _mapper.Map(dto, movie);
-
 
         movie.Actors = dto.ActorIds.ToMovieActors();
         movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
         movie.Genres = dto.GenreIds.ToMovieGenres();
         movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
 
-        movie.PosterUrl = await _fileService.ProcessImageAsync(dto.PosterFile, "movies/posters", "image/", 50, movie.PosterUrl);
-        movie.TrailerUrl = await _fileService.ProcessImageAsync(dto.TrailerFile, "movies/trailers", "video/", 1024, movie.TrailerUrl);
-
         _repo.UpdateAsync(movie);
         bool updated = await _repo.SaveAsync() > 0;
 
@@ -223,13 +210,23 @@ public class MovieService : IMovieService
         return updated;
     }
 
-    public async Task<bool> UpdatePosterUrlAsync(int movieId, IFormFile posterFile)
+    public async Task<bool> UpdateMediaUrlAsync(int movieId, IFormFile file, EMediaType type)
     {
-        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
+        var movie = await _repo.GetByIdAsync(movieId);
         if (movie == null)
             throw new NotFoundException<Movie>();
 
-        movie.PosterUrl = await _fileService.ProcessImageAsync(posterFile, "movies/posters", "image/", 15, movie.PosterUrl);
+        string folder = type == EMediaType.Poster ? "movies/posters" : "movies/trailers";
+        string contentType = type == EMediaType.Poster ? "image/" : "video/";
+        int maxSize = type == EMediaType.Poster ? 15 : 1024;
+
+        string updatedUrl = await _fileService.ProcessImageAsync(file, folder, contentType, maxSize,
+            type == EMediaType.Poster ? movie.PosterUrl : movie.TrailerUrl);
+
+        if (type == EMediaType.Poster)
+            movie.PosterUrl = updatedUrl;
+        else
+            movie.TrailerUrl = updatedUrl;
 
         _repo.UpdateAsync(movie);
         bool updated = await _repo.SaveAsync() > 0;
@@ -242,27 +239,6 @@ public class MovieService : IMovieService
 
         return updated;
     }
-
-    public async Task<bool> UpdateTrailerUrlAsync(int movieId, IFormFile trailerFile)
-    {
-        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
-        if (movie == null)
-            throw new NotFoundException<Movie>();
-
-        movie.TrailerUrl = await _fileService.ProcessImageAsync(trailerFile, "movies/trailers", "video/", 1024, movie.TrailerUrl);
-
-        _repo.UpdateAsync(movie);
-        bool updated = await _repo.SaveAsync() > 0;
-
-        if (updated)
-        {
-            await _cache.RemoveAsync($"movie_{movieId}");
-            await _cache.RemoveAsync("all_movies");
-        }
-
-        return updated;
-    }
-
 
     //DELETE
     public async Task<bool> DeleteAsync(string ids, EDeleteType deleteType)
