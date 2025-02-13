@@ -1,18 +1,15 @@
-﻿using System;
-using System.Linq.Expressions;
+﻿using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
-using MovieApp.BL.ExternalServices.Implements;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
 using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
-using StackExchange.Redis;
 
 namespace MovieApp.BL.Services.Implements;
 public class MovieService : IMovieService
@@ -21,6 +18,7 @@ public class MovieService : IMovieService
     readonly IActorRepository _actRepo;
     readonly ICacheService _cache; 
     readonly IMapper _mapper;
+    readonly ICurrentUser _user;
     readonly IFileService _fileService;
 
     private readonly string[] _includeProperties =
@@ -29,8 +27,9 @@ public class MovieService : IMovieService
         "Reviews", "Rentals", "AudioTracks", "Recommendations"
     };
 
-    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache)
+    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache, ICurrentUser user)
     {
+        _user = user; 
         _cache = cache;
         _actRepo = actRepo;
         _fileService = fileService; 

@@ -13,8 +13,13 @@ public static class ServiceRegistration
 		services.AddScoped<IGenreService, GenreService>();
         services.AddScoped<IActorService, ActorService>();
         services.AddScoped<ILanguageService, LanguageService>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IMovieService, MovieService>();
 
-
+        services.AddScoped<ICacheService, CacheService>();
+        services.AddScoped<ICurrentUser, CurrentUser>();
+        services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
+        services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IFileService, FileService>();
         services.AddDistributedMemoryCache(); 
         return services; 

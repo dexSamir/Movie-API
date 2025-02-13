@@ -35,9 +35,9 @@ public interface IMovieService
     Task<IEnumerable<MovieGetDto>> GetPopularMoviesAsync();
     Task<IEnumerable<MovieGetDto>> GetRecentlyAddedMoviesAsync();
 
-    Task<bool> AddToFavoritesAsync(int userId, int movieId);
-    Task<bool> RemoveFromFavoritesAsync(int userId, int movieId);
-    Task<IEnumerable<MovieGetDto>> GetFavoritesAsync(int userId);
+    Task<bool> AddToFavoritesAsync(int movieId);
+    Task<bool> RemoveFromFavoritesAsync(int movieId);
+    Task<IEnumerable<MovieGetDto>> GetFavoritesAsync();
 
     Task<int> GetTotalMovieCountAsync();
     Task<int> GetTotalWatchCountAsync(int movieId);
@@ -49,34 +49,33 @@ public interface IMovieService
     Task<string> GetMovieDownloadUrlAsync(int movieId);
     Task<bool> ShareMovieAsync(int movieId, string socialMediaPlatform);
 
-    Task<bool> SubscribeToMovieNotificationsAsync(int userId, int movieId);
     Task<bool> NotifyUsersAboutNewMovieAsync(int movieId);
-    Task<bool> UnsubscribeFromMovieNotificationsAsync(int userId, int movieId);
+    Task<bool> SubscribeToMovieNotificationsAsync(int movieId);
+    Task<bool> UnsubscribeFromMovieNotificationsAsync(int movieId);
 
-    Task<bool> LikeMovieAsync(int userId, int movieId);
-    Task<bool> UnlikeMovieAsync(int userId, int movieId);
-    Task<bool> DislikeMovieAsync(int userId, int movieId);
-    Task<bool> UndislikeMovieAsync(int userId, int movieId);
+    Task<bool> LikeMovieAsync(int movieId);
+    Task<bool> UnlikeMovieAsync(int movieId);
+    Task<bool> DislikeMovieAsync(int movieId);
+    Task<bool> UndislikeMovieAsync(int movieId);
 
     Task<IEnumerable<MovieGetDto>> SearchMoviesAsync(MovieSearchCriteria criteria);
 
-    Task<bool> RentMovieAsync(int userId, int movieId);
-    Task<IEnumerable<MovieGetDto>> GetUserRentedMoviesAsync(int userId);
-    Task<bool> ExtendRentalPeriodAsync(int userId, int movieId, int additionalDays);
+    Task<bool> RentMovieAsync(int movieId);
+    Task<IEnumerable<MovieGetDto>> GetUserRentedMoviesAsync();
+    Task<bool> ExtendRentalPeriodAsync(int movieId, int additionalDays);
 
-    Task<bool> AddToWatchHistoryAsync(int userId, int movieId);
-    Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync(int userId);
+    Task<bool> AddToWatchHistoryAsync(int movieId);
+    Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync();
 
-    Task<bool> DeleteAsync(string ids, EDeleteType deleteType); 
+    Task<bool> DeleteAsync(string ids, EDeleteType deleteType);
 
-    Task<bool> StartWatchingAsync(int userId, int movieId);
-    Task<bool> UpdateWatchProgressAsync(int userId, int movieId, TimeSpan currentTime);
-    Task<bool> FinishWatchingAsync(int userId, int movieId);
+    Task<bool> StartWatchingAsync(int movieId);
+    Task<bool> UpdateWatchProgressAsync(int movieId, TimeSpan currentTime);
+    Task<bool> FinishWatchingAsync(int movieId);
     //Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
-    Task<bool> PauseMovieAsync(int userId, int movieId, TimeSpan pausedAt);
-    Task<bool> ResumeWatchingAsync(int userId, int movieId);
-
-    Task<bool> IsUserWatchingAsync(int userId, int movieId);
+    Task<bool> PauseMovieAsync(int movieId, TimeSpan pausedAt);
+    Task<bool> ResumeWatchingAsync(int movieId);
+    Task<bool> IsUserWatchingAsync(int movieId);
 
     Task<bool> UpdateAverageRatingAsync(int movieId); 
 }
