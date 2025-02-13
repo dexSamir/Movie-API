@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+
 namespace MovieApp.Core.Entities;
 public class User : IdentityUser
 {
