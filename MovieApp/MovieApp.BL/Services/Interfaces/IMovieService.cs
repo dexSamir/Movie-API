@@ -26,12 +26,12 @@ public interface IMovieService
     Task<bool> UpdatePosterUrlAsync(int movieId, IFormFile posterUrl);
     Task<bool> UpdateTrailerUrlAsync(int movieId, IFormFile trailerUrl);
 
-    Task<bool> RateMovieAsync(int userId, int movieId, double rating);
-    Task<bool> AddReviewAsync(int userId, int movieId, string comment);
+    Task<bool> RateMovieAsync(int movieId, double rating);
+    Task<bool> AddReviewAsync(int movieId, string comment);
     //Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
     Task<double> GetAverageRatingAsync(int movieId);
 
-    Task<IEnumerable<MovieGetDto>> GetRecommendationsAsync(int userId);
+    Task<IEnumerable<MovieGetDto>> GetRecommendationsAsync();
     Task<IEnumerable<MovieGetDto>> GetPopularMoviesAsync();
     Task<IEnumerable<MovieGetDto>> GetRecentlyAddedMoviesAsync();
 

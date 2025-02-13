@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using MovieApp.Core.Entities.Base;
+﻿using MovieApp.Core.Entities.Base;
 
 namespace MovieApp.Core.Entities;
 public class Plan : BaseEntity

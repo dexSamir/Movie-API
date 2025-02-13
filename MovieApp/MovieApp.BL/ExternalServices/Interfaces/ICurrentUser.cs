@@ -3,7 +3,7 @@
 namespace MovieApp.BL.ExternalServices.Interfaces;
 public interface ICurrentUser
 {
-    int GetId();
+    string GetId();
     string GetUserName();
     string GetEmail();
     string GetFullname();

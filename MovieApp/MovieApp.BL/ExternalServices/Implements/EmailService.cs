@@ -58,7 +58,7 @@ public class EmailService : IEmailService
         return handler.WriteToken(token);
     }
 
-    public async Task<string> SendEmailVerificationAsync(string email, string token)
+    public async Task<string> SendEmailVereficationAsync(string email, string token)
     {
         if (_cache.TryGetValue(email, out var _))
             throw new ExistException("Email artiq gonderilib!");

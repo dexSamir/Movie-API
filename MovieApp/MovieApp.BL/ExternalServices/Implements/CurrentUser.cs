@@ -28,12 +28,12 @@ public class CurrentUser(IHttpContextAccessor _http, IMapper _mapper) : ICurrent
         return value;
     }
 
-    public int GetId()
+    public string GetId()
     {
         var value = User.FindFirst(x => x.Type == ClaimType.Id)?.Value;
         if (value is null)
             throw new NotFoundException<User>();
-        return Convert.ToInt32(value);
+        return value;
     }
 
     public string GetUserName()
