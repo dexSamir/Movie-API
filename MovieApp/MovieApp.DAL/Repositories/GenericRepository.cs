@@ -1,5 +1,6 @@
 ﻿using System.Linq.Expressions;
 using Microsoft.EntityFrameworkCore;
+using MovieApp.Core.Entities;
 using MovieApp.Core.Entities.Base;
 using MovieApp.Core.Repositories;
 using MovieApp.DAL.Context;
@@ -184,5 +185,40 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
         Table.UpdateRange(entities);
     }
 
+    public async Task<bool> HasUserReactedAsync(int entityId, string userId, bool isLike)
+    {
+        return await _context.LikeDislikes
+            .AnyAsync(ld => ld.UserId == userId && ld.IsLike == isLike &&
+                ((ld.ReviewId == entityId && typeof(T) == typeof(Review)) ||
+                 (ld.MovieId == entityId && typeof(T) == typeof(Movie)) ||
+                 (ld.EpisodeId == entityId && typeof(T) == typeof(Episode))));
+    }
+
+    public async Task AddUserReactionAsync(int entityId, string userId, bool isLike)
+    {
+        var reaction = new LikeDislike
+        {
+            UserId = userId,
+            IsLike = isLike
+        };
+
+        if (typeof(T) == typeof(Review)) reaction.ReviewId = entityId;
+        else if (typeof(T) == typeof(Movie)) reaction.MovieId = entityId;
+        else if (typeof(T) == typeof(Episode)) reaction.EpisodeId = entityId;
+
+        await _context.LikeDislikes.AddAsync(reaction); 
+    }
+
+    public async Task RemoveUserReactionAsync(int entityId, string userId, bool isLike)
+    {
+        var reaction = await _context.LikeDislikes.FirstOrDefaultAsync(ld =>
+            ld.UserId == userId && ld.IsLike == isLike &&
+            ((ld.ReviewId == entityId && typeof(T) == typeof(Review)) ||
+             (ld.MovieId == entityId && typeof(T) == typeof(Movie)) ||
+             (ld.EpisodeId == entityId && typeof(T) == typeof(Episode))));
+
+        if (reaction != null)
+            _context.LikeDislikes.Remove(reaction);
+    }
 }
 

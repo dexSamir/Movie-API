@@ -16,6 +16,5 @@ public class LikeDislike : BaseEntity
 	public Review? Review { get; set; }
 
 	public bool IsLike { get; set; }
-
 }
 

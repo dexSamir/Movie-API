@@ -34,6 +34,7 @@
     <None Remove="Utilities\Helpers\" />
     <None Remove="Exceptions\Rating\" />
     <None Remove="DTOs\ReviewDtos\" />
+    <None Remove="Exceptions\LikeOrDislike\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -61,6 +62,7 @@
     <Folder Include="Utilities\Helpers\" />
     <Folder Include="Exceptions\Rating\" />
     <Folder Include="DTOs\ReviewDtos\" />
+    <Folder Include="Exceptions\LikeOrDislike\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />

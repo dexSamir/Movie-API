@@ -3,5 +3,6 @@
 namespace MovieApp.Core.Repositories;
 public interface IReviewRepository : IGenericRepository<Review>
 {
+
 }
 

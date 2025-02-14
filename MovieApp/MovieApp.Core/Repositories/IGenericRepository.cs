@@ -44,5 +44,9 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task<int> SaveAsync();
     //string GetCurrentUserId();
     //Task<User?> GetCurrentUserAsync();
+
+    Task<bool> HasUserReactedAsync(int entityId, string userId, bool isLike);
+    Task AddUserReactionAsync(int entityId, string userId, bool isLike);
+    Task RemoveUserReactionAsync(int entityId, string userId, bool isLike);
 }
 

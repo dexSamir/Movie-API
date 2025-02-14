@@ -8,12 +8,12 @@ public interface IReviewService
     Task<bool> UpdateReviewAsync(int reviewId, ReviewUpdateDto dto);
 	Task<bool> DeleteReviewAsync(int reviewId);
 
-    Task<Review> GetReviewByIdAsync(int reviewId);
-    Task<IEnumerable<Review>> GetReviewsByMovieAsync(int movieId);
-    Task<IEnumerable<Review>> GetReviewsBySerieAsync(int serieId);
-    Task<IEnumerable<Review>> GetReviewsByEpisodeAsync(int episodeId);
+    Task<ReviewGetDto> GetReviewByIdAsync(int reviewId);
+    Task<IEnumerable<ReviewGetDto>> GetReviewsByMovieAsync(int movieId);
+    Task<IEnumerable<ReviewGetDto>> GetReviewsBySerieAsync(int serieId);
+    Task<IEnumerable<ReviewGetDto>> GetReviewsByEpisodeAsync(int episodeId);
 
-    Task<IEnumerable<Review>> GetReviewsByUserAsync(string userId);
+    Task<IEnumerable<ReviewGetDto>> GetReviewsByUserAsync(string userId);
 
     Task<bool> AddReplyAsync(ReviewCreateDto dto);
     Task<bool> UpdateReplyAsync(ReviewUpdateDto dto, int reviewId);

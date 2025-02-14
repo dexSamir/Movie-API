@@ -2,6 +2,7 @@
 using MovieApp.BL.DTOs.ReviewDtos;
 using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
+using MovieApp.BL.Exceptions.LikeOrDislike;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.Core.Entities;
@@ -165,25 +166,6 @@ public class ReviewService : IReviewService
         return await _repo.GetWhereAsync(r => r.ParentReviewId == parentReviewId, _includeProperties);
     }
 
-
-    public async Task<bool> LikeReviewAsync(int reviewId)
-    {
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
-
-        review.LikeCount++;
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> DislikeReviewAsync(int reviewId)
-    {
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
-
-        review.DislikeCount++;
-        return await _repo.SaveAsync() > 0;
-    }
-
     public async Task<(int LikeCount, int DislikeCount)> GetReviewLikeDislikeCountAsync(int reviewId)
     {
         var review = await _repo.GetByIdAsync(reviewId);
@@ -191,5 +173,86 @@ public class ReviewService : IReviewService
 
         return (review.LikeCount, review.DislikeCount);
     }
+
+    public async Task<bool> LikeReviewAsync(int reviewId)
+    {
+        var userId = _user.GetId();
+        if (userId == null) throw new AuthorisationException<User>();
+
+        var review = await _repo.GetByIdAsync(reviewId);
+        if (review == null) throw new NotFoundException<Review>();
+
+        if (await _repo.HasUserReactedAsync(reviewId, userId, true))
+            throw new AlreadyLikedException<Review>();
+
+        if (await _repo.HasUserReactedAsync(reviewId, userId, false))
+        {
+            await _repo.RemoveUserReactionAsync(reviewId, userId, false);
+            review.DislikeCount--;
+        }
+
+        await _repo.AddUserReactionAsync(reviewId, userId, true);
+        review.LikeCount++;
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> DislikeReviewAsync(int reviewId)
+    {
+        var userId = _user.GetId();
+        if (userId == null) throw new AuthorisationException<User>();
+
+        var review = await _repo.GetByIdAsync(reviewId);
+        if (review == null) throw new NotFoundException<Review>();
+
+        if (await _repo.HasUserReactedAsync(reviewId, userId, false))
+            throw new AlreadyDislikedException<Review>();
+
+        if (await _repo.HasUserReactedAsync(reviewId, userId, true))
+        {
+            await _repo.RemoveUserReactionAsync(reviewId, userId, true);
+            review.LikeCount--;
+        }
+
+        await _repo.AddUserReactionAsync(reviewId, userId, false);
+        review.DislikeCount++;
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> UndoLikeAsync(int reviewId)
+    {
+        var userId = _user.GetId();
+        if (userId == null) throw new AuthorisationException<User>();
+
+        var review = await _repo.GetByIdAsync(reviewId);
+        if (review == null) throw new NotFoundException<Review>();
+
+        if (!await _repo.HasUserReactedAsync(reviewId, userId, true))
+            throw new NotLikedException<Review>();
+
+        await _repo.RemoveUserReactionAsync(reviewId, userId, true);
+        review.LikeCount--;
+
+        return await _repo.SaveAsync() > 0;
+    }
+
+    public async Task<bool> UndoDislikeAsync(int reviewId)
+    {
+        var userId = _user.GetId();
+        if (userId == null) throw new AuthorisationException<User>();
+
+        var review = await _repo.GetByIdAsync(reviewId);
+        if (review == null) throw new NotFoundException<Review>();
+
+        if (!await _repo.HasUserReactedAsync(reviewId, userId, false))
+            throw new NotDislikedException<Review>();
+
+        await _repo.RemoveUserReactionAsync(reviewId, userId, false);
+        review.DislikeCount--;
+
+        return await _repo.SaveAsync() > 0;
+    }
+
 }
 
