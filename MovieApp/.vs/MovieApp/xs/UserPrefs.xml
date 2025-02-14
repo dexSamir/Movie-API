@@ -1,23 +1,31 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Services/Implements/MovieService.cs">
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Services/Implements/RatingService.cs">
     <Files>
-      <File FileName="MovieApp.BL/Services/Implements/MovieService.cs" Line="8" Column="39" />
+      <File FileName="MovieApp.BL/Services/Implements/RatingService.cs" Line="37" Column="9" />
+      <File FileName="MovieApp.BL/Services/Interfaces/IRatingService.cs" Line="3" Column="2" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MovieApp" expanded="True">
-            <Node name="MovieApp.BL" expanded="True" />
+          <Node name="MovieApp">
+            <Node name="MovieApp.BL" expanded="True">
+              <Node name="Exceptions" expanded="True">
+                <Node name="Rating" expanded="True" />
+              </Node>
+              <Node name="Services" expanded="True">
+                <Node name="Implements" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
 </Properties>
