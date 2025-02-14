@@ -15,16 +15,20 @@ public static class ServiceRegistration
         services.AddScoped<ILanguageService, LanguageService>();
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<IMovieService, MovieService>();
-        services.AddScoped<IRatingService, RatingService>(); 
+        services.AddScoped<IRatingService, RatingService>();
+        services.AddScoped<IReviewService, ReviewService>(); 
 
         services.AddScoped<ICacheService, CacheService>();
         services.AddScoped<ICurrentUser, CurrentUser>();
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IFileService, FileService>();
+
         services.AddDistributedMemoryCache(); 
         return services; 
 	}
+
+
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ServiceRegistration));

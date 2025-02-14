@@ -287,7 +287,7 @@ public class MovieService : IMovieService
         return success;
     }
 
-    //PRIVATE DELETE
+    //PRIVATE DELETE TEST
     private async Task EnsureMovieExist(int[] ids)
     {
         var existingCount = await _repo.CountAsync(ids);

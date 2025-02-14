@@ -21,6 +21,13 @@ public class Program
 
         builder.Services.AddDbContext<AppDbContext>(opt =>
             opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
+
+        builder.Services.AddStackExchangeRedisCache(options =>
+        {
+            options.Configuration = builder.Configuration.GetConnectionString("Redis");
+            options.InstanceName = "MovieApp_";
+        });
+
         builder.Services.AddRepositories();
         builder.Services.AddServices();
         builder.Services.AddAutoMapper(); 

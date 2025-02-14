@@ -33,6 +33,7 @@
     <None Remove="Exceptions\AuthException\" />
     <None Remove="Utilities\Helpers\" />
     <None Remove="Exceptions\Rating\" />
+    <None Remove="DTOs\ReviewDtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -59,6 +60,7 @@
     <Folder Include="Exceptions\AuthException\" />
     <Folder Include="Utilities\Helpers\" />
     <Folder Include="Exceptions\Rating\" />
+    <Folder Include="DTOs\ReviewDtos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />

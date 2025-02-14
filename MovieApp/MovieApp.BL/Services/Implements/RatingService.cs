@@ -23,7 +23,7 @@ public class RatingService : IRatingService
     public async Task<bool> RateMovieAsync(int movieId, int score)
     {
         var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        await ValidateUserAsync(userId);
 
         var existingRating = await _repo.GetFirstAsync(r => r.MovieId == movieId && r.UserId == userId);
         if (existingRating != null)
@@ -42,7 +42,7 @@ public class RatingService : IRatingService
     public async Task<bool> RateEpisodeAsync(int episodeId, int score)
     {
         var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        await ValidateUserAsync(userId);
 
         if (score < 1 || score > 10)
             throw new InvalidScoreException();
@@ -78,7 +78,8 @@ public class RatingService : IRatingService
     public async Task<bool> RateSerieAsync(int serieId, int score)
     {
         var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        await ValidateUserAsync(userId);
+
 
         var existingRating = await _repo.GetFirstAsync(r => r.SerieId == serieId && r.UserId == userId);
         if (existingRating != null)
@@ -97,7 +98,7 @@ public class RatingService : IRatingService
     public async Task<bool> UpdateRatingAsync(int ratingId, int newScore)
     {
         var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        await ValidateUserAsync(userId);
 
         var rating = await _repo.GetByIdAsync(ratingId);
         if (rating == null) throw new NotFoundException<Rating>();
@@ -115,7 +116,7 @@ public class RatingService : IRatingService
     public async Task<bool> DeleteRatingAsync(int ratingId)
     {
         var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        await ValidateUserAsync(userId);
 
         var rating = await _repo.GetByIdAsync(ratingId);
         if (rating == null) throw new NotFoundException<Rating>();
@@ -130,7 +131,7 @@ public class RatingService : IRatingService
     public async Task<IEnumerable<Rating>> GetUserRatingsAsync()
     {
         var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        await ValidateUserAsync(userId);
 
         return await _repo.GetWhereAsync(r => r.UserId == userId);
     }
@@ -176,5 +177,10 @@ public class RatingService : IRatingService
         return hybridRating;
     }
 
+    private async Task ValidateUserAsync(string userId)
+    {
+        if (userId == null)
+            throw new AuthorisationException<User>();
+    }
 }
 
