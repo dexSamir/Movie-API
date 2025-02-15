@@ -59,7 +59,6 @@ public interface IMovieService
     Task<bool> UndoDislikeMovieAsync(int movieId);
     Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId);
 
-
     Task<IEnumerable<MovieGetDto>> SearchMoviesAsync(MovieSearchCriteria criteria);
 
     Task<bool> RentMovieAsync(int movieId);

@@ -53,6 +53,12 @@ public class EpisodeConfiguration : IEntityTypeConfiguration<Episode>
         builder.Property(e => e.SeasonId)
             .IsRequired();
 
+        builder.HasMany(wp => wp.WatchProgresses)
+               .WithOne(m => m.Episode)
+               .HasForeignKey(wp => wp.EpisodeId)
+               .OnDelete(DeleteBehavior.Cascade);
+
+
         builder.HasOne(e => e.Season)
             .WithMany(s => s.Episodes)
             .HasForeignKey(e => e.SeasonId)

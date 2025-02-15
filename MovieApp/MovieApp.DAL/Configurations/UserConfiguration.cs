@@ -37,7 +37,12 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder.HasOne(u => u.Stats)
                .WithOne(us => us.User)
                .HasForeignKey<UserStatistics>(us => us.UserId)
-               .OnDelete(DeleteBehavior.Cascade); 
+               .OnDelete(DeleteBehavior.Cascade);
+
+        builder.HasMany(wp => wp.WatchProgresses)
+               .WithOne(m => m.User)
+               .HasForeignKey(wp => wp.MovieId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         builder.HasMany(u => u.Ratings)
                .WithOne(r => r.User)

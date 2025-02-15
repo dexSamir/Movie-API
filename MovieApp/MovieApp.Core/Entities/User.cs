@@ -40,5 +40,6 @@ public class User : IdentityUser
     public ICollection<ActivityLog> Logs { get; set; }
     public ICollection<WatchRoom> HostedRooms { get; set; }
     public ICollection<WatchRoomUser> JoinedRooms { get; set; }
+    public ICollection<WatchProgress> WatchProgresses { get; set; }
 }
 

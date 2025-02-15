@@ -25,6 +25,7 @@ public class AppDbContext : IdentityDbContext<User>
     public DbSet<Episode> Episodes{ get; set; }
     public DbSet<Season> Seasons { get; set; }
     public DbSet<Serie> Series { get; set; }
+    public DbSet<WatchProgress> WatchProgresses { get; set; }
     // End Main
 
     // Ratings 

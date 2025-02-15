@@ -25,4 +25,5 @@ public class Movie : BaseEntity
     public ICollection<Rental> Rentals { get; set; }
     public ICollection<AudioTrack> AudioTracks { get; set; }
     public ICollection<Recommendation> Recommendations { get; set; }
+    public ICollection<WatchProgress> WatchProgresses { get; set; }
 }

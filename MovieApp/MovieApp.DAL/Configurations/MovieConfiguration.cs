@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MovieApp.Core.Entities;
@@ -54,10 +53,16 @@ public class MovieConfiguration : IEntityTypeConfiguration<Movie>
             .HasColumnType("decimal(3,1)") 
             .HasDefaultValue(0)             
             .IsRequired();
+
         builder.HasOne(x => x.Director)
             .WithMany(x => x.Movies)
             .HasForeignKey(x => x.DirectorId)
             .OnDelete(DeleteBehavior.SetNull);
+
+        builder.HasMany(wp => wp.WatchProgresses)
+               .WithOne(m => m.Movie)
+               .HasForeignKey(wp => wp.MovieId)
+               .OnDelete(DeleteBehavior.Cascade);
 
         // many-to-many
         builder.HasMany(x => x.Actors)

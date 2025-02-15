@@ -18,5 +18,6 @@ public class Episode : BaseEntity
 
     public ICollection<Review>? Reviews { get; set; }
     public ICollection<Rating>? Ratings { get; set; }
+    public ICollection<WatchProgress> WatchProgresses { get; set; }
 }
 
