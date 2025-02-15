@@ -26,11 +26,13 @@ public interface IMovieService
     Task<bool> UpdatePosterUrlAsync(int movieId, IFormFile posterUrl);
     Task<bool> UpdateTrailerUrlAsync(int movieId, IFormFile trailerUrl);
 
-    Task<bool> RateMovieAsync(int movieId, double rating);
+    Task<bool> RateMovieAsync(int movieId, int score);
     Task<bool> AddReviewAsync(int movieId, string comment);
-    //Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
+    Task<bool> UpdateRatingAsync(int ratingId, int newScore);
+    Task<bool> DeleteRatingAsync(int ratingId);
     Task<double> GetAverageRatingAsync(int movieId);
 
+    //Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
     Task<IEnumerable<MovieGetDto>> GetRecommendationsAsync();
     Task<IEnumerable<MovieGetDto>> GetPopularMoviesAsync();
     Task<IEnumerable<MovieGetDto>> GetRecentlyAddedMoviesAsync();
@@ -44,8 +46,6 @@ public interface IMovieService
     Task<IEnumerable<MovieGetDto>> GetTopRatedMoviesAsync(int count);
     Task<IEnumerable<MovieGetDto>> GetMostWatchedMoviesAsync(int count);
 
-    Task<(int likeCount, int dislikeCount)> GetMovieLikeDislikeCountAsync(int movieId);
-
     Task<string> GetMovieDownloadUrlAsync(int movieId);
     Task<bool> ShareMovieAsync(int movieId, string socialMediaPlatform);
 
@@ -54,9 +54,11 @@ public interface IMovieService
     Task<bool> UnsubscribeFromMovieNotificationsAsync(int movieId);
 
     Task<bool> LikeMovieAsync(int movieId);
-    Task<bool> UnlikeMovieAsync(int movieId);
     Task<bool> DislikeMovieAsync(int movieId);
-    Task<bool> UndislikeMovieAsync(int movieId);
+    Task<bool> UndoLikeMovieAsync(int movieId);
+    Task<bool> UndoDislikeMovieAsync(int movieId);
+    Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId);
+
 
     Task<IEnumerable<MovieGetDto>> SearchMoviesAsync(MovieSearchCriteria criteria);
 

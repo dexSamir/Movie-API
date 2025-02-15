@@ -22,6 +22,8 @@ public interface IReviewService
 
     Task<bool> LikeReviewAsync(int reviewId);
     Task<bool> DislikeReviewAsync(int reviewId);
-    Task<(int LikeCount, int DislikeCount)> GetReviewLikeDislikeCountAsync(int reviewId);
+    Task<bool> UndoLikeReviewAsync(int reviewId);
+    Task<bool> UndoDislikeReviewAsync(int reviewId);
+    Task<(int LikeCount, int DislikeCount)> GetReviewReactionCountAsync(int reviewId);
 }
 

@@ -16,10 +16,12 @@ public class MovieService : IMovieService
 {
     readonly IMovieRepository _repo;
     readonly IActorRepository _actRepo;
+    readonly ILikeDislikeService _like; 
     readonly ICacheService _cache; 
     readonly IMapper _mapper;
     readonly ICurrentUser _user;
     readonly IFileService _fileService;
+    readonly IRatingService _ratingService; 
 
     private readonly string[] _includeProperties =
     {
@@ -27,8 +29,10 @@ public class MovieService : IMovieService
         "Reviews", "Rentals", "AudioTracks", "Recommendations"
     };
 
-    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache, ICurrentUser user)
+    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache, ICurrentUser user, IRatingService ratingService, ILikeDislikeService like)
     {
+        _like = like; 
+        _ratingService = ratingService; 
         _user = user; 
         _cache = cache;
         _actRepo = actRepo;
@@ -94,14 +98,6 @@ public class MovieService : IMovieService
     public Task<IEnumerable<MovieGetDto>> SortByRatingAsync(bool ascending = true)
         => FilterSortAsync(x => x.AvgRating, $"movies_sorted_by_rating_{ascending}", ascending);
 
-    public async Task<double> GetAverageRatingAsync(int movieId)
-    {
-        var movie = await _repo.GetByIdAsync(movieId, "Actors", "MovieSubtitles", "Genres", "AudioTracks");
-        if (movie == null)
-            throw new NotFoundException<Movie>();
-
-        return movie.AvgRating; 
-    }
 
     //Yuxaridaki methodlar ucun umumi bir method
     public async Task<IEnumerable<MovieGetDto>> FilterGetByAsync(Expression<Func<Movie, bool>> expression)
@@ -294,4 +290,34 @@ public class MovieService : IMovieService
         if (existingCount != ids.Length)
             throw new NotFoundException<Movie>();
     }
+
+    //RATING
+    public async Task<bool> RateMovieAsync(int movieId, int score)
+        => await _ratingService.RateMovieAsync(movieId, score);
+
+    public async Task<bool> UpdateRatingAsync(int ratingId, int newScore)
+        => await _ratingService.UpdateRatingAsync(ratingId, newScore);
+
+    public async Task<bool> DeleteRatingAsync(int ratingId)
+        => await _ratingService.DeleteRatingAsync(ratingId);
+
+    public async Task<double> GetAverageRatingAsync(int movieId)
+        => await _ratingService.GetAverageRatingForMovieAsync(movieId);
+
+
+    //Like And Dislike
+    public async Task<bool> LikeMovieAsync(int movieId)
+        => await _like.LikeAsync(EReactionEntityType.Movie, movieId);
+
+    public async Task<bool> DislikeMovieAsync(int movieId)
+        => await _like.DislikeAsync(EReactionEntityType.Movie, movieId);
+
+    public async Task<bool> UndoLikeMovieAsync(int movieId)
+        => await _like.UndoLikeAsync(EReactionEntityType.Movie, movieId);
+
+    public async Task<bool> UndoDislikeMovieAsync(int movieId)
+        => await _like.UndoDislikeAsync(EReactionEntityType.Movie, movieId);
+
+    public async Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId)
+        => await _like.GetLikeDislikeCountAsync(EReactionEntityType.Movie, movieId);
 }

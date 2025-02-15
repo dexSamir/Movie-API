@@ -35,6 +35,9 @@
     <None Remove="Exceptions\Rating\" />
     <None Remove="DTOs\ReviewDtos\" />
     <None Remove="Exceptions\LikeOrDislike\" />
+    <None Remove="OtherServices\" />
+    <None Remove="OtherServices\Interfaces\" />
+    <None Remove="OtherServices\Implements\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -63,6 +66,9 @@
     <Folder Include="Exceptions\Rating\" />
     <Folder Include="DTOs\ReviewDtos\" />
     <Folder Include="Exceptions\LikeOrDislike\" />
+    <Folder Include="OtherServices\" />
+    <Folder Include="OtherServices\Interfaces\" />
+    <Folder Include="OtherServices\Implements\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />

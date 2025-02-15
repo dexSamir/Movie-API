@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using MovieApp.BL.ExternalServices.Implements;
 using MovieApp.BL.ExternalServices.Interfaces;
+using MovieApp.BL.OtherServices.Implements;
+using MovieApp.BL.OtherServices.Interfaces;
 using MovieApp.BL.Services.Implements;
 using MovieApp.BL.Services.Interfaces;
 
@@ -23,6 +25,11 @@ public static class ServiceRegistration
         services.AddScoped<IJwtTokenHandler, JwtTokenHandler>();
         services.AddScoped<IEmailService, EmailService>();
         services.AddScoped<IFileService, FileService>();
+
+
+        services.AddScoped<IReactionStrategy, MovieReactionStrategy>();
+        services.AddScoped<IReactionStrategy, ReviewReactionStrategy>();
+        services.AddScoped<ILikeDislikeService, LikeDislikeService>();
 
         services.AddDistributedMemoryCache(); 
         return services; 

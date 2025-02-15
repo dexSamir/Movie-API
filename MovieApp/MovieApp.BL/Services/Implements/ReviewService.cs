@@ -2,9 +2,9 @@
 using MovieApp.BL.DTOs.ReviewDtos;
 using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Exceptions.LikeOrDislike;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
 
@@ -15,6 +15,7 @@ public class ReviewService : IReviewService
 	readonly ICurrentUser _user;
     readonly ICacheService _cache;
     readonly IMapper _mapper;
+    readonly ILikeDislikeService _like;
 
 
     readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(10);
@@ -24,8 +25,9 @@ public class ReviewService : IReviewService
         "Rating", "Review"
     };
 
-    public ReviewService(IReviewRepository repo, ICurrentUser user, ICacheService cache, IMapper mapper)
-	{
+    public ReviewService(IReviewRepository repo, ICurrentUser user, ICacheService cache, IMapper mapper, ILikeDislikeService like)
+    {
+        _like = like;
         _cache = cache; 
 		_user = user;
         _mapper = mapper;
@@ -166,93 +168,21 @@ public class ReviewService : IReviewService
         return await _repo.GetWhereAsync(r => r.ParentReviewId == parentReviewId, _includeProperties);
     }
 
-    public async Task<(int LikeCount, int DislikeCount)> GetReviewLikeDislikeCountAsync(int reviewId)
-    {
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
 
-        return (review.LikeCount, review.DislikeCount);
-    }
-
+    //Like And Dislike
     public async Task<bool> LikeReviewAsync(int reviewId)
-    {
-        var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
-
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
-
-        if (await _repo.HasUserReactedAsync(reviewId, userId, true))
-            throw new AlreadyLikedException<Review>();
-
-        if (await _repo.HasUserReactedAsync(reviewId, userId, false))
-        {
-            await _repo.RemoveUserReactionAsync(reviewId, userId, false);
-            review.DislikeCount--;
-        }
-
-        await _repo.AddUserReactionAsync(reviewId, userId, true);
-        review.LikeCount++;
-
-        return await _repo.SaveAsync() > 0;
-    }
+        => await _like.LikeAsync(EReactionEntityType.Review, reviewId);
 
     public async Task<bool> DislikeReviewAsync(int reviewId)
-    {
-        var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
+        => await _like.DislikeAsync(EReactionEntityType.Review, reviewId);
 
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
+    public async Task<bool> UndoLikeReviewAsync(int reviewId)
+        => await _like.UndoLikeAsync(EReactionEntityType.Review, reviewId);
 
-        if (await _repo.HasUserReactedAsync(reviewId, userId, false))
-            throw new AlreadyDislikedException<Review>();
+    public async Task<bool> UndoDislikeReviewAsync(int reviewId)
+        => await _like.UndoDislikeAsync(EReactionEntityType.Review, reviewId);
 
-        if (await _repo.HasUserReactedAsync(reviewId, userId, true))
-        {
-            await _repo.RemoveUserReactionAsync(reviewId, userId, true);
-            review.LikeCount--;
-        }
-
-        await _repo.AddUserReactionAsync(reviewId, userId, false);
-        review.DislikeCount++;
-
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> UndoLikeAsync(int reviewId)
-    {
-        var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
-
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
-
-        if (!await _repo.HasUserReactedAsync(reviewId, userId, true))
-            throw new NotLikedException<Review>();
-
-        await _repo.RemoveUserReactionAsync(reviewId, userId, true);
-        review.LikeCount--;
-
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> UndoDislikeAsync(int reviewId)
-    {
-        var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
-
-        var review = await _repo.GetByIdAsync(reviewId);
-        if (review == null) throw new NotFoundException<Review>();
-
-        if (!await _repo.HasUserReactedAsync(reviewId, userId, false))
-            throw new NotDislikedException<Review>();
-
-        await _repo.RemoveUserReactionAsync(reviewId, userId, false);
-        review.DislikeCount--;
-
-        return await _repo.SaveAsync() > 0;
-    }
-
+    public async Task<(int LikeCount, int DislikeCount)> GetReviewReactionCountAsync(int reviewId)
+        => await _like.GetLikeDislikeCountAsync(EReactionEntityType.Review, reviewId);
 }
 
