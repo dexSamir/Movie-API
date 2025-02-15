@@ -23,6 +23,5 @@ public class Serie : BaseEntity
     public ICollection<Recommendation> Recommendations { get; set; }
     public ICollection<AudioTrack> AudioTracks { get; set; }
     public ICollection<Review>? Reviews { get; set; }
-    public ICollection<WatchProgress> WatchProgresses { get; set; }
 }
 

@@ -1,6 +1,5 @@
 ﻿using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Exceptions.LikeOrDislike;
 using MovieApp.BL.Exceptions.Rating;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;

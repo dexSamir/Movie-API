@@ -32,6 +32,17 @@ public interface IMovieService
     Task<bool> DeleteRatingAsync(int ratingId);
     Task<double> GetAverageRatingAsync(int movieId);
 
+    Task<bool> LikeMovieAsync(int movieId);
+    Task<bool> DislikeMovieAsync(int movieId);
+    Task<bool> UndoLikeMovieAsync(int movieId);
+    Task<bool> UndoDislikeMovieAsync(int movieId);
+    Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId);
+
+    Task<bool> DeleteAsync(string ids, EDeleteType deleteType);
+
+    Task<bool> UpdateAverageRatingAsync(int movieId);
+
+
     //Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
     Task<IEnumerable<MovieGetDto>> GetRecommendationsAsync();
     Task<IEnumerable<MovieGetDto>> GetPopularMoviesAsync();
@@ -53,12 +64,6 @@ public interface IMovieService
     Task<bool> SubscribeToMovieNotificationsAsync(int movieId);
     Task<bool> UnsubscribeFromMovieNotificationsAsync(int movieId);
 
-    Task<bool> LikeMovieAsync(int movieId);
-    Task<bool> DislikeMovieAsync(int movieId);
-    Task<bool> UndoLikeMovieAsync(int movieId);
-    Task<bool> UndoDislikeMovieAsync(int movieId);
-    Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId);
-
     Task<IEnumerable<MovieGetDto>> SearchMoviesAsync(MovieSearchCriteria criteria);
 
     Task<bool> RentMovieAsync(int movieId);
@@ -67,17 +72,14 @@ public interface IMovieService
 
     Task<bool> AddToWatchHistoryAsync(int movieId);
     Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync();
-
-    Task<bool> DeleteAsync(string ids, EDeleteType deleteType);
+    //Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
 
     Task<bool> StartWatchingAsync(int movieId);
     Task<bool> UpdateWatchProgressAsync(int movieId, TimeSpan currentTime);
     Task<bool> FinishWatchingAsync(int movieId);
-    //Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
     Task<bool> PauseMovieAsync(int movieId, TimeSpan pausedAt);
     Task<bool> ResumeWatchingAsync(int movieId);
     Task<bool> IsUserWatchingAsync(int movieId);
 
-    Task<bool> UpdateAverageRatingAsync(int movieId); 
 }
 

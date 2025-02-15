@@ -45,11 +45,6 @@ public class SerieConfiguration : IEntityTypeConfiguration<Serie>
             .HasForeignKey(ss => ss.SerieId)
             .OnDelete(DeleteBehavior.Cascade);
 
-        builder.HasMany(wp => wp.WatchProgresses)
-               .WithOne(m => m.Serie)
-               .HasForeignKey(wp => wp.SerieId)
-               .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasMany(s => s.Seasons)
             .WithOne(s=> s.Serie)
             .HasForeignKey(s => s.SerieId)

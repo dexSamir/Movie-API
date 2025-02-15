@@ -14,11 +14,6 @@ public class WatchProgressConfiguration : IEntityTypeConfiguration<WatchProgress
                .HasForeignKey(wp => wp.MovieId)
                .OnDelete(DeleteBehavior.Cascade); 
 
-        builder.HasOne(wp => wp.Serie)
-               .WithMany(s => s.WatchProgresses)
-               .HasForeignKey(wp => wp.SerieId)
-               .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(wp => wp.Episode)
                .WithMany(e => e.WatchProgresses)
                .HasForeignKey(wp => wp.EpisodeId)
@@ -37,8 +32,6 @@ public class WatchProgressConfiguration : IEntityTypeConfiguration<WatchProgress
         builder.Property(wp => wp.PausedAt).IsRequired(false);
 
         builder.HasIndex(wp => new { wp.MovieId, wp.UserId });
-
-        builder.HasIndex(wp => new { wp.SerieId, wp.UserId });
 
         builder.HasIndex(wp => new { wp.EpisodeId, wp.UserId });
 
