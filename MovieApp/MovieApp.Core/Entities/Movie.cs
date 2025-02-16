@@ -10,6 +10,7 @@ public class Movie : BaseEntity
     public string? TrailerUrl { get; set; }
     public int Duration { get; set; } // bu da deqiqe olcag
     public DateOnly ReleaseDate { get; set; }
+    public int WatchCount { get; set; }
 
     public int? DirectorId { get; set; }
     public Director? Director { get; set; }

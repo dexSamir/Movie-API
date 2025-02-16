@@ -11,6 +11,7 @@ public class MovieGetDto
     public string? DirectorName { get; set; }
     public int LikeCount { get; set; }
     public int DislikeCount { get; set; }
+    public int WatchCount { get; set; }
     //public ICollection<string> Actors { get; set; }
     //public ICollection<string> Subtitles { get; set; }
     //public ICollection<string> Genres { get; set; }

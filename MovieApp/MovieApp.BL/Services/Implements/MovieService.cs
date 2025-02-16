@@ -1,6 +1,7 @@
 ﻿using System.Linq.Expressions;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
@@ -10,6 +11,7 @@ using MovieApp.BL.Utilities;
 using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
+using MovieApp.DAL.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
 public class MovieService : IMovieService
@@ -320,4 +322,26 @@ public class MovieService : IMovieService
 
     public async Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId)
         => await _like.GetLikeDislikeCountAsync(EReactionEntityType.Movie, movieId);
+
+
+    public async Task<int> GetTotalMovieCountAsync()
+        => await _repo.GetTotalMovieCountAsync();
+
+    public async Task<int> GetTotalWatchCountAsync(int movieId)
+    {
+        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
+        return movie?.WatchCount ?? 0;
+    }
+
+    public async Task<IEnumerable<MovieGetDto>> GetTopRatedMoviesAsync(int count)
+    {
+        var movies = await _repo.GetTopRatedMoviesAsync(count);
+        return _mapper.Map<IEnumerable<MovieGetDto>>(movies); 
+    }
+
+    public async Task<IEnumerable<MovieGetDto>> GetMostWatchedMoviesAsync(int count)
+    {
+        var movies = await _repo.GetMostWatchedMoviesAsync(count);
+        return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+    }
 }
