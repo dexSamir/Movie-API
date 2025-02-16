@@ -31,6 +31,11 @@ public static class ServiceRegistration
         services.AddScoped<IReactionStrategy, ReviewReactionStrategy>();
         services.AddScoped<ILikeDislikeService, LikeDislikeService>();
 
+        services.AddScoped<IWatchProgressStrategy, MovieWatchProgressStrategy>();
+        services.AddScoped<IWatchProgressService, WatchProgressService>();
+
+
+
         services.AddDistributedMemoryCache(); 
         return services; 
 	}

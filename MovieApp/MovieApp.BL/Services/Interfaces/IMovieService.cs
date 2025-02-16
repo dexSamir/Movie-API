@@ -73,13 +73,5 @@ public interface IMovieService
     Task<bool> AddToWatchHistoryAsync(int movieId);
     Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync();
     //Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
-
-    Task<bool> StartWatchingAsync(int movieId);
-    Task<bool> UpdateWatchProgressAsync(int movieId, TimeSpan currentTime);
-    Task<bool> FinishWatchingAsync(int movieId);
-    Task<bool> PauseMovieAsync(int movieId, TimeSpan pausedAt);
-    Task<bool> ResumeWatchingAsync(int movieId);
-    Task<bool> IsUserWatchingAsync(int movieId);
-
 }
 

@@ -1,24 +1,31 @@
 ﻿using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.ExternalServices.Interfaces;
+using MovieApp.BL.OtherServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
-using MovieApp.Core.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
 
 public class WatchProgressService : IWatchProgressService
 {
-    readonly IWatchProgressRepository _repo;
+    private readonly ICacheService _cache;
     readonly ICurrentUser _user;
-    readonly ICacheService _cache;
-    private readonly string[] _includeProperties = { "Movie", "Serie", "Episode", "User" };
+    private readonly IDictionary<EWatchProgress, IWatchProgressStrategy> _strategies;
 
-    public WatchProgressService(IWatchProgressRepository repo, ICurrentUser user, ICacheService cache)
+    public WatchProgressService(ICacheService cache, IEnumerable<IWatchProgressStrategy> strategies, ICurrentUser user)
     {
-        _repo = repo;
-        _user = user;
         _cache = cache;
+        _user = user; 
+        _strategies = strategies.ToDictionary(s => s.EntityType);
+    }
+
+    private string GetCacheKey(int movieId, string userId) => $"watchProgress_{movieId}_{userId}";
+
+    private async Task RemoveCacheAsync(int movieId, string userId)
+    {
+        await _cache.RemoveAsync(GetCacheKey(movieId, userId));
     }
 
     private async Task<string> GetUserIdAsync()
@@ -29,60 +36,28 @@ public class WatchProgressService : IWatchProgressService
         return await Task.FromResult(userId);
     }
 
-    private async Task<WatchProgress> GetWatchProgressAsync(int movieId, string userId)
-        => await _repo.GetFirstAsync(wp => wp.MovieId == movieId && wp.UserId == userId, false, _includeProperties);
-
-    private string GetCacheKey(int movieId, string userId)
+    private IWatchProgressStrategy GetStrategy(EWatchProgress type)
     {
-        return $"watchProgress_{movieId}_{userId}";
-    }
-
-    private async Task RemoveCacheAsync(int movieId, string userId)
-    {
-        await _cache.RemoveAsync(GetCacheKey(movieId, userId));
+        if (!_strategies.TryGetValue(type, out var strategy))
+            throw new NotFoundException<IWatchProgressStrategy>();
+        return strategy;
     }
 
     public async Task<bool> StartWatchingAsync(int movieId)
     {
-        var userId = await GetUserIdAsync();
-
-        var existingProgress = await GetWatchProgressAsync(movieId, userId);
-        if (existingProgress != null)
-            return false;
-
-        var watchProgress = new WatchProgress
-        {
-            MovieId = movieId,
-            UserId = userId,
-            StartTime = DateTime.UtcNow,
-            IsWatching = true,
-            PlaybackSpeed = 1.0,
-            CurrentTime = TimeSpan.Zero
-        };
-
-        await _repo.AddAsync(watchProgress);
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var userId = await GetUserIdAsync(); 
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.StartWatchingAsync(movieId, userId);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
     public async Task<bool> UpdateWatchProgressAsync(int movieId, TimeSpan currentTime)
     {
         var userId = await GetUserIdAsync();
-
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.CurrentTime = currentTime;
-        progress.LastUpdated = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.UpdateWatchProgressAsync(movieId, userId, currentTime);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
@@ -90,54 +65,27 @@ public class WatchProgressService : IWatchProgressService
     {
         var userId = await GetUserIdAsync();
 
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.IsWatching = false;
-        progress.EndTime = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.FinishWatchingAsync(movieId, userId);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
     public async Task<bool> PauseMovieAsync(int movieId, TimeSpan pausedAt)
     {
         var userId = await GetUserIdAsync();
-
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.IsWatching = false;
-        progress.PausedAt = pausedAt;
-        progress.LastUpdated = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.PauseMovieAsync(movieId, userId, pausedAt);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
     public async Task<bool> ResumeWatchingAsync(int movieId)
     {
         var userId = await GetUserIdAsync();
-
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.IsWatching = true;
-        progress.LastUpdated = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.ResumeWatchingAsync(movieId, userId);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
@@ -145,11 +93,10 @@ public class WatchProgressService : IWatchProgressService
     {
         var userId = await GetUserIdAsync();
         var cacheKey = GetCacheKey(movieId, userId);
-
         return await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            var progress = await GetWatchProgressAsync(movieId, userId);
-            return progress?.IsWatching ?? false;
+            var strategy = GetStrategy(EWatchProgress.Movie);
+            return await strategy.IsUserWatchingAsync(movieId, userId);
         }, TimeSpan.FromMinutes(5));
     }
 
@@ -157,11 +104,10 @@ public class WatchProgressService : IWatchProgressService
     {
         var userId = await GetUserIdAsync();
         var cacheKey = GetCacheKey(movieId, userId);
-
         return await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            var progress = await GetWatchProgressAsync(movieId, userId);
-            return progress?.CurrentTime ?? TimeSpan.Zero;
+            var strategy = GetStrategy(EWatchProgress.Movie);
+            return await strategy.GetCurrentTimeAsync(movieId, userId);
         }, TimeSpan.FromMinutes(5));
     }
 
@@ -169,68 +115,37 @@ public class WatchProgressService : IWatchProgressService
     {
         var userId = await GetUserIdAsync();
         var cacheKey = GetCacheKey(movieId, userId);
-
         return await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            var progress = await GetWatchProgressAsync(movieId, userId);
-            return progress?.PlaybackSpeed ?? 1.0;
+            var strategy = GetStrategy(EWatchProgress.Movie);
+            return await strategy.GetPlaybackSpeedAsync(movieId, userId);
         }, TimeSpan.FromMinutes(5));
     }
 
     public async Task<bool> SetPlaybackSpeedAsync(int movieId, double speed)
     {
         var userId = await GetUserIdAsync();
-
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.PlaybackSpeed = speed;
-        progress.LastUpdated = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.SetPlaybackSpeedAsync(movieId, userId, speed);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
     public async Task<bool> SeekForwardAsync(int movieId, TimeSpan seekTime)
     {
         var userId = await GetUserIdAsync();
-
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.CurrentTime += seekTime;
-        progress.LastUpdated = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.SeekForwardAsync(movieId, userId, seekTime);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 
     public async Task<bool> SeekBackwardAsync(int movieId, TimeSpan seekTime)
     {
         var userId = await GetUserIdAsync();
-
-        var progress = await GetWatchProgressAsync(movieId, userId);
-        if (progress == null)
-            throw new NotFoundException<WatchProgress>();
-
-        progress.CurrentTime -= seekTime;
-        if (progress.CurrentTime < TimeSpan.Zero)
-            progress.CurrentTime = TimeSpan.Zero;
-
-        progress.LastUpdated = DateTime.UtcNow;
-
-        var result = await _repo.SaveAsync() > 0;
-        if (result)
-            await RemoveCacheAsync(movieId, userId);
-
+        var strategy = GetStrategy(EWatchProgress.Movie);
+        var result = await strategy.SeekBackwardAsync(movieId, userId, seekTime);
+        if (result) await RemoveCacheAsync(movieId, userId);
         return result;
     }
 }
