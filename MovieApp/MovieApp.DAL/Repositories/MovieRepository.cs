@@ -16,9 +16,9 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
     {
 
         return await _context.Movies
-                              .OrderByDescending(m => m.WatchCount)
-                              .Take(count)
-                              .ToListAsync();
+            .OrderByDescending(m => m.WatchCount)
+            .Take(count)
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Movie>> GetTopRatedMoviesAsync(int count)
@@ -31,6 +31,33 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
     public async Task<int> GetTotalMovieCountAsync()
     {
         return await _context.Movies.CountAsync(); 
+    }
+
+    public async Task<IEnumerable<Recommendation>> GetRecommendationsAsync(string userId)
+    {
+        return await _context.Recommendations
+            .Include(r => r.Movie) 
+            .Include(r => r.Serie)
+            .Where(r => r.UserId == userId)
+            .OrderByDescending(r => r.RecommendedDate) 
+            .Take(10) 
+            .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Movie>> GetPopularMoviesAsync()
+    {
+        return await _context.Movies
+                              .OrderByDescending(m => m.WatchCount)
+                              .Take(10) 
+                              .ToListAsync();
+    }
+
+    public async Task<IEnumerable<Movie>> GetRecentlyAddedMoviesAsync()
+    {
+        return await _context.Movies
+                              .OrderByDescending(m => m.CreatedTime)
+                              .Take(10) 
+                              .ToListAsync();
     }
 }
 

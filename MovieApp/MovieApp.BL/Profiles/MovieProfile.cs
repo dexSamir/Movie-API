@@ -1,13 +1,15 @@
 ﻿using AutoMapper;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.DTOs.RecommendationDtos;
 using MovieApp.Core.Entities;
-using MovieApp.Core.Entities.Relational;
 
 namespace MovieApp.BL.Profiles;
 public class MovieProfile : Profile
 {
 	public MovieProfile()
 	{
+
+        CreateMap<Recommendation, RecommendationGetDto>();
         CreateMap<MovieCreateDto, Movie>()
             .ForMember(dest => dest.Actors, opt => opt.Ignore())
             .ForMember(dest => dest.Genres, opt => opt.Ignore())

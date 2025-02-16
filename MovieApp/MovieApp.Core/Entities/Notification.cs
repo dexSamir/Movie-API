@@ -9,4 +9,3 @@ public class Notification : BaseEntity
 	public DateTime SendDate { get; set; }
 	public bool IsRead { get; set; }
 }
-

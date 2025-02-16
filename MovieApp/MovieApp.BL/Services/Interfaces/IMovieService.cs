@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.DTOs.RecommendationDtos;
 using MovieApp.BL.Utilities.Enums;
 
 namespace MovieApp.BL.Services.Interfaces;
@@ -42,20 +43,24 @@ public interface IMovieService
 
     Task<bool> UpdateAverageRatingAsync(int movieId);
 
+    Task<int> GetTotalMovieCountAsync();
+    Task<int> GetTotalWatchCountAsync(int movieId);
+    Task<IEnumerable<MovieGetDto>> GetTopRatedMoviesAsync(int count);
+    Task<IEnumerable<MovieGetDto>> GetMostWatchedMoviesAsync(int count);
 
-    //Task<IEnumerable<ReviewDto>> GetReviewsByMovieAsync(int movieId);
-    Task<IEnumerable<MovieGetDto>> GetRecommendationsAsync();
+    Task<IEnumerable<RecommendationGetDto>> GetRecommendationsAsync();
     Task<IEnumerable<MovieGetDto>> GetPopularMoviesAsync();
     Task<IEnumerable<MovieGetDto>> GetRecentlyAddedMoviesAsync();
+
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
     Task<bool> AddToFavoritesAsync(int movieId);
     Task<bool> RemoveFromFavoritesAsync(int movieId);
     Task<IEnumerable<MovieGetDto>> GetFavoritesAsync();
 
-    Task<int> GetTotalMovieCountAsync();
-    Task<int> GetTotalWatchCountAsync(int movieId);
-    Task<IEnumerable<MovieGetDto>> GetTopRatedMoviesAsync(int count);
-    Task<IEnumerable<MovieGetDto>> GetMostWatchedMoviesAsync(int count);
+    Task<bool> AddToWatchHistoryAsync(int movieId);
+    Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync();
 
     Task<string> GetMovieDownloadUrlAsync(int movieId);
     Task<bool> ShareMovieAsync(int movieId, string socialMediaPlatform);
@@ -70,8 +75,6 @@ public interface IMovieService
     Task<IEnumerable<MovieGetDto>> GetUserRentedMoviesAsync();
     Task<bool> ExtendRentalPeriodAsync(int movieId, int additionalDays);
 
-    Task<bool> AddToWatchHistoryAsync(int movieId);
-    Task<IEnumerable<MovieGetDto>> GetUserWatchHistoryAsync();
     //Task<IEnumerable<WatchHistoryDto>> GetWatchHistoryAsync(int userId);
 }
 

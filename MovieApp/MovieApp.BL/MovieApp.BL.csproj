@@ -38,6 +38,7 @@
     <None Remove="OtherServices\" />
     <None Remove="OtherServices\Interfaces\" />
     <None Remove="OtherServices\Implements\" />
+    <None Remove="DTOs\RecommendationDtos\" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Services\" />
@@ -69,6 +70,7 @@
     <Folder Include="OtherServices\" />
     <Folder Include="OtherServices\Interfaces\" />
     <Folder Include="OtherServices\Implements\" />
+    <Folder Include="DTOs\RecommendationDtos\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="13.0.1" />

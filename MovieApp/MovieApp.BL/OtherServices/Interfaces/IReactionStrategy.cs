@@ -5,7 +5,7 @@ public interface IReactionStrategy
 {
     EReactionEntityType EntityType { get; }
 
-    Task<(int LikeCount, int DislikeCount)> wGetReactionCountAsync(int entityId);
+    Task<(int LikeCount, int DislikeCount)> GetReactionCountAsync(int entityId);
     Task<bool> LikeAsync(int entityId, string userId);
     Task<bool> DislikeAsync(int entityId, string userId);
     Task<bool> UndoLikeAsync(int entityId, string userId);

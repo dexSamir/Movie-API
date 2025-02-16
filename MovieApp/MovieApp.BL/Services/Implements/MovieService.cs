@@ -3,15 +3,17 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.DTOs.RecommendationDtos;
+using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
+using MovieApp.BL.ExternalServices.Implements;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities;
 using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
 using MovieApp.Core.Repositories;
-using MovieApp.DAL.Repositories;
 
 namespace MovieApp.BL.Services.Implements;
 public class MovieService : IMovieService
@@ -30,6 +32,14 @@ public class MovieService : IMovieService
         "Actors", "MovieSubtitles", "Genres", "Ratings",
         "Reviews", "Rentals", "AudioTracks", "Recommendations"
     };
+
+    private async Task<string> GetUserIdAsync()
+    {
+        var userId = _user.GetId();
+        if (userId == null)
+            throw new AuthorisationException<User>();
+        return await Task.FromResult(userId);
+    }
 
     public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache, ICurrentUser user, IRatingService ratingService, ILikeDislikeService like)
     {
@@ -325,23 +335,71 @@ public class MovieService : IMovieService
 
 
     public async Task<int> GetTotalMovieCountAsync()
-        => await _repo.GetTotalMovieCountAsync();
+    {
+        var cacheKey = "TotalMovieCount";
+        return await _cache.GetOrSetAsync(cacheKey, async () => await _repo.GetTotalMovieCountAsync(), TimeSpan.FromMinutes(10));
+    }
 
     public async Task<int> GetTotalWatchCountAsync(int movieId)
     {
-        var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
-        return movie?.WatchCount ?? 0;
+        var cacheKey = $"TotalWatchCount_{movieId}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movie = await _repo.GetByIdAsync(movieId, _includeProperties);
+            return movie?.WatchCount ?? 0;
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<IEnumerable<MovieGetDto>> GetTopRatedMoviesAsync(int count)
     {
-        var movies = await _repo.GetTopRatedMoviesAsync(count);
-        return _mapper.Map<IEnumerable<MovieGetDto>>(movies); 
+        var cacheKey = $"TopRatedMovies_{count}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movies = await _repo.GetTopRatedMoviesAsync(count);
+            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<IEnumerable<MovieGetDto>> GetMostWatchedMoviesAsync(int count)
     {
-        var movies = await _repo.GetMostWatchedMoviesAsync(count);
-        return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+        var cacheKey = $"MostWatchedMovies_{count}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movies = await _repo.GetMostWatchedMoviesAsync(count);
+            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+        }, TimeSpan.FromMinutes(10));
+    }
+
+    public async Task<IEnumerable<RecommendationGetDto>> GetRecommendationsAsync()
+    {
+        var userId = await GetUserIdAsync();
+        if (string.IsNullOrEmpty(userId)) throw new AuthorisationException<User>();
+
+        var cacheKey = $"Recommendations_{userId}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var recommendations = await _repo.GetRecommendationsAsync(userId);
+            return _mapper.Map<IEnumerable<RecommendationGetDto>>(recommendations);
+        }, TimeSpan.FromMinutes(10));
+    }
+
+    public async Task<IEnumerable<MovieGetDto>> GetPopularMoviesAsync()
+    {
+        var cacheKey = "PopularMovies";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movies = await _repo.GetPopularMoviesAsync();
+            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+        }, TimeSpan.FromMinutes(10));
+    }
+
+    public async Task<IEnumerable<MovieGetDto>> GetRecentlyAddedMoviesAsync()
+    {
+        var cacheKey = "RecentlyAddedMovies";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var movies = await _repo.GetRecentlyAddedMoviesAsync();
+            return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
+        }, TimeSpan.FromMinutes(10));
     }
 }
