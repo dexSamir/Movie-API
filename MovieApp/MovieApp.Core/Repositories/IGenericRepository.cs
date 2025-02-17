@@ -33,17 +33,15 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task SoftDeleteRangeAsync(int[] ids);
     Task ReverseSoftDeleteRangeAsync(int[] ids);
 
-    void DeleteRange(params T[] entities);
-    void SoftDeleteRange(params T[] entities);
-    void ReverseSoftDeleteRange(params T[] entities);
+    void DeleteRange(IEnumerable<T> entites);
+    void SoftDeleteRange(IEnumerable<T> entites);
+    void ReverseSoftDeleteRange(IEnumerable<T> entites);
     void Delete(T entity);
     void SoftDelete(T entity);
     void ReverseSoftDelete(T entity);
 
     Task DeleteAndSaveAsync(int id);
     Task<int> SaveAsync();
-    //string GetCurrentUserId();
-    //Task<User?> GetCurrentUserAsync();
 
     Task<bool> HasUserReactedAsync(int entityId, string userId, bool isLike);
     Task AddUserReactionAsync(int entityId, string userId, bool isLike);

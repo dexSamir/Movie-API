@@ -168,18 +168,19 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
         Table.UpdateRange(entities);
     }
 
-    public void DeleteRange(params T[] entities)
+    public void DeleteRange(IEnumerable<T> entities)
     {
         Table.RemoveRange(entities); 
     }
 
-    public void SoftDeleteRange(params T[] entities)
+    public void SoftDeleteRange(IEnumerable<T> entities)
     {
-        foreach (var entity in entities) entity.IsDeleted = true;
+        foreach (var entity in entities)
+            entity.IsDeleted = false;
         Table.UpdateRange(entities);
     }
 
-    public void ReverseSoftDeleteRange(params T[] entities)
+    public void ReverseSoftDeleteRange(IEnumerable<T> entities)
     {
         foreach (var entity in entities) entity.IsDeleted = false;
         Table.UpdateRange(entities);
