@@ -11,10 +11,10 @@ using MovieApp.Core.Repositories;
 namespace MovieApp.BL.Services.Implements;
 public class HistoryService : IHistoryService
 {
-    private readonly IHistoryRepository _repo;
-    private readonly ICacheService _cacheService;
-    private readonly ICurrentUser _currentUser;
-    private readonly IMapper _mapper;
+    readonly IHistoryRepository _repo;
+    readonly ICacheService _cacheService;
+    readonly ICurrentUser _currentUser;
+    readonly IMapper _mapper;
 
     public HistoryService(IHistoryRepository repo, ICacheService cacheService, ICurrentUser currentUser, IMapper mapper)
     {

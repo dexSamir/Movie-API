@@ -54,7 +54,6 @@ public interface IMovieService
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
     Task<bool> AddToFavoritesAsync(int movieId);
     Task<bool> RemoveFromFavoritesAsync(int movieId);
     Task<IEnumerable<MovieGetDto>> GetFavoritesAsync();
