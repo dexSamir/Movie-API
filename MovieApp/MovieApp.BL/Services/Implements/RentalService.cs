@@ -74,7 +74,8 @@ public class RentalService : IRentalService
             throw new NotFoundException<Rental>();
         
         var data = _mapper.Map(dto, rental);
-        data.UpdatedTime = DateTime.UtcNow; 
+        data.UpdatedTime = DateTime.UtcNow;
+
         _repo.UpdateAsync(rental);
         return await _repo.SaveAsync() > 0 ;
     }

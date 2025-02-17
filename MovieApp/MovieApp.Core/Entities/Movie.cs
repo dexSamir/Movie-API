@@ -17,6 +17,7 @@ public class Movie : BaseEntity
     public double AvgRating { get; set; }
     public int LikeCount { get; set; } = 0;
     public int DislikeCount { get; set; } = 0;
+    public decimal RentalPrice { get; set; }
 
     public ICollection<MovieActor>? Actors { get; set; } = new HashSet<MovieActor>(); 
     public ICollection<MovieSubtitle>? MovieSubtitles{ get; set; }

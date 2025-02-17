@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.DTOs.RecommendationDtos;
+using MovieApp.BL.DTOs.RentalDtos;
 using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Extensions;
@@ -24,7 +25,8 @@ public class MovieService : IMovieService
     readonly IMapper _mapper;
     readonly ICurrentUser _user;
     readonly IFileService _fileService;
-    readonly IRatingService _ratingService; 
+    readonly IRatingService _ratingService;
+    readonly IRentalService _rental; 
 
     private readonly string[] _includeProperties =
     {
@@ -40,8 +42,9 @@ public class MovieService : IMovieService
         return await Task.FromResult(userId);
     }
 
-    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache, ICurrentUser user, IRatingService ratingService, ILikeDislikeService like)
+    public MovieService(IMovieRepository repo, IMapper mapper, IActorRepository actRepo, IFileService fileService, ICacheService cache, ICurrentUser user, IRatingService ratingService, ILikeDislikeService like, IRentalService rental)
     {
+        _rental = rental; 
         _like = like; 
         _ratingService = ratingService; 
         _user = user; 
@@ -401,4 +404,30 @@ public class MovieService : IMovieService
             return _mapper.Map<IEnumerable<MovieGetDto>>(movies);
         }, TimeSpan.FromMinutes(10));
     }
+
+    public async Task<bool> RentMovieAsync(int movieId)
+    {
+        var movie = await _repo.GetByIdAsync(movieId, false, _includeProperties);
+        if (movie == null)
+            throw new NotFoundException<Movie>();
+
+        var rentalCreateDto = new RentalCreateDto
+        {
+            MovieId = movieId,
+            RentalDate = DateTime.UtcNow,
+            ReturnDate = DateTime.UtcNow.AddDays(7), 
+            Price = movie.RentalPrice,
+        };
+
+        await _rental.RentMovieAsync(rentalCreateDto);
+        return true;
+    }
+
+    public async Task<IEnumerable<MovieGetDto>> GetUserRentedMoviesAsync()
+    {
+        var rentals = await _rental.GetUserRentalsAsync();
+        var rentedMovies = rentals.Select(r => r.MovieTitle);
+        return _mapper.Map<IEnumerable<MovieGetDto>>(rentedMovies);
+    }
+
 }
