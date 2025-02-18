@@ -1,6 +1,8 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieApp.BL;
+using MovieApp.Core.Entities;
 using MovieApp.DAL;
 using MovieApp.DAL.Context;
 
@@ -20,6 +22,12 @@ public class Program
         builder.Services.AddAuth(builder.Configuration);
         builder.Services.AddJwtOptions(builder.Configuration);
         builder.Services.AddEmailOptions(builder.Configuration);
+
+        builder.Services.AddHttpContextAccessor();
+
+        builder.Services.AddIdentity<User, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>()
+            .AddDefaultTokenProviders();
 
         builder.Services.AddSwaggerGen();
         builder.Services.AddSwaggerGen(options =>
@@ -57,7 +65,8 @@ public class Program
 
         builder.Services.AddRepositories();
         builder.Services.AddServices();
-        builder.Services.AddAutoMapper(); 
+        builder.Services.AddAutoMapper();
+        builder.Services.AddMemoryCache();
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.

@@ -14,9 +14,12 @@ public static class ServiceRegistration
 		services.AddScoped<IMovieRepository, MovieRepository>();
         services.AddScoped<IRatingRepository, RatingRepository>();
 		services.AddScoped<IEpisodeRepository, EpisodeRepository>();
+		services.AddScoped<IRentalRepository, RentalRepository>();
 		services.AddScoped<IReviewRepository, ReviewRepository>();
         services.AddScoped<ILikeDislikeRepository, LikeDislikeRepository>();
         services.AddScoped<IHistoryRepository, HistoryRepository>();
+        services.AddScoped<IWatchProgressRepository, WatchProgressRepository>();
+
 
         return services; 
 	}

@@ -8,6 +8,7 @@
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/MovieApp.API.pdb
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/AutoMapper.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Humanizer.dll
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.AspNetCore.Authentication.JwtBearer.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.AspNetCore.Authorization.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.AspNetCore.Components.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.AspNetCore.Components.Forms.dll
@@ -56,6 +57,8 @@
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.IdentityModel.Abstractions.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.IdentityModel.JsonWebTokens.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.IdentityModel.Logging.dll
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.dll
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.IdentityModel.Tokens.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.JSInterop.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/bin/Debug/net8.0/Microsoft.NET.StringTools.dll

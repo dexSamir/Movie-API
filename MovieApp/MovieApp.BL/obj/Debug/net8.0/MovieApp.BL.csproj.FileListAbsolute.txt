@@ -1,9 +1,3 @@
-/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.csproj.AssemblyReference.cache
-/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.GeneratedMSBuildEditorConfig.editorconfig
-/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.AssemblyInfoInputs.cache
-/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.AssemblyInfo.cs
-/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.csproj.CoreCompileInputs.cache
-/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.sourcelink.json
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/bin/Debug/net8.0/MovieApp.BL.deps.json
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/bin/Debug/net8.0/MovieApp.BL.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/bin/Debug/net8.0/MovieApp.BL.pdb
@@ -11,6 +5,12 @@
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/bin/Debug/net8.0/MovieApp.DAL.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/bin/Debug/net8.0/MovieApp.DAL.pdb
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/bin/Debug/net8.0/MovieApp.Core.pdb
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.csproj.AssemblyReference.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.GeneratedMSBuildEditorConfig.editorconfig
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.AssemblyInfoInputs.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.AssemblyInfo.cs
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.csproj.CoreCompileInputs.cache
+/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.sourcelink.json
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.csproj.CopyComplete
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/MovieApp.BL.dll
 /Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/obj/Debug/net8.0/refint/MovieApp.BL.dll
