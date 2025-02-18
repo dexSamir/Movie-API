@@ -13,7 +13,7 @@ public interface IReviewService
     Task<IEnumerable<ReviewGetDto>> GetReviewsBySerieAsync(int serieId);
     Task<IEnumerable<ReviewGetDto>> GetReviewsByEpisodeAsync(int episodeId);
 
-    Task<IEnumerable<ReviewGetDto>> GetReviewsByUserAsync(string userId);
+    Task<IEnumerable<ReviewGetDto>> GetReviewsByUserAsync();
 
     Task<bool> AddReplyAsync(ReviewCreateDto dto);
     Task<bool> UpdateReplyAsync(ReviewUpdateDto dto, int reviewId);

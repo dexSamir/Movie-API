@@ -118,8 +118,9 @@ public class ReviewService : IReviewService
         return _mapper.Map<IEnumerable<ReviewGetDto>>(reviews);
     }
 
-    public async Task<IEnumerable<ReviewGetDto>> GetReviewsByUserAsync(string userId)
+    public async Task<IEnumerable<ReviewGetDto>> GetReviewsByUserAsync()
     {
+        var userId = _user.GetId(); 
         string cacheKey = $"reviews_user_{userId}";
         var reviews =  await _cache.GetOrSetAsync(cacheKey, async () =>
         {
