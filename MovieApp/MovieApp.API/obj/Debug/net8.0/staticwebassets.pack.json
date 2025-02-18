@@ -1,0 +1,465 @@
+{
+  "Files": [
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/03aq2f50.yt1.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/03aq2f50.yt1.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/0wznxr3u.cdm.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/0wznxr3u.cdm.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/0zzhufxw.xqq.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/0zzhufxw.xqq.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/12td1rkd.2lu.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/12td1rkd.2lu.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/2gma0a5u.rn4.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/2gma0a5u.rn4.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/2gojupvw.qxe.webp",
+      "PackagePath": "staticwebassets/imgs/actors/2gojupvw.qxe.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/2pbi2ysi.0qn.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/2pbi2ysi.0qn.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/2v4oxxhd.ju1.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/2v4oxxhd.ju1.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/4vt4hmdf.kh5.webp",
+      "PackagePath": "staticwebassets/imgs/actors/4vt4hmdf.kh5.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/atwt0tcr.53h.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/atwt0tcr.53h.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/bfpfoisr.nde.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/bfpfoisr.nde.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/chljbkok.nws.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/chljbkok.nws.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/czacilq3.sqi.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/czacilq3.sqi.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/d0qjsxlw.tme.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/d0qjsxlw.tme.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/epeqindf.432.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/epeqindf.432.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/eqh2vxss.ayu.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/eqh2vxss.ayu.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/eqiodwtx.20r.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/eqiodwtx.20r.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/f0t1p33l.ias.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/f0t1p33l.ias.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/f1v23mi1.e41.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/f1v23mi1.e41.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/fjbrp2y4.1bg.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/fjbrp2y4.1bg.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/gufjz0ie.kqn.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/gufjz0ie.kqn.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/hhewk3qb.iun.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/hhewk3qb.iun.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/hjxcwclr.nqz.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/hjxcwclr.nqz.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/hwbecjyf.ngo.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/hwbecjyf.ngo.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/i1mi5k40.4bw.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/i1mi5k40.4bw.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/iodwo5sv.3am.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/iodwo5sv.3am.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/jnh4hxwz.ee3.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/jnh4hxwz.ee3.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/jpwqpmt4.21e.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/jpwqpmt4.21e.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/kgicwax3.lhu.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/kgicwax3.lhu.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/kimbea23.g3b.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/kimbea23.g3b.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/levvuhit.wns.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/levvuhit.wns.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/lihznqrd.sjb.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/lihznqrd.sjb.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/m4p23mt3.qxs.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/m4p23mt3.qxs.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/mnyewwlh.fyy.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/mnyewwlh.fyy.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/mvaeicuh.wxo.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/mvaeicuh.wxo.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/og3i2hgz.ue5.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/og3i2hgz.ue5.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/ozf5q1tr.uur.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/ozf5q1tr.uur.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/p4k2nznd.tu4.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/p4k2nznd.tu4.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/rl4tcv3n.4ce.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/rl4tcv3n.4ce.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/s4melhzg.4hw.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/s4melhzg.4hw.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/tklyczjn.itl.avif",
+      "PackagePath": "staticwebassets/imgs/actors/tklyczjn.itl.avif"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/tmcryc1f.0cq.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/tmcryc1f.0cq.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/ubbyimfs.pnk.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/ubbyimfs.pnk.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/uy4f1rxn.0me.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/uy4f1rxn.0me.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/vsxkvyrr.trj.webp",
+      "PackagePath": "staticwebassets/imgs/actors/vsxkvyrr.trj.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/vxc4jm0e.5yg.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/vxc4jm0e.5yg.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/wcupieyz.cit.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/wcupieyz.cit.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/wd11ppk1.4ql.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/wd11ppk1.4ql.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/wrqfr4s1.s2a.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/wrqfr4s1.s2a.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/y5rgqepj.wm4.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/y5rgqepj.wm4.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/yjdgb1g1.bwn.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/yjdgb1g1.bwn.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/yt0hqkov.gr5.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/yt0hqkov.gr5.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/zt21kwbs.gnl.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/zt21kwbs.gnl.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/zuyrnsfb.5dy.jpg",
+      "PackagePath": "staticwebassets/imgs/actors/zuyrnsfb.5dy.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/zvo3qgeb.wrg.jpeg",
+      "PackagePath": "staticwebassets/imgs/actors/zvo3qgeb.wrg.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/0hpre21b.f43.webp",
+      "PackagePath": "staticwebassets/imgs/directors/0hpre21b.f43.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/1hdqbiwv.ziz.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/1hdqbiwv.ziz.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/1qbbmmkl.bve.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/1qbbmmkl.bve.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/2sxvs4gf.3sx.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/2sxvs4gf.3sx.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/3git4ehk.3bs.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/3git4ehk.3bs.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/3owmtilp.oec.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/3owmtilp.oec.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/42kbi4fe.prt.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/42kbi4fe.prt.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/4t4srr3s.sx0.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/4t4srr3s.sx0.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/5ddrjqnw.sm2.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/5ddrjqnw.sm2.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/arsm2n5w.b1e.webp",
+      "PackagePath": "staticwebassets/imgs/directors/arsm2n5w.b1e.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/bhjqqovi.uft.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/bhjqqovi.uft.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/e2sskgjj.u0x.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/e2sskgjj.u0x.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/eegofwjb.b4m.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/eegofwjb.b4m.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/fc1n0a1k.1dw.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/fc1n0a1k.1dw.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/hez2oxfq.qxl.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/hez2oxfq.qxl.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/htawfw4t.1sz.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/htawfw4t.1sz.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/i2xpnxiv.w3n.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/i2xpnxiv.w3n.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/i4llyv1a.3lf.webp",
+      "PackagePath": "staticwebassets/imgs/directors/i4llyv1a.3lf.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/imeutdxe.4ne.webp",
+      "PackagePath": "staticwebassets/imgs/directors/imeutdxe.4ne.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/jjfhq5ap.xoe.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/jjfhq5ap.xoe.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/kemuraky.atr.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/kemuraky.atr.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/kjl2g3bq.qvt.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/kjl2g3bq.qvt.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/lxhctpao.bjy.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/lxhctpao.bjy.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/mluhj2xm.vgj.jpeg",
+      "PackagePath": "staticwebassets/imgs/directors/mluhj2xm.vgj.jpeg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/nbc45nhu.y54.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/nbc45nhu.y54.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/p0wrx3ti.r0l.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/p0wrx3ti.r0l.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/pildckot.z3b.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/pildckot.z3b.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/qiqyfzpx.scj.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/qiqyfzpx.scj.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/r4y4ukpj.rzd.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/r4y4ukpj.rzd.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/rc3tvfji.5zl.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/rc3tvfji.5zl.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/rib215k2.w3f.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/rib215k2.w3f.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/snvxwzod.shm.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/snvxwzod.shm.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/sp3m00re.dh0.webp",
+      "PackagePath": "staticwebassets/imgs/directors/sp3m00re.dh0.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/st3ey5vp.lzd.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/st3ey5vp.lzd.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/tqlm0te3.yri.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/tqlm0te3.yri.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/v03zpl0k.ldr.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/v03zpl0k.ldr.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/v3meox4a.r1s.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/v3meox4a.r1s.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/vfwywidb.zoo.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/vfwywidb.zoo.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/vntmqrao.gm4.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/vntmqrao.gm4.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/vspugbqu.t5y.webp",
+      "PackagePath": "staticwebassets/imgs/directors/vspugbqu.t5y.webp"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/vwi3c0cu.2kr.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/vwi3c0cu.2kr.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/wzmfvdjp.pda.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/wzmfvdjp.pda.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/xe2njmtp.l0d.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/xe2njmtp.l0d.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/yc0zmcwa.bgo.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/yc0zmcwa.bgo.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/directors/zuwjtc2o.l1c.jpg",
+      "PackagePath": "staticwebassets/imgs/directors/zuwjtc2o.l1c.jpg"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/0ek1gjr1.sx4.png",
+      "PackagePath": "staticwebassets/imgs/languages/0ek1gjr1.sx4.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/1sk2n135.sq5.png",
+      "PackagePath": "staticwebassets/imgs/languages/1sk2n135.sq5.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/4hx4hep0.fs2.png",
+      "PackagePath": "staticwebassets/imgs/languages/4hx4hep0.fs2.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/hwjxntcl.cmp.png",
+      "PackagePath": "staticwebassets/imgs/languages/hwjxntcl.cmp.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/jazl0hw5.nji.png",
+      "PackagePath": "staticwebassets/imgs/languages/jazl0hw5.nji.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/lfgds5f2.inu.png",
+      "PackagePath": "staticwebassets/imgs/languages/lfgds5f2.inu.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/lgbkieje.1d3.png",
+      "PackagePath": "staticwebassets/imgs/languages/lgbkieje.1d3.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/mcteg01j.1ox.png",
+      "PackagePath": "staticwebassets/imgs/languages/mcteg01j.1ox.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/v2lgqmke.eae.png",
+      "PackagePath": "staticwebassets/imgs/languages/v2lgqmke.eae.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/z0nemui2.nsg.png",
+      "PackagePath": "staticwebassets/imgs/languages/z0nemui2.nsg.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/languages/zrirqiyu.sg5.png",
+      "PackagePath": "staticwebassets/imgs/languages/zrirqiyu.sg5.png"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.MovieApp.API.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.build.MovieApp.API.props",
+      "PackagePath": "build\\MovieApp.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildMultiTargeting.MovieApp.API.props",
+      "PackagePath": "buildMultiTargeting\\MovieApp.API.props"
+    },
+    {
+      "Id": "obj/Debug/net8.0/staticwebassets/msbuild.buildTransitive.MovieApp.API.props",
+      "PackagePath": "buildTransitive\\MovieApp.API.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

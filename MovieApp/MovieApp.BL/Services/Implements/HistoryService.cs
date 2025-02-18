@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using Microsoft.EntityFrameworkCore.Migrations;
 using MovieApp.BL.DTOs.HistoryDtos;
 using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;

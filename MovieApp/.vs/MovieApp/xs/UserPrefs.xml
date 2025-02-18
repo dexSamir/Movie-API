@@ -1,22 +1,23 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Services/Implements/HistoryService.cs">
+    <Files>
+      <File FileName="MovieApp.BL/Services/Implements/HistoryService.cs" Line="123" Column="39" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MovieApp">
-            <Node name="MovieApp.BL" expanded="True">
-              <Node name="Services" expanded="True" />
-            </Node>
+            <Node name="MovieApp.BL" expanded="True" />
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
