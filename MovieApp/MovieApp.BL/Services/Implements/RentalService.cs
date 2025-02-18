@@ -65,11 +65,11 @@ public class RentalService : IRentalService
         return rental.Id;
     }
 
-    public async Task<bool> UpdateRentalAsync(RentalUpdateDto dto)
+    public async Task<bool> UpdateRentalAsync(RentalUpdateDto dto, int rentalId)
     {
         var userId = await GetUserIdAsync();
 
-        var rental = await _repo.GetByIdAsync(dto.Id, _includeProperties);
+        var rental = await _repo.GetByIdAsync(rentalId, _includeProperties);
         if (rental == null || rental.UserId != userId)
             throw new NotFoundException<Rental>();
         
