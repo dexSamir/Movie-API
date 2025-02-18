@@ -1,7 +1,5 @@
 ﻿using AutoMapper;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.Extensions.Caching.Memory;
 using MovieApp.BL.DTOs.UserDtos;
 using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
@@ -14,11 +12,9 @@ namespace MovieApp.BL.Services.Implements;
 
 public class AuthService : IAuthService
 {
-    private readonly IMemoryCache _cache;
     private readonly IEmailService _emailService;
     private readonly IMapper _mapper;
     private readonly IJwtTokenHandler _tokenHandler;
-    private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
 
@@ -26,13 +22,9 @@ public class AuthService : IAuthService
         IMapper mapper,
         IJwtTokenHandler tokenHandler,
         IEmailService emailService,
-        IHttpContextAccessor httpContextAccessor,
-        IMemoryCache cache,
         SignInManager<User> signInManager,
         UserManager<User> userManager)
     {
-        _cache = cache;
-        _httpContextAccessor = httpContextAccessor;
         _emailService = emailService;
         _tokenHandler = tokenHandler;
         _mapper = mapper;

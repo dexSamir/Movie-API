@@ -78,11 +78,11 @@ public class HistoryService : IHistoryService
         return history.Id;
     }
 
-    public async Task<bool> UpdateHistoryAsync(HistoryUpdateDto dto)
+    public async Task<bool> UpdateHistoryAsync(HistoryUpdateDto dto, int historyId)
     {
         var userId = await GetUserIdAsync();
 
-        var history = await _repo.GetByIdAsync(dto.Id);
+        var history = await _repo.GetByIdAsync(historyId, false, _includeProperties);
         if (history == null || history.UserId != userId)
             throw new NotFoundException<History>();
 
