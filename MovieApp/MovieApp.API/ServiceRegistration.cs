@@ -16,13 +16,17 @@ public static class ServiceRegistration
         services.Configure<SmtpOptions>(Configuration.GetSection(SmtpOptions.Name));
         return services;
     }
-    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration Configuration)
+
+    public static IServiceCollection AddAuth(this IServiceCollection services, IConfiguration configuration)
     {
-        JwtOptions jwtOpt = new JwtOptions();
-        jwtOpt.Issuer = Configuration.GetRequiredSection("JwtSettings")["Issuer"]!;
-        jwtOpt.Audience = Configuration.GetRequiredSection("JwtSettings")["Audience"]!;
-        jwtOpt.SecretKey = Configuration.GetRequiredSection("JwtSettings")["SecretKey"]!;
-        var signInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtOpt.SecretKey));
+
+        JwtOptions Jwtopt = new JwtOptions();
+        Jwtopt.Issuer = configuration.GetSection("JwtSettings")["Issuer"]!;
+        Jwtopt.Audience = configuration.GetSection("JwtSettings")["Audience"]!;
+        Jwtopt.SecretKey = configuration.GetSection("JwtSettings")["SecretKey"]!;
+
+        var SignInKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Jwtopt.SecretKey));
+
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             .AddJwtBearer(opt =>
             {
@@ -33,14 +37,13 @@ public static class ServiceRegistration
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
 
-                    IssuerSigningKey = signInKey,
-                    ValidAudience = jwtOpt.Audience,
-                    ValidIssuer = jwtOpt.Issuer,
+                    IssuerSigningKey = SignInKey,
+                    ValidAudience = Jwtopt.Audience,
+                    ValidIssuer = Jwtopt.Issuer,
                     ClockSkew = TimeSpan.Zero
-
                 };
-            });
-
+            }
+        );
         return services;
     }
 }

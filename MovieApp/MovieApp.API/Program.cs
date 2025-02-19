@@ -2,7 +2,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MovieApp.BL;
-using MovieApp.BL.Utilities.Helpers;
 using MovieApp.Core.Entities;
 using MovieApp.DAL;
 using MovieApp.DAL.Context;
@@ -14,19 +13,9 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
-
-        builder.Services.AddControllers()
-            .AddJsonOptions(options =>
-            {
-                options.JsonSerializerOptions.Converters.Add(new DateOnlyJsonConverter());
-            }); 
+        builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
-
-        builder.Services.AddAuth(builder.Configuration);
-        builder.Services.AddJwtOptions(builder.Configuration);
-        builder.Services.AddEmailOptions(builder.Configuration);
 
         builder.Services.AddHttpContextAccessor();
 
@@ -59,6 +48,13 @@ public class Program
                 }
             });
         });
+
+
+
+        builder.Services.AddAuth(builder.Configuration);
+        builder.Services.AddJwtOptions(builder.Configuration);
+        builder.Services.AddEmailOptions(builder.Configuration);
+
         builder.Services.AddDbContext<AppDbContext>(opt =>
             opt.UseNpgsql(builder.Configuration.GetConnectionString("PostgreSQL")));
 
@@ -67,7 +63,6 @@ public class Program
             options.Configuration = builder.Configuration.GetConnectionString("Redis");
             options.InstanceName = "MovieApp_";
         });
-
         builder.Services.AddRepositories();
         builder.Services.AddServices();
         builder.Services.AddAutoMapper();

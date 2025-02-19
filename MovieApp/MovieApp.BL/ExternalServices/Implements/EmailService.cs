@@ -40,10 +40,10 @@ public class EmailService : IEmailService
     {
         var claims = new List<Claim>
         {
-            new Claim(ClaimTypes.Email, email)
+            new Claim(ClaimType.Email, email)
         };
 
-        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]));
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration.GetSection("JwtSettings")["SecretKey"]!));
         var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
         var token = new JwtSecurityToken(

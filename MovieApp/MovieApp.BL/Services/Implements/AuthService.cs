@@ -5,6 +5,7 @@ using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
+using MovieApp.BL.Utilities.Helpers;
 using MovieApp.Core.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -44,9 +45,8 @@ public class AuthService : IAuthService
         if (user == null)
             throw new NotFoundException<User>();
 
-        var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: false);
-        if (!result.Succeeded)
-            throw new AuthorisationException();
+        if (!HashHelper.VerifyHashedPassword(user.PasswordHash, dto.Password))
+            throw new NotFoundException<User>();
 
         return _tokenHandler.CreateToken(user, 12);
     }
@@ -71,6 +71,10 @@ public class AuthService : IAuthService
                 throw new ValidationException(error.Description);
 
         var token = await _userManager.GenerateEmailConfirmationTokenAsync(newUser);
+
+        newUser.IsVerified = false;
+        newUser.ConfirmationToken = token;
+
         await _emailService.SendEmailVereficationAsync(newUser.Email, token);
     }
 

@@ -37,7 +37,7 @@ public static class ServiceRegistration
         services.AddScoped<IWatchProgressService, WatchProgressService>();
 
 
-
+        services.AddHttpContextAccessor(); 
         services.AddDistributedMemoryCache(); 
         return services; 
 	}

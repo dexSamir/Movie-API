@@ -17,7 +17,7 @@ public class JwtTokenHandler : IJwtTokenHandler
         _opt = opt.Value;
     }
 
-    public string CreateToken(User user, int hours)
+    public string CreateToken(User user, int days)
     {
         List<Claim> claims = [
                     new Claim(ClaimType.Username, user.UserName),
@@ -36,7 +36,7 @@ public class JwtTokenHandler : IJwtTokenHandler
                 audience: _opt.Audience,
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddDays(hours),
+                expires: DateTime.Now.AddDays(days),
                 signingCredentials: cred);
 
         JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
