@@ -24,7 +24,6 @@ public class JwtTokenHandler : IJwtTokenHandler
                     new Claim(ClaimType.Email, user.Email),
                     new Claim(ClaimType.Id, user.Id), 
                     new Claim(ClaimType.Fullname, user.Name + " " + user.Surname),
-                    new Claim(ClaimType.SubscriptionType, user.Subscriptions.FirstOrDefault()?.Plan.Name ?? "Free"),
                     new Claim(ClaimType.IsMale, user.IsMale.ToString())
                 ];
 

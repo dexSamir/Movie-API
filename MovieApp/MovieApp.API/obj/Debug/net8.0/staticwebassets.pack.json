@@ -445,6 +445,18 @@
       "PackagePath": "staticwebassets/imgs/languages/zrirqiyu.sg5.png"
     },
     {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/0tr0q2xb.24p.png",
+      "PackagePath": "staticwebassets/imgs/users/0tr0q2xb.24p.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/cfm0dxbs.a45.png",
+      "PackagePath": "staticwebassets/imgs/users/cfm0dxbs.a45.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/ro4wpivf.ty0.png",
+      "PackagePath": "staticwebassets/imgs/users/ro4wpivf.ty0.png"
+    },
+    {
       "Id": "obj/Debug/net8.0/staticwebassets/msbuild.MovieApp.API.Microsoft.AspNetCore.StaticWebAssets.props",
       "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
     },

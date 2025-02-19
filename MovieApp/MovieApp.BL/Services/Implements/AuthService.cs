@@ -17,14 +17,18 @@ public class AuthService : IAuthService
     private readonly IJwtTokenHandler _tokenHandler;
     private readonly SignInManager<User> _signInManager;
     private readonly UserManager<User> _userManager;
+    readonly IFileService _fileService;
+
 
     public AuthService(
+        IFileService fileService,
         IMapper mapper,
         IJwtTokenHandler tokenHandler,
         IEmailService emailService,
         SignInManager<User> signInManager,
         UserManager<User> userManager)
     {
+        _fileService = fileService; 
         _emailService = emailService;
         _tokenHandler = tokenHandler;
         _mapper = mapper;
@@ -40,12 +44,9 @@ public class AuthService : IAuthService
         if (user == null)
             throw new NotFoundException<User>();
 
-        if (!user.EmailConfirmed)
-            throw new AuthorisationException("Email is not confirmed.");
-
         var result = await _signInManager.CheckPasswordSignInAsync(user, dto.Password, lockoutOnFailure: false);
         if (!result.Succeeded)
-            throw new AuthorisationException("Invalid credentials.");
+            throw new AuthorisationException();
 
         return _tokenHandler.CreateToken(user, 12);
     }
@@ -62,6 +63,7 @@ public class AuthService : IAuthService
             throw new ExistException($"{dto.UserName} already exists.");
 
         var newUser = _mapper.Map<User>(dto);
+        newUser.ProfileUrl = await _fileService.ProcessImageAsync(dto.ProfileUrl, "users/","image/", 15); 
         var createResult = await _userManager.CreateAsync(newUser, dto.Password);
 
         if (!createResult.Succeeded)
@@ -83,7 +85,7 @@ public class AuthService : IAuthService
         return "Verification email sent.";
     }
 
-    public async Task<bool> VerifyAccountAsync(string email, int code)
-        => await _emailService.VerifyEmailAsync(email, code);
+    public async Task<bool> VerifyAccountAsync(string email, string token)
+        => await _emailService.VerifyEmailAsync(email, token);
 
 }

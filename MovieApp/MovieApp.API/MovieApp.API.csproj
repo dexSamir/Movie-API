@@ -30,6 +30,7 @@
     <Folder Include="wwwroot\imgs\actors\" />
     <Folder Include="wwwroot\imgs\languages\" />
     <Folder Include="wwwroot\imgs\Movies\" />
+    <Folder Include="wwwroot\imgs\users\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -44,5 +45,6 @@
     <Content Remove="wwwroot\imgs\actors\" />
     <Content Remove="wwwroot\imgs\languages\" />
     <Content Remove="wwwroot\imgs\Movies\" />
+    <Content Remove="wwwroot\imgs\users\" />
   </ItemGroup>
 </Project>

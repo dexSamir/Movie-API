@@ -1,10 +1,6 @@
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.UserDtos;
-using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Services.Interfaces;
-using MovieApp.Core.Entities;
-using NuGet.Common;
 
 namespace MovieApp.API.Controllers;
 [Route("api/[controller]/[action]")]
@@ -24,7 +20,7 @@ public class AuthsController : ControllerBase
     }
 
     [HttpPost("register")]
-    public async Task<IActionResult> RegisterAsync([FromBody] RegisterDto dto)
+    public async Task<IActionResult> RegisterAsync([FromForm] RegisterDto dto)
     {
         await _service.RegisterAsync(dto);
         return Ok();
@@ -37,8 +33,8 @@ public class AuthsController : ControllerBase
     }
 
     [HttpPost("verify-account")]
-    public async Task<IActionResult> VerifyAccountAsync([FromQuery] string email, [FromQuery] int code)
+    public async Task<IActionResult> VerifyAccountAsync([FromQuery] string email, [FromQuery] string token)
     {
-        return Ok(await _service.VerifyAccountAsync(email, code));
+        return Ok(await _service.VerifyAccountAsync(email, token));
     }
 }

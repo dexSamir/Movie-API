@@ -77,10 +77,7 @@ public class ActorService : IActorService
 
     public async Task<bool> UpdateAsync(ActorUpdateDto dto, int id)
     {
-        var data = await _repo.GetByIdAsync(id, false);
-        if (data == null)
-            throw new NotFoundException<Actor>();
-
+        var data = await _repo.GetByIdAsync(id, false) ?? throw new NotFoundException<Actor>();
         _mapper.Map(dto, data);
         if (dto.ImageUrl != null)
             data.ImageUrl = await _fileService.ProcessImageAsync(dto.ImageUrl, "actors", "image/", 15, data.ImageUrl);

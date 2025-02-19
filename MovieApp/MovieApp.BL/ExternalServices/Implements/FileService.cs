@@ -21,7 +21,7 @@ public class FileService : IFileService
         if (!string.IsNullOrEmpty(existingFilePath))
             FileExtension.DeleteFile(Path.Combine("wwwroot", directory, existingFilePath));
 
-        return await file.UploadAsync("wwwroot", directory);
+        return await file.UploadAsync("wwwroot", "imgs", directory);
     }
 
     

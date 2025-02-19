@@ -13,7 +13,7 @@ using MovieApp.Core.Entities;
 using MovieApp.BL.DTOs.Options;
 using MovieApp.DAL.Context;
 using Microsoft.EntityFrameworkCore;
-using BlogApp.BL.Exceptions.AuthException;
+using MovieApp.BL.Constant;
 
 namespace MovieApp.BL.ExternalServices.Implements;
 public class EmailService : IEmailService
@@ -93,21 +93,36 @@ public class EmailService : IEmailService
         return "Email gönderildi!";
     }
 
-    public async Task<bool> VerifyEmailAsync(string email, int code)
+    public async Task<bool> VerifyEmailAsync(string email, string token)
     {
-        if (!_cache.TryGetValue(email, out int result))
-            throw new NotFoundException("Bu email-e kod gonderilmeyib!");
+        var tokenHandler = new JwtSecurityTokenHandler();
+        var key = Encoding.UTF8.GetBytes(_configuration["JwtSettings:SecretKey"]);
 
-        if (result != code)
-            throw new CodeIsInvalidException();
+        tokenHandler.ValidateToken(token, new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = _configuration["JwtSettings:Issuer"],
+            ValidAudience = _configuration["JwtSettings:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(key)
+        }, out SecurityToken validatedToken);
+
+        var jwtToken = tokenHandler.ReadJwtToken(token);
+        var tokenEmail = jwtToken.Claims.FirstOrDefault(c => c.Type == ClaimType.Email)?.Value;
+
+        if (tokenEmail == null || !tokenEmail.Equals(email, StringComparison.OrdinalIgnoreCase))
+            throw new Exception();
 
         var user = await _context.Users.FirstOrDefaultAsync(x => x.Email == email);
         if (user == null)
             throw new NotFoundException<User>();
 
-        user!.IsVerified = true;
-        await _context.SaveChangesAsync();
-        return true;
+        user.IsVerified = true;
+
+        return await _context.SaveChangesAsync() > 0;
     }
+
 }
 

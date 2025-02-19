@@ -3,6 +3,6 @@ public interface IEmailService
 {
     Task<string> EmailVereficationToken(string email);
     Task<string> SendEmailVereficationAsync(string email, string token);
-    Task<bool> VerifyEmailAsync(string email, int code);
+    Task<bool> VerifyEmailAsync(string email,string token);
 }
 
