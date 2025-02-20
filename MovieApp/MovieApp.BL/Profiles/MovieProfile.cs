@@ -8,8 +8,8 @@ public class MovieProfile : Profile
 {
 	public MovieProfile()
 	{
-
         CreateMap<Recommendation, RecommendationGetDto>();
+
         CreateMap<MovieCreateDto, Movie>()
             .ForMember(dest => dest.Actors, opt => opt.Ignore())
             .ForMember(dest => dest.Genres, opt => opt.Ignore())

@@ -8,7 +8,7 @@ using MovieApp.Core.Repositories;
 namespace MovieApp.BL.OtherServices.Implements;
 public class ReviewReactionStrategy : IReactionStrategy 
 {
-    public EReactionEntityType EntityType => EReactionEntityType.Movie;
+    public EReactionEntityType EntityType => EReactionEntityType.Review;
 
     private readonly IReviewRepository _reviewRepo;
     private readonly ILikeDislikeRepository _likeRepo;

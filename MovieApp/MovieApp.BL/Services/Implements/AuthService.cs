@@ -1,11 +1,9 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using MovieApp.BL.DTOs.UserDtos;
-using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.Services.Interfaces;
-using MovieApp.BL.Utilities.Helpers;
 using MovieApp.Core.Entities;
 using System.ComponentModel.DataAnnotations;
 
@@ -45,9 +43,11 @@ public class AuthService : IAuthService
         if (user == null)
             throw new NotFoundException<User>();
 
-        if (!HashHelper.VerifyHashedPassword(user.PasswordHash, dto.Password))
-            throw new NotFoundException<User>();
+        var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, true);
 
+        //Buna exception qoy da gijd. 
+        if (!result.Succeeded)
+            throw new NotFoundException<User>(); 
         return _tokenHandler.CreateToken(user, 12);
     }
 
