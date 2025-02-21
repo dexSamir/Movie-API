@@ -25,10 +25,12 @@ public class MovieProfile : Profile
             .ForMember(dest => dest.ReleaseDate, opt => opt.MapFrom((src, dest) =>
                 string.IsNullOrWhiteSpace(src.ReleaseDate) ? dest.ReleaseDate : DateOnly.Parse(src.ReleaseDate)))
             .ForAllMembers(opt => opt.Condition((src, dest, srcMember) =>
-                srcMember != null && (srcMember is not string || !string.IsNullOrWhiteSpace(srcMember.ToString())))); 
+                srcMember != null && (srcMember is not string || !string.IsNullOrWhiteSpace(srcMember.ToString()))));
 
         CreateMap<Movie, MovieGetDto>()
-            .AfterMap((src, dest) => dest.DirectorName = src.Director?.Name ?? "");
+            .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(x => x.LikeCount))
+            .ForMember(dest => dest.DislikeCount, opt => opt.MapFrom(x => x.DislikeCount))
+            .ForMember(dest => dest.DirectorName, opt => opt.MapFrom(src => src.Director.Name + " " + src.Director.Surname)); 
     }
 }
 

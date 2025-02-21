@@ -30,7 +30,7 @@ public class MovieReactionStrategy : IReactionStrategy
 
     public async Task<bool> LikeAsync(int entityId, string userId)
     {
-        var movie = await _movieRepo.GetByIdAsync(entityId);
+        var movie = await _movieRepo.GetByIdAsync(entityId, false);
         if (movie == null)
             throw new NotFoundException<Movie>();
 
@@ -43,8 +43,8 @@ public class MovieReactionStrategy : IReactionStrategy
             movie.DislikeCount--;
         }
 
-        await _likeRepo.AddUserReactionAsync(entityId, userId, true);
         movie.LikeCount++;
+        await _likeRepo.AddUserReactionAsync(entityId, userId, true);
 
         return await _movieRepo.SaveAsync() > 0;
     }

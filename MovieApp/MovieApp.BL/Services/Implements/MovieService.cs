@@ -30,7 +30,7 @@ public class MovieService : IMovieService
 
     private readonly string[] _includeProperties =
     {
-        "Actors", "MovieSubtitles", "Genres", "Ratings",
+        "Actors", "MovieSubtitles", "Genres", "Ratings", "Director",
         "Reviews", "Rentals", "AudioTracks", "Recommendations"
     };
 
@@ -161,9 +161,7 @@ public class MovieService : IMovieService
         var movie = _mapper.Map<Movie>(dto);
 
         movie.Actors = dto.ActorIds.ToMovieActors();
-        movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
         movie.Genres = dto.GenreIds.ToMovieGenres();
-        movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
 
         await _repo.AddAsync(movie);
         await _repo.SaveAsync();
@@ -183,9 +181,7 @@ public class MovieService : IMovieService
         foreach (var (dto, movie) in dtos.Zip(movies))
         {
             movie.Actors = dto.ActorIds.ToMovieActors();
-            movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
             movie.Genres = dto.GenreIds.ToMovieGenres();
-            movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
         }
 
         await _repo.AddRangeAsync(movies);
@@ -203,9 +199,7 @@ public class MovieService : IMovieService
         _mapper.Map(dto, movie);
 
         movie.Actors = dto.ActorIds.ToMovieActors();
-        movie.MovieSubtitles = dto.SubtitleIds.ToMovieSubtitles();
         movie.Genres = dto.GenreIds.ToMovieGenres();
-        movie.AudioTracks = dto.AudioTrackIds.ToAudioTracks();
 
         _repo.UpdateAsync(movie);
         bool updated = await _repo.SaveAsync() > 0;

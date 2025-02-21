@@ -189,8 +189,8 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity, 
     public async Task<bool> HasUserReactedAsync(int entityId, string userId, bool isLike)
     {
         return await _context.LikeDislikes
-            .AnyAsync(ld => ld.UserId == userId && ld.IsLike == isLike &&
-                ((ld.ReviewId == entityId && typeof(T) == typeof(Review)) ||
+            .AnyAsync(ld => ld.UserId == userId && ld.IsLike == isLike && (
+                 (ld.ReviewId == entityId && typeof(T) == typeof(Review)) ||
                  (ld.MovieId == entityId && typeof(T) == typeof(Movie)) ||
                  (ld.EpisodeId == entityId && typeof(T) == typeof(Episode))));
     }

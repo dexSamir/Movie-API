@@ -6,11 +6,9 @@ public class MovieCreateDto
     public int Duration { get; set; }  
     public string ReleaseDate { get; set; }
     public int? DirectorId { get; set; }
+    public decimal RentalPrice { get; set; }
 
     public ICollection<int>? ActorIds { get; set; }
-    public ICollection<int>? SubtitleIds { get; set; }
     public ICollection<int>? GenreIds { get; set; }
-    public ICollection<int>? AudioTrackIds { get; set; }
-
 }
 
