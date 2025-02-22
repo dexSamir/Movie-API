@@ -302,13 +302,15 @@ public class MovieService : IMovieService
 
     //RATING
     public async Task<bool> RateMovieAsync(int movieId, int score)
-        => await _ratingService.RateMovieAsync(movieId, score);
+    {
+        return await _ratingService.RateMovieAsync(movieId, score);
+    }
 
-    public async Task<bool> UpdateRatingAsync(int ratingId, int newScore)
-        => await _ratingService.UpdateRatingAsync(ratingId, newScore);
+    public async Task<bool> UpdateRatingAsync(int movieId, int newScore)
+        => await _ratingService.UpdateRatingAsync(movieId, newScore);
 
-    public async Task<bool> DeleteRatingAsync(int ratingId)
-        => await _ratingService.DeleteRatingAsync(ratingId);
+    public async Task<bool> DeleteRatingAsync(int movieId)
+        => await _ratingService.DeleteRatingAsync(movieId);
 
     public async Task<double> GetAverageRatingAsync(int movieId)
         => await _ratingService.GetAverageRatingForMovieAsync(movieId);

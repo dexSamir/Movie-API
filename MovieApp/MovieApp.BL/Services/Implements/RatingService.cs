@@ -12,10 +12,12 @@ public class RatingService : IRatingService
     readonly ICurrentUser _user;
     readonly IRatingRepository _repo;
     readonly ICacheService _cache;
+    readonly IMovieRepository _movieRepo; 
     readonly IEpisodeRepository _episodeRepository;
 
-    public RatingService(IRatingRepository repo, ICurrentUser user, IEpisodeRepository episodeRepository, ICacheService cache)
+    public RatingService(IRatingRepository repo, ICurrentUser user, IEpisodeRepository episodeRepository, ICacheService cache, IMovieRepository movieRepo)
     {
+        _movieRepo = movieRepo; 
         _cache = cache; 
         _episodeRepository = episodeRepository;
         _user = user;
@@ -26,7 +28,7 @@ public class RatingService : IRatingService
     {
         var userId = await ValidateAndGetUserIdAsync();
 
-        var existingRating = await _repo.GetFirstAsync(r => r.MovieId == movieId && r.UserId == userId);
+        var existingRating = await _repo.GetFirstAsync(r => r.MovieId == movieId && r.UserId == userId, false);
         if (existingRating != null)
             throw new AlreadyRatedException();
 
@@ -39,8 +41,12 @@ public class RatingService : IRatingService
             EpisodeId = null,
         };
         await _repo.AddAsync(rating);
+        await _cache.RemoveAsync($"movie_{movieId}");
         await _cache.RemoveAsync($"movie_avg_rating_{movieId}");
-        return await _repo.SaveAsync() > 0;
+
+        var movie = await _movieRepo.GetByIdAsync(movieId, false, "Ratings");
+        movie.AvgRating = movie.Ratings.Average(x => x.Score);
+        return await _repo.SaveAsync() > 0; 
     }
 
     public async Task<bool> RateEpisodeAsync(int episodeId, int score)
@@ -50,11 +56,11 @@ public class RatingService : IRatingService
         if (score < 1 || score > 10)
             throw new InvalidScoreException();
 
-        var episode = await _episodeRepository.GetByIdAsync(episodeId);
+        var episode = await _episodeRepository.GetByIdAsync(episodeId, false);
         if (episode == null)
             throw new NotFoundException<Episode>();
 
-        if (episode.Season == null || episode.Season.SerieId == null)
+        if (episode.Season == null || episode.Season?.SerieId == null)
             throw new InvalidEpisodeAssociationException();
 
         var serieId = episode.Season.SerieId;
@@ -102,18 +108,19 @@ public class RatingService : IRatingService
         return await _repo.SaveAsync() > 0;
     }
 
-    public async Task<bool> UpdateRatingAsync(int ratingId, int newScore)
+    public async Task<bool> UpdateRatingAsync(int movieId, int newScore)
     {
         var userId = await ValidateAndGetUserIdAsync();
 
-        var rating = await _repo.GetByIdAsync(ratingId);
-        if (rating == null) throw new NotFoundException<Rating>();
+        var movie = await _movieRepo.GetByIdAsync(movieId, false);
+        if (movie == null) throw new NotFoundException<Movie>();
 
-        if (rating.UserId != userId)
-            throw new ForbiddenException<Rating>();
+        var rating = await _repo.GetFirstAsync(x => x.MovieId == movie.Id && x.UserId == userId);
 
         if (newScore < 1 || newScore > 10)
             throw new InvalidScoreException();
+
+        if (rating == null) throw new NotFoundException<Rating>();
 
         rating.Score = newScore;
 
@@ -130,15 +137,16 @@ public class RatingService : IRatingService
         return await _repo.SaveAsync() > 0;
     }
 
-    public async Task<bool> DeleteRatingAsync(int ratingId)
+    public async Task<bool> DeleteRatingAsync(int movieId)
     {
         var userId = await ValidateAndGetUserIdAsync();
 
-        var rating = await _repo.GetByIdAsync(ratingId, false);
-        if (rating == null) throw new NotFoundException<Rating>();
+        var movie = await _movieRepo.GetByIdAsync(movieId, false);
+        if (movie == null) throw new NotFoundException<Movie>();
 
-        if (rating.UserId != userId)
-            throw new ForbiddenException<Rating>();
+        var rating = await _repo.GetFirstAsync(x=> x.MovieId == movie.Id && x.UserId == userId);
+
+        if (rating == null) throw new NotFoundException<Rating>(); 
 
         _repo.Delete(rating);
 
@@ -162,16 +170,6 @@ public class RatingService : IRatingService
     }
 
 
-    public async Task<double> GetAverageRatingForEpisodeAsync(int episodeId)
-    {
-        var cacheKey = $"episode_avg_rating_{episodeId}";
-        return await _cache.GetOrSetAsync(cacheKey, async () =>
-        {
-            var episodeRatings = await _repo.GetWhereAsync(r => r.EpisodeId == episodeId);
-            return episodeRatings.Any() ? episodeRatings.Average(r => r.Score) : 0;
-        }, TimeSpan.FromMinutes(10));
-    }
-
     public async Task<double> GetAverageRatingForMovieAsync(int movieId)
     {
         var cacheKey = $"movie_avg_rating_{movieId}";
@@ -180,6 +178,16 @@ public class RatingService : IRatingService
             var movieRatings = await _repo.GetWhereAsync(r => r.MovieId == movieId);
             return movieRatings.Any() ? movieRatings.Average(r => r.Score) : 0;
         }, TimeSpan.FromMinutes(30));
+    }
+
+    public async Task<double> GetAverageRatingForEpisodeAsync(int episodeId)
+    {
+        var cacheKey = $"episode_avg_rating_{episodeId}";
+        return await _cache.GetOrSetAsync(cacheKey, async () =>
+        {
+            var episodeRatings = await _repo.GetWhereAsync(r => r.EpisodeId == episodeId);
+            return episodeRatings.Any() ? episodeRatings.Average(r => r.Score) : 0;
+        }, TimeSpan.FromMinutes(10));
     }
 
     public async Task<double> GetAverageRatingForSerieAsync(int serieId)
@@ -213,6 +221,7 @@ public class RatingService : IRatingService
             return hybridRating;
         }, TimeSpan.FromMinutes(10));
     }
+
 
     private async Task<string> ValidateAndGetUserIdAsync()
     {

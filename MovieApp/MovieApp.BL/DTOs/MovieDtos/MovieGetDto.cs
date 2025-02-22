@@ -6,6 +6,7 @@ public class MovieGetDto
     public string Description { get; set; }
     public string? PosterUrl { get; set; }
     public string? TrailerUrl { get; set; }
+    public double AvgRating { get; set; }
     public int Duration { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public string? DirectorName { get; set; }
@@ -13,9 +14,9 @@ public class MovieGetDto
     public int LikeCount { get; set; }
     public int DislikeCount { get; set; }
     public int WatchCount { get; set; }
-    //public ICollection<string> Actors { get; set; }
-    //public ICollection<string> Subtitles { get; set; }
-    //public ICollection<string> Genres { get; set; }
-    //public ICollection<string> AudioTracks { get; set; }
 }
 
+//public ICollection<string> Actors { get; set; }
+//public ICollection<string> Subtitles { get; set; }
+//public ICollection<string> Genres { get; set; }
+//public ICollection<string> AudioTracks { get; set; }

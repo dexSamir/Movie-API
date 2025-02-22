@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.MovieDtos;
-using MovieApp.BL.DTOs.RecommendationDtos;
 using MovieApp.BL.Services.Interfaces;
 using MovieApp.BL.Utilities.Enums;
 
@@ -118,21 +117,21 @@ public class MoviesController : ControllerBase
     }
 
     [HttpPost("{movieId}/rate")]
-    public async Task<IActionResult> RateMovie(int movieId, [FromBody] int score)
+    public async Task<IActionResult> RateMovie(int movieId, [FromForm] int score)
     {
         return Ok(await _service.RateMovieAsync(movieId, score));
     }
 
-    [HttpPut("rating/{ratingId}")]
-    public async Task<IActionResult> UpdateRating(int ratingId, [FromBody] int newScore)
+    [HttpPut("rating/{movieId}")]
+    public async Task<IActionResult> UpdateRating(int movieId, [FromBody] int newScore)
     {
-        return Ok(await _service.UpdateRatingAsync(ratingId, newScore));
+        return Ok(await _service.UpdateRatingAsync(movieId, newScore));
     }
 
-    [HttpDelete("rating/{ratingId}")]
-    public async Task<IActionResult> DeleteRating(int ratingId)
+    [HttpDelete("rating/{movieId}")]
+    public async Task<IActionResult> DeleteRating(int movieId)
     {
-        return Ok(await _service.DeleteRatingAsync(ratingId));
+        return Ok(await _service.DeleteRatingAsync(movieId));
     }
 
     [HttpGet("{movieId}/average-rating")]
