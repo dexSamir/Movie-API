@@ -1,31 +1,50 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MovieApp" expanded="True">
+          <Node name="MovieApp">
+            <Node name="MovieApp.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
             <Node name="MovieApp.BL" expanded="True">
               <Node name="DTOs" expanded="True">
                 <Node name="MovieDtos" expanded="True" />
               </Node>
+              <Node name="ExternalServices" expanded="True">
+                <Node name="Implements" expanded="True" />
+              </Node>
+              <Node name="OtherServices" expanded="True">
+                <Node name="Implements" expanded="True" />
+              </Node>
               <Node name="Profiles" expanded="True" />
               <Node name="Services" expanded="True">
                 <Node name="Implements" expanded="True" />
+                <Node name="Interfaces" expanded="True" />
+              </Node>
+              <Node name="Utilities" expanded="True">
+                <Node name="Enums" expanded="True" />
               </Node>
             </Node>
             <Node name="MovieApp.Core" expanded="True">
               <Node name="Entities" expanded="True" />
+            </Node>
+            <Node name="MovieApp.DAL" expanded="True">
+              <Node name="Repositories" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/LikeDislikeService.cs" relfile="MovieApp.BL/Services/Implements/LikeDislikeService.cs" line="36" column="1" />
+      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/OtherServices/Implements/MovieReactionStrategy.cs" relfile="MovieApp.BL/OtherServices/Implements/MovieReactionStrategy.cs" line="31" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
 </Properties>

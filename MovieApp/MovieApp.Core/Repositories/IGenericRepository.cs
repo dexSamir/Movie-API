@@ -43,8 +43,8 @@ public interface IGenericRepository<T> where T : BaseEntity, new()
     Task DeleteAndSaveAsync(int id);
     Task<int> SaveAsync();
 
-    Task<bool> HasUserReactedAsync(int entityId, string userId, bool isLike);
-    Task AddUserReactionAsync(int entityId, string userId, bool isLike);
-    Task RemoveUserReactionAsync(int entityId, string userId, bool isLike);
+    Task<bool> HasUserReactedAsync(int entityId, string userId, bool isLike, Type entityType);
+    Task AddUserReactionAsync(int entityId, string userId, bool isLike, Type entityType);
+    Task RemoveUserReactionAsync(int entityId, string userId, bool isLike, Type entityType);
 }
 

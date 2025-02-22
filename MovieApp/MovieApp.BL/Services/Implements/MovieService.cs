@@ -315,7 +315,6 @@ public class MovieService : IMovieService
 
     //Like And Dislike
     public async Task<bool> LikeMovieAsync(int movieId)
-        => await _like.LikeAsync(EReactionEntityType.Movie, movieId);
 
     public async Task<bool> DislikeMovieAsync(int movieId)
         => await _like.DislikeAsync(EReactionEntityType.Movie, movieId);

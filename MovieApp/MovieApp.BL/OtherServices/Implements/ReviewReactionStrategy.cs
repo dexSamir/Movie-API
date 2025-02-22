@@ -34,16 +34,16 @@ public class ReviewReactionStrategy : IReactionStrategy
         if (movie == null)
             throw new NotFoundException<Review>();
 
-        if (await _likeRepo.HasUserReactedAsync(entityId, userId, true))
+        if (await _likeRepo.HasUserReactedAsync(entityId, userId, true, typeof(Review)))
             throw new AlreadyLikedException<Review>();
 
-        if (await _likeRepo.HasUserReactedAsync(entityId, userId, false))
+        if (await _likeRepo.HasUserReactedAsync(entityId, userId, false, typeof(Review)))
         {
-            await _likeRepo.RemoveUserReactionAsync(entityId, userId, false);
+            await _likeRepo.RemoveUserReactionAsync(entityId, userId, false, typeof(Review));
             movie.DislikeCount--;
         }
 
-        await _likeRepo.AddUserReactionAsync(entityId, userId, true);
+        await _likeRepo.AddUserReactionAsync(entityId, userId, true, typeof(Review));
         movie.LikeCount++;
 
         return await _reviewRepo.SaveAsync() > 0;
@@ -55,16 +55,16 @@ public class ReviewReactionStrategy : IReactionStrategy
         if (movie == null)
             throw new NotFoundException<Review>();
 
-        if (await _likeRepo.HasUserReactedAsync(entityId, userId, false))
+        if (await _likeRepo.HasUserReactedAsync(entityId, userId, false, typeof(Review)))
             throw new AlreadyDislikedException<Review>();
 
-        if (await _likeRepo.HasUserReactedAsync(entityId, userId, true))
+        if (await _likeRepo.HasUserReactedAsync(entityId, userId, true, typeof(Review)))
         {
-            await _likeRepo.RemoveUserReactionAsync(entityId, userId, true);
+            await _likeRepo.RemoveUserReactionAsync(entityId, userId, true, typeof(Review));
             movie.LikeCount--;
         }
 
-        await _likeRepo.AddUserReactionAsync(entityId, userId, false);
+        await _likeRepo.AddUserReactionAsync(entityId, userId, false, typeof(Review));
         movie.DislikeCount++;
 
         return await _reviewRepo.SaveAsync() > 0;
@@ -76,10 +76,10 @@ public class ReviewReactionStrategy : IReactionStrategy
         if (movie == null)
             throw new NotFoundException<Review>();
 
-        if (!await _likeRepo.HasUserReactedAsync(entityId, userId, true))
+        if (!await _likeRepo.HasUserReactedAsync(entityId, userId, true, typeof(Review)))
             throw new NotLikedException<Review>();
 
-        await _likeRepo.RemoveUserReactionAsync(entityId, userId, true);
+        await _likeRepo.RemoveUserReactionAsync(entityId, userId, true, typeof(Review));
         movie.LikeCount--;
 
         return await _reviewRepo.SaveAsync() > 0;
@@ -91,10 +91,10 @@ public class ReviewReactionStrategy : IReactionStrategy
         if (movie == null)
             throw new NotFoundException<Review>();
 
-        if (!await _likeRepo.HasUserReactedAsync(entityId, userId, false))
+        if (!await _likeRepo.HasUserReactedAsync(entityId, userId, false, typeof(Review)))
             throw new NotDislikedException<Review>();
 
-        await _likeRepo.RemoveUserReactionAsync(entityId, userId, false);
+        await _likeRepo.RemoveUserReactionAsync(entityId, userId, false, typeof(Review));
         movie.DislikeCount--;
 
         return await _reviewRepo.SaveAsync() > 0;

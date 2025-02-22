@@ -9,6 +9,7 @@ public class MovieGetDto
     public int Duration { get; set; }
     public DateOnly ReleaseDate { get; set; }
     public string? DirectorName { get; set; }
+    public decimal RentalPrice { get; set; }
     public int LikeCount { get; set; }
     public int DislikeCount { get; set; }
     public int WatchCount { get; set; }
@@ -17,5 +18,4 @@ public class MovieGetDto
     //public ICollection<string> Genres { get; set; }
     //public ICollection<string> AudioTracks { get; set; }
 }
-
 
