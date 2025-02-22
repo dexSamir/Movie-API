@@ -112,13 +112,10 @@ public class RatingService : IRatingService
     {
         var userId = await ValidateAndGetUserIdAsync();
 
-        var movie = await _movieRepo.GetByIdAsync(movieId, false);
+        var movie = await _movieRepo.GetByIdAsync(movieId, false, "Ratings");
         if (movie == null) throw new NotFoundException<Movie>();
 
-        var rating = await _repo.GetFirstAsync(x => x.MovieId == movie.Id && x.UserId == userId);
-
-        if (newScore < 1 || newScore > 10)
-            throw new InvalidScoreException();
+        var rating = await _repo.GetFirstAsync(x => x.MovieId == movie.Id && x.UserId == userId, false);
 
         if (rating == null) throw new NotFoundException<Rating>();
 
@@ -134,6 +131,7 @@ public class RatingService : IRatingService
             await _cache.RemoveAsync($"serie_hybrid_rating_{rating.SerieId}");
         }
 
+        movie.AvgRating = movie.Ratings.Average(x => x.Score);
         return await _repo.SaveAsync() > 0;
     }
 

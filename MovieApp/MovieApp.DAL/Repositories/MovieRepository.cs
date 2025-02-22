@@ -47,17 +47,17 @@ public class MovieRepository : GenericRepository<Movie>, IMovieRepository
     public async Task<IEnumerable<Movie>> GetPopularMoviesAsync()
     {
         return await _context.Movies
-                              .OrderByDescending(m => m.WatchCount)
-                              .Take(10) 
-                              .ToListAsync();
+            .OrderByDescending(m => m.WatchCount)
+            .Take(10) 
+            .ToListAsync();
     }
 
     public async Task<IEnumerable<Movie>> GetRecentlyAddedMoviesAsync()
     {
         return await _context.Movies
-                              .OrderByDescending(m => m.CreatedTime)
-                              .Take(10) 
-                              .ToListAsync();
+            .OrderByDescending(m => m.CreatedTime)
+            .Take(10) 
+            .ToListAsync();
     }
 }
 
