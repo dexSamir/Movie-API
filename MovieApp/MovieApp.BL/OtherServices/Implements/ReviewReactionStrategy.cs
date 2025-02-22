@@ -1,4 +1,6 @@
-﻿using MovieApp.BL.Exceptions.Common;
+﻿using AutoMapper;
+using MovieApp.BL.DTOs.ReactionDtos;
+using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Exceptions.LikeOrDislike;
 using MovieApp.BL.OtherServices.Interfaces;
 using MovieApp.BL.Utilities.Enums;
@@ -10,22 +12,23 @@ public class ReviewReactionStrategy : IReactionStrategy
 {
     public EReactionEntityType EntityType => EReactionEntityType.Review;
 
-    private readonly IReviewRepository _reviewRepo;
-    private readonly ILikeDislikeRepository _likeRepo;
-
-    public ReviewReactionStrategy(IReviewRepository reviewRepo, ILikeDislikeRepository likeRepo)
+    readonly IReviewRepository _reviewRepo;
+    readonly ILikeDislikeRepository _likeRepo;
+    readonly IMapper _mapper; 
+    public ReviewReactionStrategy(IReviewRepository reviewRepo, ILikeDislikeRepository likeRepo, IMapper mapper)
     {
+        _mapper = mapper; 
         _reviewRepo = reviewRepo;
         _likeRepo = likeRepo;
     }
 
-    public async Task<(int LikeCount, int DislikeCount)> GetReactionCountAsync(int entityId)
+    public async Task<ReactionCountDto> GetReactionCountAsync(int entityId)
     {
-        var movie = await _reviewRepo.GetByIdAsync(entityId);
-        if (movie == null)
+        var review = await _reviewRepo.GetByIdAsync(entityId);
+        if (review == null)
             throw new NotFoundException<Review>();
 
-        return (movie.LikeCount, movie.DislikeCount);
+        return _mapper.Map<ReactionCountDto>(review);
     }
 
     public async Task<bool> LikeAsync(int entityId, string userId)

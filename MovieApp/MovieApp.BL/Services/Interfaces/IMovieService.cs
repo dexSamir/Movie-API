@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.DTOs.ReactionDtos;
 using MovieApp.BL.DTOs.RecommendationDtos;
 using MovieApp.BL.Utilities.Enums;
 
@@ -35,7 +36,7 @@ public interface IMovieService
     Task<bool> DislikeMovieAsync(int movieId);
     Task<bool> UndoLikeMovieAsync(int movieId);
     Task<bool> UndoDislikeMovieAsync(int movieId);
-    Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId);
+    Task<ReactionCountDto> GetMovieReactionCountAsync(int movieId);
 
     Task<bool> DeleteAsync(string ids, EDeleteType deleteType);
 

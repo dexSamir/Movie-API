@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.DTOs.ReactionDtos;
 using MovieApp.BL.DTOs.RecommendationDtos;
 using MovieApp.Core.Entities;
 
@@ -30,7 +31,9 @@ public class MovieProfile : Profile
         CreateMap<Movie, MovieGetDto>()
             .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(x => x.LikeCount))
             .ForMember(dest => dest.DislikeCount, opt => opt.MapFrom(x => x.DislikeCount))
-            .ForMember(dest => dest.DirectorName, opt => opt.MapFrom(src => src.Director.Name + " " + src.Director.Surname)); 
+            .ForMember(dest => dest.DirectorName, opt => opt.MapFrom(src => src.Director.Name + " " + src.Director.Surname));
+
+        CreateMap<Movie, ReactionCountDto>(); 
     }
 }
 

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MovieApp.BL.DTOs.ReactionDtos;
 using MovieApp.BL.DTOs.ReviewDtos;
 using MovieApp.Core.Entities;
 
@@ -14,6 +15,7 @@ public class ReviewProfile : Profile
 
         CreateMap<ReviewCreateDto, Review>();
         CreateMap<ReviewUpdateDto, Review>();
+        CreateMap<Review, ReactionCountDto>();
 
     }
 }

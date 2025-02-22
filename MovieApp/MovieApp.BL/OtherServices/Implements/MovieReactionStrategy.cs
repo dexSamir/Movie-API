@@ -1,4 +1,6 @@
-﻿using MovieApp.BL.Exceptions.Common;
+﻿using AutoMapper;
+using MovieApp.BL.DTOs.ReactionDtos;
+using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.Exceptions.LikeOrDislike;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.OtherServices.Interfaces;
@@ -13,22 +15,24 @@ public class MovieReactionStrategy : IReactionStrategy
 
     readonly IMovieRepository _movieRepo;
     readonly ICacheService _cacheService;
+    readonly IMapper _mapper; 
     readonly ILikeDislikeRepository _likeRepo;
 
-    public MovieReactionStrategy(IMovieRepository movieRepo, ILikeDislikeRepository likeRepo, ICacheService cacheService)
+    public MovieReactionStrategy(IMovieRepository movieRepo, ILikeDislikeRepository likeRepo, ICacheService cacheService, IMapper mapper)
     {
+        _mapper = mapper; 
         _cacheService = cacheService; 
         _movieRepo = movieRepo;
         _likeRepo = likeRepo;
     }
 
-    public async Task<(int LikeCount, int DislikeCount)> GetReactionCountAsync(int entityId)
+    public async Task<ReactionCountDto> GetReactionCountAsync(int entityId)
     {
         var movie = await _movieRepo.GetByIdAsync(entityId);
         if (movie == null)
             throw new NotFoundException<Movie>();
 
-        return (movie.LikeCount, movie.DislikeCount);
+        return _mapper.Map<ReactionCountDto>(movie);
     }
 
     public async Task<bool> LikeAsync(int entityId, string userId)

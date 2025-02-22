@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using MovieApp.BL.DTOs.ReactionDtos;
 using MovieApp.BL.DTOs.ReviewDtos;
 using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
@@ -183,7 +184,7 @@ public class ReviewService : IReviewService
     public async Task<bool> UndoDislikeReviewAsync(int reviewId)
         => await _like.UndoDislikeAsync(EReactionEntityType.Review, reviewId);
 
-    public async Task<(int LikeCount, int DislikeCount)> GetReviewReactionCountAsync(int reviewId)
+    public async Task<ReactionCountDto> GetReviewReactionCountAsync(int reviewId)
         => await _like.GetLikeDislikeCountAsync(EReactionEntityType.Review, reviewId);
 }
 

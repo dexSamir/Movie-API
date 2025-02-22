@@ -3,6 +3,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using MovieApp.BL.DTOs.MovieDtos;
+using MovieApp.BL.DTOs.ReactionDtos;
 using MovieApp.BL.DTOs.RecommendationDtos;
 using MovieApp.BL.DTOs.RentalDtos;
 using MovieApp.BL.Exceptions.AuthException;
@@ -315,6 +316,7 @@ public class MovieService : IMovieService
 
     //Like And Dislike
     public async Task<bool> LikeMovieAsync(int movieId)
+        => await _like.LikeAsync(EReactionEntityType.Movie, movieId);
 
     public async Task<bool> DislikeMovieAsync(int movieId)
         => await _like.DislikeAsync(EReactionEntityType.Movie, movieId);
@@ -325,7 +327,7 @@ public class MovieService : IMovieService
     public async Task<bool> UndoDislikeMovieAsync(int movieId)
         => await _like.UndoDislikeAsync(EReactionEntityType.Movie, movieId);
 
-    public async Task<(int LikeCount, int DislikeCount)> GetMovieReactionCountAsync(int movieId)
+    public async Task<ReactionCountDto> GetMovieReactionCountAsync(int movieId)
         => await _like.GetLikeDislikeCountAsync(EReactionEntityType.Movie, movieId);
 
 

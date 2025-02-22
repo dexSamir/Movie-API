@@ -1,4 +1,5 @@
-﻿using MovieApp.BL.DTOs.ReviewDtos;
+﻿using MovieApp.BL.DTOs.ReactionDtos;
+using MovieApp.BL.DTOs.ReviewDtos;
 using MovieApp.Core.Entities;
 
 namespace MovieApp.BL.Services.Interfaces;
@@ -24,6 +25,6 @@ public interface IReviewService
     Task<bool> DislikeReviewAsync(int reviewId);
     Task<bool> UndoLikeReviewAsync(int reviewId);
     Task<bool> UndoDislikeReviewAsync(int reviewId);
-    Task<(int LikeCount, int DislikeCount)> GetReviewReactionCountAsync(int reviewId);
+    Task<ReactionCountDto> GetReviewReactionCountAsync(int reviewId);
 }
 

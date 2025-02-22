@@ -1,4 +1,5 @@
-﻿using MovieApp.BL.Exceptions.AuthException;
+﻿using MovieApp.BL.DTOs.ReactionDtos;
+using MovieApp.BL.Exceptions.AuthException;
 using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.ExternalServices.Interfaces;
 using MovieApp.BL.OtherServices.Interfaces;
@@ -25,7 +26,7 @@ public class LikeDislikeService : ILikeDislikeService
         return await Task.FromResult(userId);
     }
 
-    public async Task<(int LikeCount, int DislikeCount)> GetLikeDislikeCountAsync(EReactionEntityType entityType, int entityId)
+    public async Task<ReactionCountDto> GetLikeDislikeCountAsync(EReactionEntityType entityType, int entityId)
     {
         if (!_strategies.TryGetValue(entityType, out var strategy))
             throw new InvalidEntityTypeException();
