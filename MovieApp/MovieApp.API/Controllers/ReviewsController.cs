@@ -1,11 +1,6 @@
-using Humanizer;
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.ReviewDtos;
-using MovieApp.BL.Exceptions.AuthException;
-using MovieApp.BL.Exceptions.Common;
-using MovieApp.BL.Services.Implements;
 using MovieApp.BL.Services.Interfaces;
-using MovieApp.Core.Entities;
 
 namespace MovieApp.API.Controllers;
 [Route("api/[controller]/[action]")]

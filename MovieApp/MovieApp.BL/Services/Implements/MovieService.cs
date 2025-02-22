@@ -302,9 +302,7 @@ public class MovieService : IMovieService
 
     //RATING
     public async Task<bool> RateMovieAsync(int movieId, int score)
-    {
-        return await _ratingService.RateMovieAsync(movieId, score);
-    }
+        => await _ratingService.RateMovieAsync(movieId, score);
 
     public async Task<bool> UpdateRatingAsync(int movieId, int newScore)
         => await _ratingService.UpdateRatingAsync(movieId, newScore);
@@ -426,5 +424,4 @@ public class MovieService : IMovieService
         var rentedMovies = rentals.Select(r => r.MovieTitle);
         return _mapper.Map<IEnumerable<MovieGetDto>>(rentedMovies);
     }
-
 }

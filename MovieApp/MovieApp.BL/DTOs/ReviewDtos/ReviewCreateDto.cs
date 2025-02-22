@@ -8,7 +8,7 @@ public class ReviewCreateDto
     public int? EpisodeId { get; set; }
     public int? ParentReviewId { get; set; }
     [Required]
-    [MaxLength(500, ErrorMessage = "Review content cannot exceed 500 characters.")]
+    [MaxLength(1000, ErrorMessage = "Review content cannot exceed 1000 characters.")]
     public string Content { get; set; }
 }
 

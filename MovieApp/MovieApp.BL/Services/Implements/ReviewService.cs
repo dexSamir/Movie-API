@@ -18,7 +18,6 @@ public class ReviewService : IReviewService
     readonly IMapper _mapper;
     readonly ILikeDislikeService _like;
 
-
     readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(10);
     private readonly string[] _includeProperties =
     {
@@ -43,9 +42,14 @@ public class ReviewService : IReviewService
         var review = _mapper.Map<Review>(dto);
         review.UserId = userId;
         review.ReviewDate = DateTime.UtcNow;
+        review.CreatedTime = DateTime.UtcNow;
 
         await _repo.AddAsync(review);
-		return await _repo.SaveAsync() > 0; 
+        bool result = await _repo.SaveAsync() > 0;
+        if (result)
+            await _cache.RemoveAsync($"reviews_movie_{dto.MovieId}");
+
+        return result; 
 	}
 
 	public async Task<bool> UpdateReviewAsync(int reviewId, ReviewUpdateDto dto)

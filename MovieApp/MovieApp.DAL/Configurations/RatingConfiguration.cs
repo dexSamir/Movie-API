@@ -24,11 +24,6 @@ public class RatingConfiguration : IEntityTypeConfiguration<Rating>
             .HasForeignKey(r => r.EpisodeId)
             .OnDelete(DeleteBehavior.SetNull);
 
-        builder.HasMany(r => r.Reviews)
-            .WithOne(rev => rev.Rating)  
-            .HasForeignKey(r => r.RatingId) 
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.HasOne(r => r.User)
             .WithMany(u => u.Ratings)
             .HasForeignKey(r => r.UserId)
