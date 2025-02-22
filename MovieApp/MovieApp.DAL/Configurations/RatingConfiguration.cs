@@ -17,7 +17,7 @@ public class RatingConfiguration : IEntityTypeConfiguration<Rating>
         builder.HasOne(r => r.Serie)
             .WithMany(s => s.Ratings)
             .HasForeignKey(r => r.SerieId)
-            .OnDelete(DeleteBehavior.SetNull);
+            .OnDelete(DeleteBehavior.SetNull); 
 
         builder.HasOne(r => r.Episode)
             .WithMany(e => e.Ratings)

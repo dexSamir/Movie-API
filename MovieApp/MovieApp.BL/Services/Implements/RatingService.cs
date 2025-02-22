@@ -34,7 +34,9 @@ public class RatingService : IRatingService
         {
             Score = score,
             UserId = userId,
-            MovieId = movieId
+            MovieId = movieId,
+            SerieId = null,
+            EpisodeId = null,
         };
         await _repo.AddAsync(rating);
         await _cache.RemoveAsync($"movie_avg_rating_{movieId}");
