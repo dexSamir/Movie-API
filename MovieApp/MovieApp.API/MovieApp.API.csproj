@@ -31,6 +31,8 @@
     <Folder Include="wwwroot\imgs\languages\" />
     <Folder Include="wwwroot\imgs\Movies\" />
     <Folder Include="wwwroot\imgs\users\" />
+    <Folder Include="wwwroot\imgs\Movies\posters\" />
+    <Folder Include="wwwroot\imgs\Movies\trailers\" />
   </ItemGroup>
 
   <ItemGroup>
@@ -46,5 +48,7 @@
     <Content Remove="wwwroot\imgs\languages\" />
     <Content Remove="wwwroot\imgs\Movies\" />
     <Content Remove="wwwroot\imgs\users\" />
+    <Content Remove="wwwroot\imgs\Movies\posters\" />
+    <Content Remove="wwwroot\imgs\Movies\trailers\" />
   </ItemGroup>
 </Project>

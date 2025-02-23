@@ -1,28 +1,46 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore>
+      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="351" column="1" />
+      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/ReviewService.cs" relfile="MovieApp.BL/Services/Implements/ReviewService.cs" line="37" column="1" />
+      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/ReviewService.cs" relfile="MovieApp.BL/Services/Implements/ReviewService.cs" line="108" column="1" />
+    </BreakpointStore>
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.BL/Services/Implements/ReviewService.cs">
     <Files>
-      <File FileName="MovieApp.BL/Services/Implements/ReviewService.cs" Line="161" Column="1" />
+      <File FileName="MovieApp.BL/Services/Implements/ReviewService.cs" Line="110" Column="1" />
+      <File FileName="MovieApp.BL/Profiles/ReviewProfile.cs" Line="35" Column="1" />
+      <File FileName="MovieApp.BL/DTOs/ReviewDtos/ReviewGetDto.cs" Line="14" Column="40" />
+      <File FileName="MovieApp.BL/DTOs/MovieDtos/MovieGetDto.cs" Line="20" Column="1" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
-          <Node name="MovieApp" expanded="True">
-            <Node name="MovieApp.API" expanded="True" />
-            <Node name="MovieApp.BL">
+          <Node name="MovieApp">
+            <Node name="MovieApp.API" expanded="True">
+              <Node name="Controllers" expanded="True" />
+            </Node>
+            <Node name="MovieApp.BL" expanded="True">
               <Node name="DTOs" expanded="True">
+                <Node name="MovieDtos" expanded="True" />
                 <Node name="ReviewDtos" expanded="True" />
+              </Node>
+              <Node name="ExternalServices" expanded="True">
+                <Node name="Implements" expanded="True" />
               </Node>
               <Node name="OtherServices" expanded="True">
                 <Node name="Implements" expanded="True" />
               </Node>
-              <Node name="Profiles" expanded="True" />
               <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True">
-                  <Node name="ReviewService.cs" selected="True" />
-                </Node>
+                <Node name="Implements" expanded="True" />
               </Node>
+            </Node>
+            <Node name="MovieApp.Core" expanded="True">
+              <Node name="Entities" expanded="True" />
             </Node>
             <Node name="MovieApp.DAL" expanded="True">
               <Node name="Repositories" expanded="True" />
@@ -32,11 +50,4 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="351" column="1" />
-    </BreakpointStore>
-  </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
 </Properties>
