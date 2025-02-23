@@ -18,7 +18,7 @@ public class Review : BaseEntity
 
     public int LikeCount { get; set; } = 0;
     public int DislikeCount { get; set; } = 0;
-
+    public bool IsUpdated { get; set; } = false; 
     public int? ParentReviewId { get; set; }
     public Review? ParentReview { get; set; }
     public ICollection<Review>? Replies { get; set; }

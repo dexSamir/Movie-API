@@ -1,4 +1,7 @@
-﻿namespace MovieApp.BL.DTOs.MovieDtos;
+﻿using System.Text.Json.Serialization;
+using MovieApp.BL.DTOs.ReviewDtos;
+
+namespace MovieApp.BL.DTOs.MovieDtos;
 public class MovieGetDto
 {
     public int Id { get; set; }
@@ -14,6 +17,9 @@ public class MovieGetDto
     public int LikeCount { get; set; }
     public int DislikeCount { get; set; }
     public int WatchCount { get; set; }
+
+    [JsonIgnore]
+    public IEnumerable<ReviewGetDto>? Reviews { get; set; }
 }
 
 //public ICollection<string> Actors { get; set; }

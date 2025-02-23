@@ -29,6 +29,7 @@ public class MovieProfile : Profile
                 srcMember != null && (srcMember is not string || !string.IsNullOrWhiteSpace(srcMember.ToString()))));
 
         CreateMap<Movie, MovieGetDto>()
+            .ForMember(x=> x.Reviews, x=> x.MapFrom(y=> y.Reviews.Any(x=>x.Replies != null)))
             .ForMember(x=> x.AvgRating, x=> x.MapFrom(y=> y.AvgRating))
             .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(x => x.LikeCount))
             .ForMember(dest => dest.DislikeCount, opt => opt.MapFrom(x => x.DislikeCount))

@@ -21,8 +21,7 @@ public class ReviewService : IReviewService
     readonly TimeSpan _cacheDuration = TimeSpan.FromMinutes(10);
     private readonly string[] _includeProperties =
     {
-        "Movie", "Serie", "Episode", "User",
-        "Rating", "Review"
+        "Movie", "Serie", "Episode", "User", "Replies"
     };
 
     public ReviewService(IReviewRepository repo, ICurrentUser user, ICacheService cache, IMapper mapper, ILikeDislikeService like)
@@ -39,18 +38,29 @@ public class ReviewService : IReviewService
 		var userId = _user.GetId();
 		if (userId == null) throw new AuthorisationException<User>();
 
+        Review parent = null; 
+        if (dto.ParentReviewId.HasValue || dto.ParentReviewId > 0)
+        {
+            parent = await _repo.GetByIdAsync(dto.ParentReviewId.Value, false);
+            if (parent is null)
+                throw new NotFoundException<Review>();
+        }
+
         var review = _mapper.Map<Review>(dto);
         review.UserId = userId;
-        review.ReviewDate = DateTime.UtcNow;
-        review.CreatedTime = DateTime.UtcNow;
+
+        review.MovieId = parent?.MovieId ?? dto.MovieId;
+        review.SerieId = parent?.SerieId ?? dto.SerieId;
+        review.EpisodeId = parent?.EpisodeId ?? dto.EpisodeId;
+        review.ParentReviewId = dto.ParentReviewId; 
 
         await _repo.AddAsync(review);
         bool result = await _repo.SaveAsync() > 0;
         if (result)
             await _cache.RemoveAsync($"reviews_movie_{dto.MovieId}");
 
-        return result; 
-	}
+        return result;
+    }
 
 	public async Task<bool> UpdateReviewAsync(int reviewId, ReviewUpdateDto dto)
 	{
@@ -61,10 +71,13 @@ public class ReviewService : IReviewService
         if (review.UserId != userId)
             throw new ForbiddenException<Review>();
 
-		review.Content = dto.NewContent;
-		review.UpdatedTime = DateTime.UtcNow;
+        _mapper.Map(dto, review);
 
-		return await _repo.SaveAsync() > 0; 
+        bool result = await _repo.SaveAsync() > 0;
+        if (result)
+            await _cache.RemoveAsync($"reviews_movie_{dto.MovieId}");
+
+        return result;
     }
 
 	public async Task<bool> DeleteReviewAsync(int reviewId)
@@ -89,6 +102,8 @@ public class ReviewService : IReviewService
         return _mapper.Map<ReviewGetDto>(review);
     }
 
+
+    //GET Methods 
     public async Task<IEnumerable<ReviewGetDto>> GetReviewsByMovieAsync(int movieId)
     {
         string cacheKey = $"reviews_movie_{movieId}";
@@ -96,10 +111,8 @@ public class ReviewService : IReviewService
         {
             return await _repo.GetWhereAsync(r => r.MovieId == movieId, _includeProperties);
         }, _cacheDuration);
-
         return _mapper.Map<IEnumerable<ReviewGetDto>>(reviews);
     }
-
 
     public async Task<IEnumerable<ReviewGetDto>> GetReviewsBySerieAsync(int serieId)
     {
