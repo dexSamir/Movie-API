@@ -42,7 +42,6 @@ public static class ServiceRegistration
         return services; 
 	}
 
-
     public static IServiceCollection AddAutoMapper(this IServiceCollection services)
     {
         services.AddAutoMapper(typeof(ServiceRegistration));
