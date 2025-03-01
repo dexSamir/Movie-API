@@ -1,7 +1,4 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
@@ -10,5 +7,26 @@
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/ReviewService.cs" relfile="MovieApp.BL/Services/Implements/ReviewService.cs" line="108" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.API/Program.cs">
+    <Files>
+      <File FileName="MovieApp.API/Program.cs" Line="53" Column="1" />
+    </Files>
+    <Pads>
+      <Pad Id="ProjectPad">
+        <State name="__root__">
+          <Node name="MovieApp" expanded="True">
+            <Node name="MovieApp.BL" expanded="True">
+              <Node name="Utilities" expanded="True">
+                <Node name="Helpers" expanded="True" />
+              </Node>
+            </Node>
+            <Node name="MovieApp.Core" selected="True" />
+          </Node>
+        </State>
+      </Pad>
+    </Pads>
+  </MonoDevelop.Ide.Workbench>
 </Properties>

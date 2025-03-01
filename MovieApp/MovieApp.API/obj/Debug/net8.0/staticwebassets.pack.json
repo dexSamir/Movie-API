@@ -1,6 +1,10 @@
 {
   "Files": [
     {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/Movies/posters/bmu0lo1k.pi3.png",
+      "PackagePath": "staticwebassets/imgs/Movies/posters/bmu0lo1k.pi3.png"
+    },
+    {
       "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/actors/03aq2f50.yt1.jpeg",
       "PackagePath": "staticwebassets/imgs/actors/03aq2f50.yt1.jpeg"
     },

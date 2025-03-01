@@ -49,7 +49,16 @@ public class Program
             });
         });
 
+        var corsOrigins = builder.Configuration.GetSection("CorsOrigins").Get<string[]>();
 
+        builder.Services.AddCors(options =>
+        {
+            options.AddPolicy("AllowReactApp",
+                builder => builder
+                    .WithOrigins(corsOrigins)
+                    .AllowAnyHeader()
+                    .AllowAnyMethod());
+        });
 
         builder.Services.AddAuth(builder.Configuration);
         builder.Services.AddJwtOptions(builder.Configuration);
