@@ -39,20 +39,16 @@ public class ReviewService : IReviewService
 		if (userId == null) throw new AuthorisationException<User>();
 
         Review parent = null; 
-        if (dto.ParentReviewId.HasValue || dto.ParentReviewId > 0)
+        if (dto.ParentReviewId.HasValue && dto.ParentReviewId > 0)
         {
-            parent = await _repo.GetByIdAsync(dto.ParentReviewId.Value, false);
+            parent = await _repo.GetByIdAsync(dto.ParentReviewId.Value, false, _includeProperties);
             if (parent is null)
                 throw new NotFoundException<Review>();
         }
 
         var review = _mapper.Map<Review>(dto);
         review.UserId = userId;
-
-        review.MovieId = parent?.MovieId ?? dto.MovieId;
-        review.SerieId = parent?.SerieId ?? dto.SerieId;
-        review.EpisodeId = parent?.EpisodeId ?? dto.EpisodeId;
-        review.ParentReviewId = dto.ParentReviewId; 
+        review.IsUpdated = false;
 
         await _repo.AddAsync(review);
         bool result = await _repo.SaveAsync() > 0;
