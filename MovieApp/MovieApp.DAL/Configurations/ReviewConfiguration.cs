@@ -34,7 +34,7 @@ public class ReviewConfiguration : IEntityTypeConfiguration<Review>
                .IsRequired(); 
 
         builder.Property(r => r.ReviewDate)
-               .IsRequired(false); 
+               .IsRequired(); 
 
         builder.Property(r => r.LikeCount)
                .HasDefaultValue(0); 

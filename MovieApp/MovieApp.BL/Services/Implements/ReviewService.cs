@@ -89,6 +89,10 @@ public class ReviewService : IReviewService
 		return await _repo.SaveAsync() > 0; 
     }
 
+
+
+
+    //GET Methods
     public async Task<ReviewGetDto> GetReviewByIdAsync(int reviewId)
     {
         var review = await _repo.GetByIdAsync(reviewId, false, _includeProperties);
@@ -98,16 +102,85 @@ public class ReviewService : IReviewService
         return _mapper.Map<ReviewGetDto>(review);
     }
 
+    private ReviewGetDto MapReviewToDto(Review review, int depth = 0, int maxDepth = 5)
+    {
+        if (depth > maxDepth)
+        {
+            return null; 
+        }
 
-    //GET Methods 
+        return new ReviewGetDto
+        {
+            Id = review.Id,
+            Content = review.Content,
+            UserName = review.User?.UserName,
+            MovieId = review.MovieId,
+            SerieId = review.SerieId,
+            EpisodeId = review.EpisodeId,
+            ParentReviewId = review.ParentReviewId,
+            ReviewDate = review.ReviewDate,
+            IsUpdated = review.IsUpdated,
+            UpdatedTime = review.UpdatedTime,
+            LikeCount = review.LikeCount,
+            DislikeCount = review.DislikeCount,
+            Replies = review.Replies?
+                .Where(r => r.ParentReviewId != null) 
+                .Select(r => MapReviewToDto(r, depth + 1, maxDepth)) 
+                .ToList() 
+        };
+    }
+
     public async Task<IEnumerable<ReviewGetDto>> GetReviewsByMovieAsync(int movieId)
     {
         string cacheKey = $"reviews_movie_{movieId}";
-        var reviews = await _cache.GetOrSetAsync(cacheKey, async () =>
+        var reviewDtos = await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            return await _repo.GetWhereAsync(r => r.MovieId == movieId, _includeProperties);
+            var reviews = await _repo.GetWhereAsync(
+                r => r.MovieId == movieId && r.ParentReviewId == null,
+                "Replies.User", "Replies.Replies.User", "Replies.Replies.Replies",
+                "User", "Movie", "Serie", "Episode"
+            );
+
+            return reviews
+            .Where(x => x.ParentReviewId == null)
+            .Select(x => new ReviewGetDto
+            {
+                Id = x.Id,
+                Content = x.Content,
+                UserName = x.User?.UserName,
+                MovieId = x.MovieId,
+                SerieId = x.SerieId,
+                EpisodeId = x.EpisodeId,
+                ParentReviewId = x.ParentReviewId,
+                ReviewDate = x.ReviewDate,
+                IsUpdated = x.IsUpdated,
+                UpdatedTime = x.UpdatedTime,
+                LikeCount = x.LikeCount,
+                DislikeCount = x.DislikeCount,
+                Replies = x.Replies?
+                    .Where(r => r.ParentReviewId == x.Id)
+                    .Select(r => new ReviewGetDto
+                    {
+                        Id = r.Id,
+                        Content = r.Content,
+                        UserName = r.User?.UserName,
+                        MovieId = r.MovieId,
+                        SerieId = r.SerieId,
+                        EpisodeId = r.EpisodeId,
+                        ParentReviewId = r.ParentReviewId,
+                        ReviewDate = r.ReviewDate,
+                        IsUpdated = r.IsUpdated,
+                        UpdatedTime = r.UpdatedTime,
+                        LikeCount = r.LikeCount,
+                        DislikeCount = r.DislikeCount,
+                        Replies = null
+                    })
+                    .ToList() ?? new List<ReviewGetDto>()
+            }).ToList();
+
         }, _cacheDuration);
-        return _mapper.Map<IEnumerable<ReviewGetDto>>(reviews);
+
+        return reviewDtos; 
     }
 
     public async Task<IEnumerable<ReviewGetDto>> GetReviewsBySerieAsync(int serieId)
