@@ -90,25 +90,10 @@ public class ReviewService : IReviewService
     }
 
 
-
-
     //GET Methods
-    public async Task<ReviewGetDto> GetReviewByIdAsync(int reviewId)
+
+    private ReviewGetDto MapReviewToDto(Review review)
     {
-        var review = await _repo.GetByIdAsync(reviewId, false, _includeProperties);
-        if (review == null)
-            throw new NotFoundException<Review>();
-
-        return _mapper.Map<ReviewGetDto>(review);
-    }
-
-    private ReviewGetDto MapReviewToDto(Review review, int depth = 0, int maxDepth = 5)
-    {
-        if (depth > maxDepth)
-        {
-            return null; 
-        }
-
         return new ReviewGetDto
         {
             Id = review.Id,
@@ -124,10 +109,34 @@ public class ReviewService : IReviewService
             LikeCount = review.LikeCount,
             DislikeCount = review.DislikeCount,
             Replies = review.Replies?
-                .Where(r => r.ParentReviewId != null) 
-                .Select(r => MapReviewToDto(r, depth + 1, maxDepth)) 
-                .ToList() 
+                .Where(r => r.ParentReviewId == review.Id)
+                .Select(r => new ReviewGetDto
+                {
+                    Id = r.Id,
+                    Content = r.Content,
+                    UserName = r.User?.UserName,
+                    MovieId = r.MovieId,
+                    SerieId = r.SerieId,
+                    EpisodeId = r.EpisodeId,
+                    ParentReviewId = r.ParentReviewId,
+                    ReviewDate = r.ReviewDate,
+                    IsUpdated = r.IsUpdated,
+                    UpdatedTime = r.UpdatedTime,
+                    LikeCount = r.LikeCount,
+                    DislikeCount = r.DislikeCount,
+                    Replies = null
+                })
+                .ToList() ?? new List<ReviewGetDto>()
         };
+    }
+
+    public async Task<ReviewGetDto> GetReviewByIdAsync(int reviewId)
+    {
+        var review = await _repo.GetByIdAsync(reviewId, false, _includeProperties);
+        if (review == null)
+            throw new NotFoundException<Review>();
+
+        return _mapper.Map<ReviewGetDto>(review);
     }
 
     public async Task<IEnumerable<ReviewGetDto>> GetReviewsByMovieAsync(int movieId)
@@ -137,46 +146,13 @@ public class ReviewService : IReviewService
         {
             var reviews = await _repo.GetWhereAsync(
                 r => r.MovieId == movieId && r.ParentReviewId == null,
-                "Replies.User", "Replies.Replies.User", "Replies.Replies.Replies",
+                "Replies", "Replies.Replies", "Replies.Replies",
                 "User", "Movie", "Serie", "Episode"
             );
 
             return reviews
             .Where(x => x.ParentReviewId == null)
-            .Select(x => new ReviewGetDto
-            {
-                Id = x.Id,
-                Content = x.Content,
-                UserName = x.User?.UserName,
-                MovieId = x.MovieId,
-                SerieId = x.SerieId,
-                EpisodeId = x.EpisodeId,
-                ParentReviewId = x.ParentReviewId,
-                ReviewDate = x.ReviewDate,
-                IsUpdated = x.IsUpdated,
-                UpdatedTime = x.UpdatedTime,
-                LikeCount = x.LikeCount,
-                DislikeCount = x.DislikeCount,
-                Replies = x.Replies?
-                    .Where(r => r.ParentReviewId == x.Id)
-                    .Select(r => new ReviewGetDto
-                    {
-                        Id = r.Id,
-                        Content = r.Content,
-                        UserName = r.User?.UserName,
-                        MovieId = r.MovieId,
-                        SerieId = r.SerieId,
-                        EpisodeId = r.EpisodeId,
-                        ParentReviewId = r.ParentReviewId,
-                        ReviewDate = r.ReviewDate,
-                        IsUpdated = r.IsUpdated,
-                        UpdatedTime = r.UpdatedTime,
-                        LikeCount = r.LikeCount,
-                        DislikeCount = r.DislikeCount,
-                        Replies = null
-                    })
-                    .ToList() ?? new List<ReviewGetDto>()
-            }).ToList();
+            .Select(x => MapReviewToDto(x)).ToList();
 
         }, _cacheDuration);
 
@@ -211,44 +187,19 @@ public class ReviewService : IReviewService
         string cacheKey = $"reviews_user_{userId}";
         var reviews =  await _cache.GetOrSetAsync(cacheKey, async () =>
         {
-            return await _repo.GetWhereAsync(r => r.UserId == userId, _includeProperties);
+            var reviews = await _repo.GetWhereAsync(
+                r => r.UserId == userId && r.ParentReviewId == null,
+                "Replies", "Replies.Replies", "Replies.Replies",
+                "User", "Movie", "Serie", "Episode"
+            );
+
+            return reviews
+            .Where(x => x.ParentReviewId == null)
+            .Select(x => MapReviewToDto(x)).ToList();
+
         }, _cacheDuration);
 
-        return _mapper.Map<IEnumerable<ReviewGetDto>>(reviews);
-    }
-
-    public async Task<bool> AddReplyAsync(ReviewCreateDto dto)
-    {
-        var userId = _user.GetId();
-        if (userId == null) throw new AuthorisationException<User>();
-
-        var parentReview = await _repo.GetByIdAsync(dto.ParentReviewId.Value);
-        if (parentReview == null) throw new NotFoundException<Review>();
-
-
-        var reply = _mapper.Map<Review>(dto);
-        reply.ParentReviewId = dto.ParentReviewId;
-        reply.UserId = userId;
-        reply.ReviewDate = DateTime.UtcNow;
-
-        await _repo.AddAsync(reply);
-        return await _repo.SaveAsync() > 0;
-    }
-
-    public async Task<bool> UpdateReplyAsync(ReviewUpdateDto dto, int reviewId)
-    {
-        var reply = await _repo.GetByIdAsync(reviewId);
-        if (reply == null) throw new NotFoundException<Review>();
-
-        var userId = _user.GetId();
-        if (reply.UserId != userId)
-            throw new ForbiddenException<Review>();
-
-        reply.Content = dto.NewContent;
-        reply.ParentReviewId = dto.ParentReviewId; 
-        reply.UpdatedTime = DateTime.UtcNow;
-
-        return await _repo.SaveAsync() > 0;
+        return reviews;
     }
 
     public async Task<IEnumerable<Review>> GetRepliesByReviewAsync(int parentReviewId)

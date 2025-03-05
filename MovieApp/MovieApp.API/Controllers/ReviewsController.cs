@@ -13,98 +13,86 @@ public class ReviewsController : ControllerBase
         _service = service;
     }
 
-    [HttpPost("add-review")]
-    public async Task<IActionResult> AddReviewAsync([FromBody] ReviewCreateDto dto)
+    [HttpPost]
+    public async Task<IActionResult> AddReview([FromBody] ReviewCreateDto dto)
     {
         return Ok(await _service.AddReviewAsync(dto));
     }
 
-    [HttpPut("update-review")]
-    public async Task<IActionResult> UpdateReviewAsync([FromQuery] int reviewId, [FromBody] ReviewUpdateDto dto)
+    [HttpPut]
+    public async Task<IActionResult> UpdateReview([FromQuery] int reviewId, [FromBody] ReviewUpdateDto dto)
     {
         return Ok(await _service.UpdateReviewAsync( reviewId, dto));
     }
 
-    [HttpDelete("delete-review")]
-    public async Task<IActionResult> DeleteReviewAsync([FromQuery] int reviewId)
+    [HttpDelete]
+    public async Task<IActionResult> DeleteReview([FromQuery] int reviewId)
     {
         return Ok(await _service.DeleteReviewAsync(reviewId));
     }
 
-    [HttpGet("get-review")]
-    public async Task<IActionResult> GetReviewByIdAsync([FromQuery] int reviewId)
+    [HttpGet]
+    public async Task<IActionResult> GetReviewById([FromQuery] int reviewId)
     {
         return Ok(await _service.GetReviewByIdAsync(reviewId));
     }
 
-    [HttpGet("reviews-by-movie")]
-    public async Task<IActionResult> GetReviewsByMovieAsync([FromQuery] int movieId)
+    [HttpGet]
+    public async Task<IActionResult> GetReviewsByMovie([FromQuery] int movieId)
     {
         return Ok(await _service.GetReviewsByMovieAsync(movieId));
     }
 
-    [HttpGet("reviews-by-serie")]
-    public async Task<IActionResult> GetReviewsBySerieAsync([FromQuery] int serieId)
+    [HttpGet]
+    public async Task<IActionResult> GetReviewsBySerie([FromQuery] int serieId)
     {
         return Ok(await _service.GetReviewsBySerieAsync(serieId));
     }
 
-    [HttpGet("reviews-by-episode")]
-    public async Task<IActionResult> GetReviewsByEpisodeAsync([FromQuery] int episodeId)
+    [HttpGet]
+    public async Task<IActionResult> GetReviewsByEpisode([FromQuery] int episodeId)
     {
         return Ok(await _service.GetReviewsByEpisodeAsync(episodeId));
     }
 
-    [HttpGet("reviews-by-user")]
-    public async Task<IActionResult> GetReviewsByUserAsync()
+    [HttpGet]
+    public async Task<IActionResult> GetReviewsByUser()
     {
         return Ok(await _service.GetReviewsByUserAsync());
     }
 
-    [HttpPost("add-reply")]
-    public async Task<IActionResult> AddReplyAsync([FromBody] ReviewCreateDto dto)
-    {
-        return Ok(await _service.AddReplyAsync(dto));
-    }
-
-    [HttpPut("update-reply")]
-    public async Task<IActionResult> UpdateReplyAsync([FromQuery] int reviewId, [FromBody] ReviewUpdateDto dto)
-    {
-        return Ok(await _service.UpdateReplyAsync(dto, reviewId));
-    }
-
-    [HttpGet("replies-by-review")]
-    public async Task<IActionResult> GetRepliesByReviewAsync([FromQuery] int parentReviewId)
+    [HttpGet]
+    public async Task<IActionResult> GetRepliesByReview([FromQuery] int parentReviewId)
     {
         return Ok(await _service.GetRepliesByReviewAsync(parentReviewId));
     }
 
-    [HttpPost("like-review")]
-    public async Task<IActionResult> LikeReviewAsync([FromQuery] int reviewId)
+    [HttpPost]
+    public async Task<IActionResult> LikeReview([FromQuery] int reviewId)
     {
         return Ok(await _service.LikeReviewAsync(reviewId));
     }
 
-    [HttpPost("dislike-review")]
-    public async Task<IActionResult> DislikeReviewAsync([FromQuery] int reviewId)
+    [HttpPost]
+    public async Task<IActionResult> DislikeReview([FromQuery] int reviewId)
     {
         return Ok(await _service.DeleteReviewAsync(reviewId));
     }
 
-    [HttpPost("undo-like-review")]
-    public async Task<IActionResult> UndoLikeReviewAsync([FromQuery] int reviewId)
+    [HttpPost]
+    public async Task<IActionResult> UndoLikeReview([FromQuery] int reviewId)
     {
         return Ok(await _service.UndoLikeReviewAsync(reviewId));
     }
 
-    [HttpPost("undo-dislike-review")]
-    public async Task<IActionResult> UndoDislikeReviewAsync([FromQuery] int reviewId)
+    [HttpPost]
+    public async Task<IActionResult> UndoDislikeReview([FromQuery] int reviewId)
     {
         return Ok(await _service.UndoDislikeReviewAsync(reviewId));
     }
 
-    [HttpGet("review-reaction-count")]
-    public async Task<IActionResult> GetReviewReactionCountAsync([FromQuery] int reviewId)
+    [HttpGet]
+    public async Task<IActionResult> GetReviewReactionCount([FromQuery] int reviewId)
     {
         return Ok(await _service.GetReviewReactionCountAsync(reviewId));
     }

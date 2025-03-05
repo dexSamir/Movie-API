@@ -16,9 +16,6 @@ public interface IReviewService
 
     Task<IEnumerable<ReviewGetDto>> GetReviewsByUserAsync();
 
-    Task<bool> AddReplyAsync(ReviewCreateDto dto);
-    Task<bool> UpdateReplyAsync(ReviewUpdateDto dto, int reviewId);
-
     Task<IEnumerable<Review>> GetRepliesByReviewAsync(int parentReviewId);
 
     Task<bool> LikeReviewAsync(int reviewId);
