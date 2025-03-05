@@ -71,7 +71,7 @@ public class ReviewService : IReviewService
 
         bool result = await _repo.SaveAsync() > 0;
         if (result)
-            await _cache.RemoveAsync($"reviews_movie_{dto.MovieId}");
+            await _cache.RemoveAsync($"reviews_movie_{review.MovieId}");
 
         return result;
     }

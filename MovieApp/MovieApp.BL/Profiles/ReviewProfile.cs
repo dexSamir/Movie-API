@@ -23,10 +23,10 @@ public class ReviewProfile : Profile
             .ForMember(dest => dest.ReviewDate, opt => opt.MapFrom(_ => DateTime.UtcNow));
 
         CreateMap<ReviewUpdateDto, Review>()
-            .ForMember(x => x.MovieId, x => x.MapFrom(y => y.MovieId > 0 ? y.MovieId : null))
-            .ForMember(x => x.SerieId, x => x.MapFrom(y => y.SerieId > 0 ? y.SerieId : null))
-            .ForMember(x => x.EpisodeId, x => x.MapFrom(y => y.EpisodeId > 0 ? y.EpisodeId : null))
-            .ForMember(x => x.ParentReviewId, x => x.MapFrom(y => y.ParentReviewId > 0 ? y.ParentReviewId : null))
+            .ForMember(x => x.MovieId, x => x.Ignore())
+            .ForMember(x => x.ParentReviewId, x => x.Ignore())
+            .ForMember(x => x.SerieId, x => x.Ignore())
+            .ForMember(x => x.EpisodeId, x => x.Ignore())
             .ForMember(dest => dest.Content, opt => opt.MapFrom(src => src.NewContent))
             .ForMember(dest => dest.UpdatedTime, opt => opt.MapFrom(_ => DateTime.UtcNow))
             .ForMember(dest => dest.IsUpdated, opt => opt.MapFrom(_ => true));
