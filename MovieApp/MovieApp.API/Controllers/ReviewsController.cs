@@ -76,7 +76,7 @@ public class ReviewsController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> DislikeReview([FromQuery] int reviewId)
     {
-        return Ok(await _service.DeleteReviewAsync(reviewId));
+        return Ok(await _service.DislikeReviewAsync(reviewId));
     }
 
     [HttpPost]
