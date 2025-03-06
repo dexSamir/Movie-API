@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using MovieApp.BL.Exceptions.Common;
+﻿using MovieApp.BL.Exceptions.Common;
 using MovieApp.BL.OtherServices.Interfaces;
 using MovieApp.BL.Utilities.Enums;
 using MovieApp.Core.Entities;
