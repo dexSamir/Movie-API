@@ -40,10 +40,10 @@ public class HistoryService : IHistoryService
     {
         var userId = await GetUserIdAsync();
 
-        var cacheKey = $"UserHistory_{userId}";
+        var cacheKey = $"History";
         return await _cacheService.GetOrSetAsync(cacheKey, async () =>
         {
-            var histories = await _repo.GetWhereAsync(x=> x.UserId == userId, false, _includeProperties);
+            var histories = await _repo.GetWhereAsync(x=> x.UserId == userId, _includeProperties);
             return _mapper.Map<IEnumerable<HistoryGetDto>>(histories);
         }, TimeSpan.FromMinutes(10));
     }
