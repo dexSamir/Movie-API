@@ -1,4 +1,6 @@
 ﻿using System.Text.Json.Serialization;
+using MovieApp.BL.DTOs.ActorDtos;
+using MovieApp.BL.DTOs.GenreDtos;
 using MovieApp.BL.DTOs.ReviewDtos;
 
 namespace MovieApp.BL.DTOs.MovieDtos;
@@ -20,9 +22,6 @@ public class MovieGetDto
 
     [JsonIgnore]
     public IEnumerable<ReviewGetDto>? Reviews { get; set; }
+    public IEnumerable<GenreNestedGetDto> Genres { get; set; }
+    public IEnumerable<ActorNestedGetDto> Actors { get; set; }
 }
-
-//public ICollection<string> Actors { get; set; }
-//public ICollection<string> Subtitles { get; set; }
-//public ICollection<string> Genres { get; set; }
-//public ICollection<string> AudioTracks { get; set; }

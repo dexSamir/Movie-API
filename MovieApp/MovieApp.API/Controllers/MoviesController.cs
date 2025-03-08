@@ -110,10 +110,35 @@ public class MoviesController : ControllerBase
         return Ok(await _service.UpdateMediaUrlAsync(id, file, type));
     }
 
-    [HttpDelete("{ids}")]
-    public async Task<IActionResult> DeleteMovies(string ids, EDeleteType deleteType)
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete(string id)
     {
-        return Ok(await _service.DeleteAsync(ids, deleteType));
+        return Ok(await _service.DeleteAsync(id, EDeleteType.Hard));
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> SoftDelete(string id)
+    {
+        return Ok(await _service.DeleteAsync(id, EDeleteType.Soft));
+    }
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> ReverseSoftDelete(string id)
+    {
+        return Ok(await _service.DeleteAsync(id, EDeleteType.Soft));
+    }
+    [HttpDelete("{ids}")]
+    public async Task<IActionResult> DeleteRange([FromRoute] string ids)
+    {
+        return Ok(await _service.DeleteAsync(ids, EDeleteType.Soft));
+    }
+    [HttpDelete("{ids}")]
+    public async Task<IActionResult> SoftDeleteRange([FromRoute] string ids)
+    {
+        return Ok(await _service.DeleteAsync(ids, EDeleteType.Soft));
+    }
+    [HttpDelete("{ids}")]
+    public async Task<IActionResult> ReverseSoftDeleteRange([FromRoute] string ids)
+    {
+        return Ok(await _service.DeleteAsync(ids, EDeleteType.Soft));
     }
 
     [HttpPost("{movieId}/rate")]

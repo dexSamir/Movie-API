@@ -31,8 +31,9 @@ public class MovieService : IMovieService
 
     private readonly string[] _includeProperties =
     {
-        "Actors", "MovieSubtitles", "Genres", "Ratings", "Director",
-        "Reviews", "Rentals", "AudioTracks", "Recommendations"
+        "MovieSubtitles", "Ratings", "Director",
+        "Reviews", "Rentals", "AudioTracks", "Recommendations",
+        "Actors.Actor", "Genres.Genre"
     };
 
     private async Task<string> GetUserIdAsync()

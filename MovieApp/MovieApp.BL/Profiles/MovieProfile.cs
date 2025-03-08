@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using MovieApp.BL.DTOs.ActorDtos;
+using MovieApp.BL.DTOs.GenreDtos;
 using MovieApp.BL.DTOs.MovieDtos;
 using MovieApp.BL.DTOs.ReactionDtos;
 using MovieApp.BL.DTOs.RecommendationDtos;
@@ -10,6 +12,15 @@ public class MovieProfile : Profile
 	public MovieProfile()
 	{
         CreateMap<Recommendation, RecommendationGetDto>();
+
+        CreateMap<MovieGenre, GenreNestedGetDto>()
+            .ForMember(dest => dest.GenreId, opt => opt.MapFrom(src => src.Genre.Id))
+            .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Genre.Name));
+
+        CreateMap<MovieActor, ActorNestedGetDto>()
+            .ForMember(dest => dest.ActorId, opt => opt.MapFrom(src => src.Actor.Id))
+            .ForMember(dest => dest.Fullname, opt => opt.MapFrom(src => src.Actor.Name + " " + src.Actor.Surname))
+            .ForMember(dest => dest.ProfilePhotoUrl, opt => opt.MapFrom(src=> src.Actor.ImageUrl));
 
         CreateMap<MovieCreateDto, Movie>()
             .ForMember(dest => dest.Actors, opt => opt.Ignore())
@@ -29,6 +40,8 @@ public class MovieProfile : Profile
                 srcMember != null && (srcMember is not string || !string.IsNullOrWhiteSpace(srcMember.ToString()))));
 
         CreateMap<Movie, MovieGetDto>()
+            .ForMember(dest => dest.Genres, opt => opt.MapFrom(src => src.Genres))
+            .ForMember(dest => dest.Actors, opt => opt.MapFrom(src => src.Actors))
             .ForMember(x=> x.Reviews, x=> x.MapFrom(y=> y.Reviews))
             .ForMember(x=> x.AvgRating, x=> x.MapFrom(y=> y.AvgRating))
             .ForMember(dest => dest.LikeCount, opt => opt.MapFrom(x => x.LikeCount))
