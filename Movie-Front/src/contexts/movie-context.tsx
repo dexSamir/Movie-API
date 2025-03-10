@@ -1,0 +1,278 @@
+"use client"
+
+import type React from "react"
+
+import { createContext, useContext, useState, useEffect } from "react"
+import { mockMovies } from "../data/mock-movies"
+
+export interface Movie {
+  id: string
+  title: string
+  description: string
+  posterUrl: string
+  backdropUrl: string
+  releaseDate: string
+  genres: string[]
+  duration: number // in minutes
+  rating: number // out of 10
+  directors: string[]
+  actors: {
+    name: string
+    character: string
+    photoUrl?: string
+  }[]
+  rentalPrice: number
+  available: boolean
+}
+
+export interface Review {
+  id: string
+  movieId: string
+  userId: string
+  userName: string
+  userAvatar?: string
+  rating: number
+  comment: string
+  date: string
+  likes: number
+  dislikes: number
+  userLiked?: boolean
+  userDisliked?: boolean
+}
+
+export interface Rental {
+  id: string
+  userId: string
+  movieId: string
+  movie: Movie
+  rentalDate: string
+  returnDate: string
+  returned: boolean
+}
+
+interface MovieContextType {
+  movies: Movie[]
+  reviews: Review[]
+  rentals: Rental[]
+  getMovie: (id: string) => Movie | undefined
+  getMovieReviews: (movieId: string) => Review[]
+  addReview: (review: Omit<Review, "id" | "date" | "likes" | "dislikes">) => void
+  likeReview: (reviewId: string) => void
+  dislikeReview: (reviewId: string) => void
+  rentMovie: (movieId: string, userId: string) => void
+  returnMovie: (rentalId: string) => void
+  getUserRentals: (userId: string) => Rental[]
+  isLoading: boolean
+}
+
+const MovieContext = createContext<MovieContextType | undefined>(undefined)
+
+export function MovieProvider({ children }: { children: React.ReactNode }) {
+  const [movies, setMovies] = useState<Movie[]>([])
+  const [reviews, setReviews] = useState<Review[]>([])
+  const [rentals, setRentals] = useState<Rental[]>([])
+  const [isLoading, setIsLoading] = useState(true)
+
+  useEffect(() => {
+    // In a real app, you would fetch this data from an API
+    setMovies(mockMovies)
+
+    // Mock reviews
+    const mockReviews: Review[] = [
+      {
+        id: "1",
+        movieId: "1",
+        userId: "2",
+        userName: "Jane Smith",
+        userAvatar: "/placeholder.svg?height=40&width=40",
+        rating: 8,
+        comment: "Great movie with amazing special effects!",
+        date: "2023-05-15T14:30:00Z",
+        likes: 24,
+        dislikes: 3,
+      },
+      {
+        id: "2",
+        movieId: "1",
+        userId: "3",
+        userName: "Mike Johnson",
+        userAvatar: "/placeholder.svg?height=40&width=40",
+        rating: 7,
+        comment: "Good plot but some scenes were too long.",
+        date: "2023-05-10T09:15:00Z",
+        likes: 12,
+        dislikes: 2,
+      },
+    ]
+
+    setReviews(mockReviews)
+
+    // Mock rentals
+    const mockRentals: Rental[] = [
+      {
+        id: "1",
+        userId: "1",
+        movieId: "2",
+        movie: mockMovies[1],
+        rentalDate: "2023-06-01T10:00:00Z",
+        returnDate: "2023-06-08T10:00:00Z",
+        returned: false,
+      },
+    ]
+
+    setRentals(mockRentals)
+    setIsLoading(false)
+  }, [])
+
+  const getMovie = (id: string) => {
+    return movies.find((movie) => movie.id === id)
+  }
+
+  const getMovieReviews = (movieId: string) => {
+    return reviews.filter((review) => review.movieId === movieId)
+  }
+
+  const addReview = (review: Omit<Review, "id" | "date" | "likes" | "dislikes">) => {
+    const newReview: Review = {
+      ...review,
+      id: Date.now().toString(),
+      date: new Date().toISOString(),
+      likes: 0,
+      dislikes: 0,
+    }
+
+    setReviews((prevReviews) => [...prevReviews, newReview])
+  }
+
+  const likeReview = (reviewId: string) => {
+    setReviews((prevReviews) =>
+      prevReviews.map((review) => {
+        if (review.id === reviewId) {
+          // Toggle like
+          if (review.userLiked) {
+            return {
+              ...review,
+              likes: review.likes - 1,
+              userLiked: false,
+            }
+          } else {
+            // If previously disliked, remove dislike
+            const dislikesChange = review.userDisliked ? -1 : 0
+            return {
+              ...review,
+              likes: review.likes + 1,
+              dislikes: review.dislikes + dislikesChange,
+              userLiked: true,
+              userDisliked: false,
+            }
+          }
+        }
+        return review
+      }),
+    )
+  }
+
+  const dislikeReview = (reviewId: string) => {
+    setReviews((prevReviews) =>
+      prevReviews.map((review) => {
+        if (review.id === reviewId) {
+          // Toggle dislike
+          if (review.userDisliked) {
+            return {
+              ...review,
+              dislikes: review.dislikes - 1,
+              userDisliked: false,
+            }
+          } else {
+            // If previously liked, remove like
+            const likesChange = review.userLiked ? -1 : 0
+            return {
+              ...review,
+              dislikes: review.dislikes + 1,
+              likes: review.likes + likesChange,
+              userDisliked: true,
+              userLiked: false,
+            }
+          }
+        }
+        return review
+      }),
+    )
+  }
+
+  const rentMovie = (movieId: string, userId: string) => {
+    const movie = getMovie(movieId)
+    if (!movie) return
+
+    const rentalDate = new Date()
+    const returnDate = new Date()
+    returnDate.setDate(returnDate.getDate() + 7) // 7 days rental period
+
+    const newRental: Rental = {
+      id: Date.now().toString(),
+      userId,
+      movieId,
+      movie,
+      rentalDate: rentalDate.toISOString(),
+      returnDate: returnDate.toISOString(),
+      returned: false,
+    }
+
+    setRentals((prevRentals) => [...prevRentals, newRental])
+
+    // Update movie availability
+    setMovies((prevMovies) =>
+      prevMovies.map((movie) => (movie.id === movieId ? { ...movie, available: false } : movie)),
+    )
+  }
+
+  const returnMovie = (rentalId: string) => {
+    setRentals((prevRentals) =>
+      prevRentals.map((rental) => {
+        if (rental.id === rentalId) {
+          // Update movie availability
+          setMovies((prevMovies) =>
+            prevMovies.map((movie) => (movie.id === rental.movieId ? { ...movie, available: true } : movie)),
+          )
+
+          return { ...rental, returned: true }
+        }
+        return rental
+      }),
+    )
+  }
+
+  const getUserRentals = (userId: string) => {
+    return rentals.filter((rental) => rental.userId === userId)
+  }
+
+  return (
+    <MovieContext.Provider
+      value={{
+        movies,
+        reviews,
+        rentals,
+        getMovie,
+        getMovieReviews,
+        addReview,
+        likeReview,
+        dislikeReview,
+        rentMovie,
+        returnMovie,
+        getUserRentals,
+        isLoading,
+      }}
+    >
+      {children}
+    </MovieContext.Provider>
+  )
+}
+
+export function useMovies() {
+  const context = useContext(MovieContext)
+  if (context === undefined) {
+    throw new Error("useMovies must be used within a MovieProvider")
+  }
+  return context
+}
+
