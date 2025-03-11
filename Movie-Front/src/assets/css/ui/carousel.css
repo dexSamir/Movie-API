@@ -1,0 +1,52 @@
+.carousel {
+  position: relative;
+}
+
+.carousel-content {
+  overflow: hidden;
+}
+
+.carousel-content > div {
+  display: flex;
+  transition: transform 0.3s ease;
+}
+
+.carousel-item {
+  min-width: 0;
+  flex-shrink: 0;
+  flex-grow: 0;
+  padding-left: 1rem;
+}
+
+.carousel-previous,
+.carousel-next {
+  position: absolute;
+  height: 2rem;
+  width: 2rem;
+  border-radius: 9999px;
+  background-color: #fff;
+  border: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10;
+}
+
+.carousel-previous {
+  left: -3rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-next {
+  right: -3rem;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.carousel-previous:disabled,
+.carousel-next:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -13,8 +13,8 @@ export interface Movie {
   backdropUrl: string
   releaseDate: string
   genres: string[]
-  duration: number // in minutes
-  rating: number // out of 10
+  duration: number 
+  rating: number 
   directors: string[]
   actors: {
     name: string
@@ -148,7 +148,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
     setReviews((prevReviews) =>
       prevReviews.map((review) => {
         if (review.id === reviewId) {
-          // Toggle like
           if (review.userLiked) {
             return {
               ...review,
@@ -156,7 +155,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
               userLiked: false,
             }
           } else {
-            // If previously disliked, remove dislike
             const dislikesChange = review.userDisliked ? -1 : 0
             return {
               ...review,
@@ -176,7 +174,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
     setReviews((prevReviews) =>
       prevReviews.map((review) => {
         if (review.id === reviewId) {
-          // Toggle dislike
           if (review.userDisliked) {
             return {
               ...review,
@@ -184,7 +181,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
               userDisliked: false,
             }
           } else {
-            // If previously liked, remove like
             const likesChange = review.userLiked ? -1 : 0
             return {
               ...review,
@@ -206,7 +202,7 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
 
     const rentalDate = new Date()
     const returnDate = new Date()
-    returnDate.setDate(returnDate.getDate() + 7) // 7 days rental period
+    returnDate.setDate(returnDate.getDate() + 7) 
 
     const newRental: Rental = {
       id: Date.now().toString(),
@@ -220,7 +216,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
 
     setRentals((prevRentals) => [...prevRentals, newRental])
 
-    // Update movie availability
     setMovies((prevMovies) =>
       prevMovies.map((movie) => (movie.id === movieId ? { ...movie, available: false } : movie)),
     )
@@ -230,7 +225,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
     setRentals((prevRentals) =>
       prevRentals.map((rental) => {
         if (rental.id === rentalId) {
-          // Update movie availability
           setMovies((prevMovies) =>
             prevMovies.map((movie) => (movie.id === rental.movieId ? { ...movie, available: true } : movie)),
           )

@@ -28,16 +28,12 @@ export function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    try {
-      await login(email, password);
-      toast({
-        title: "Login successful",
-        description: "Welcome back!",
-      });
-      navigate("/");
-    } catch (err) {
-      // Error is handled by the auth context
-    }
+    await login(email, password);
+    toast({
+      title: "Login successful",
+      description: "Welcome back!",
+    });
+    navigate("/");
   };
 
   return (

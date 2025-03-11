@@ -39,16 +39,12 @@ export function RegisterPage() {
 
     setPasswordError("");
 
-    try {
-      await register(name, email, password);
-      toast({
-        title: "Registration successful",
-        description: "Your account has been created",
-      });
-      navigate("/");
-    } catch (err) {
-      // Error is handled by the auth context
-    }
+    await register(name, email, password);
+    toast({
+    title: "Registration successful",
+    description: "Your account has been created",
+    });
+    navigate("/");
   };
 
   return (

@@ -1,9 +1,10 @@
 import { BrowserRouter as Router } from "react-router-dom"
 import { ThemeProvider } from "./components/theme-provider"
-import { Toaster } from "./components/ui/toaster"
+import { Toast } from "./components/ui/toast"
 import { AppRoutes } from "./routes"
 import { AuthProvider } from "./contexts/auth-context"
 import { MovieProvider } from "./contexts/movie-context"
+import { ToastProvider } from "@radix-ui/react-toast";
 
 function App() {
   return (
@@ -12,7 +13,10 @@ function App() {
         <MovieProvider>
           <Router>
             <AppRoutes />
-            <Toaster />
+            
+            <ToastProvider >
+                <Toast />
+            </ToastProvider>
           </Router>
         </MovieProvider>
       </AuthProvider>
