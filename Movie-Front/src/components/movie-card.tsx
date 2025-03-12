@@ -21,16 +21,16 @@ export function MovieCard({ movie }: MovieCardProps) {
           <div className="absolute top-2 right-2">
             <Badge variant="secondary" className="flex items-center gap-1">
               <Star className="h-3 w-3 fill-current" />
-              {movie.rating.toFixed(1)}
+              {movie.rating}
             </Badge>
           </div>
-          {!movie.available && (
+          {/* {!movie.available && (
             <div className="absolute inset-0 bg-black/60 flex items-center justify-center">
               <Badge variant="destructive" className="text-sm">
                 Rented
               </Badge>
             </div>
-          )}
+          )} */}
         </div>
         <CardContent className="p-4">
           <h3 className="font-semibold line-clamp-1">{movie.title}</h3>

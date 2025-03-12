@@ -85,7 +85,7 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <address className="not-italic text-muted-foreground">
               <p>Baku, CodeAcademy</p>
-              <p>Email: samira-bp215@code.edu.az</p>
+              <p>Email: samirah-bp215@code.edu.az</p>
               <p>Phone: (050) 622-9328</p>
             </address>
           </div>

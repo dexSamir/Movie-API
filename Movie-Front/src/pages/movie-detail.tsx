@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useMovies } from "../contexts/movie-context";
 import { useAuth } from "../contexts/auth-context";
@@ -31,7 +31,6 @@ import {
   DialogFooter,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "../components/ui/dialog";
 import {
   AlertDialog,
@@ -42,9 +41,30 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "../components/ui/alert-dialog";
 import { useToast } from "../hooks/use-toast";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+
+export interface Movie {
+  id: string;
+  title: string;
+  description: string;
+  posterUrl: string;
+  backdropUrl: string;
+  releaseDate: string;
+  genres: { genreId: number; name: string }[];
+  duration: number;
+  rating: number;
+  director: string;
+  actors: {
+    name: string;
+    character: string;
+    photoUrl?: string;
+  }[];
+  rentalPrice: number;
+  available: boolean;
+}
 
 export function MovieDetailPage() {
   const { id } = useParams<{ id: string }>();
@@ -60,23 +80,234 @@ export function MovieDetailPage() {
   } = useMovies();
   const { user } = useAuth();
 
-  const movie = getMovie(id || "");
-  const reviews = getMovieReviews(id || "");
-
+  const [movie, setMovie] = useState<Movie | null>(null);
   const [reviewText, setReviewText] = useState("");
   const [userRating, setUserRating] = useState(5);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [averageRating, setAverageRating] = useState<number | null>(null);
+  const [totalWatchCount, setTotalWatchCount] = useState<number | null>(null);
+  const [reactions, setReactions] = useState<{
+    likes: number;
+    dislikes: number;
+  }>({
+    likes: 0,
+    dislikes: 0,
+  });
 
-  if (!movie) {
-    return (
-      <div className="text-center py-16">
-        <h2 className="text-2xl font-bold mb-4">Movie not found</h2>
-        <Button onClick={() => navigate("/movies")}>Back to Movies</Button>
-      </div>
-    );
-  }
+  useEffect(() => {
+    fetch("https://localhost:7116/api/movies/getmoviebyid/" + id)
+      .then((res) => res.json())
+      .then((data: Movie) => setMovie(data))
+      .catch((error) => console.error("Failed to fetch movie:", error));
+  }, [id]);
 
-  const handleSubmitReview = () => {
+  const reviews = getMovieReviews(id || "");
+
+  const fetchAverageRating = async () => {
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/getaveragerating/${id}/average-rating`
+      );
+      const data = await response.json();
+      setAverageRating(data.averageRating);
+    } catch (error) {
+      console.error("Failed to fetch average rating:", error);
+    }
+  };
+
+  const fetchTotalWatchCount = async () => {
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/gettotalwatchcount/${id}/total-watch-count`
+      );
+      const data = await response.json();
+      setTotalWatchCount(data.totalWatchCount);
+    } catch (error) {
+      console.error("Failed to fetch total watch count:", error);
+    }
+  };
+
+  const fetchMovieReactions = async () => {
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/getmoviereactions/${id}/reactions`
+      );
+      const data = await response.json();
+      setReactions(data);
+    } catch (error) {
+      console.error("Failed to fetch movie reactions:", error);
+    }
+  };
+
+  useEffect(() => {
+    if (id) {
+      fetchAverageRating();
+      fetchTotalWatchCount();
+      fetchMovieReactions();
+    }
+  }, [id]);
+
+  const handleLikeMovie = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to like movies",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/likemovie/${id}/like`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }
+      );
+
+      if (response.ok) {
+        toast({
+          title: "Liked",
+          description: "You liked this movie",
+        });
+        fetchMovieReactions();
+      } else {
+        throw new Error("Failed to like movie");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to like movie",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDislikeMovie = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to dislike movies",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/dislikemovie/${id}/dislike`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }
+      );
+
+      if (response.ok) {
+        toast({
+          title: "Disliked",
+          description: "You disliked this movie",
+        });
+        fetchMovieReactions();
+      } else {
+        throw new Error("Failed to dislike movie");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to dislike movie",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUndoLikeMovie = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to undo like",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/undolikemovie/${id}/undo-like`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }
+      );
+
+      if (response.ok) {
+        toast({
+          title: "Like Removed",
+          description: "You removed your like from this movie",
+        });
+        fetchMovieReactions();
+      } else {
+        throw new Error("Failed to undo like");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to undo like",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleUndoDislikeMovie = async () => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to undo dislike",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/movies/undodislikemovie/${id}/undo-dislike`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }
+      );
+
+      if (response.ok) {
+        toast({
+          title: "Dislike Removed",
+          description: "You removed your dislike from this movie",
+        });
+        fetchMovieReactions();
+      } else {
+        throw new Error("Failed to undo dislike");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to undo dislike",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleSubmitReview = async () => {
     if (!user) {
       toast({
         title: "Authentication required",
@@ -97,43 +328,125 @@ export function MovieDetailPage() {
 
     setIsSubmitting(true);
 
-    // Add the review
-    addReview({
-      movieId: movie.id,
-      userId: user.id,
-      userName: user.name,
-      userAvatar: user.avatar,
-      rating: userRating,
-      comment: reviewText,
-    });
+    try {
+      const response = await fetch(
+        "https://localhost:7116/api/reviews/addreview",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            movieId: id,
+            userId: user.id,
+            userName: user.name,
+            userAvatar: user.avatar,
+            rating: userRating,
+            comment: reviewText,
+          }),
+        }
+      );
 
-    // Reset form
-    setReviewText("");
-    setUserRating(5);
-    setIsSubmitting(false);
-
-    toast({
-      title: "Review submitted",
-      description: "Thank you for your feedback!",
-    });
+      if (response.ok) {
+        toast({
+          title: "Review submitted",
+          description: "Thank you for your feedback!",
+        });
+        setReviewText("");
+        setUserRating(5);
+        getMovieReviews(id || "");
+      } else {
+        throw new Error("Failed to submit review");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit review",
+        variant: "destructive",
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleRentMovie = () => {
+  const handleLikeReview = async (reviewId: string) => {
     if (!user) {
       toast({
         title: "Authentication required",
-        description: "Please log in to rent movies",
+        description: "Please log in to like reviews",
         variant: "destructive",
       });
       return;
     }
 
-    rentMovie(movie.id, user.id);
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/reviews/likereview/${reviewId}/like`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }
+      );
 
-    toast({
-      title: "Movie rented successfully",
-      description: `You have rented ${movie.title} for 7 days.`,
-    });
+      if (response.ok) {
+        toast({
+          title: "Liked",
+          description: "You liked this review",
+        });
+        getMovieReviews(id || "");
+      } else {
+        throw new Error("Failed to like review");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to like review",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const handleDislikeReview = async (reviewId: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to dislike reviews",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `https://localhost:7116/api/reviews/dislikereview/${reviewId}/dislike`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userId: user.id }),
+        }
+      );
+
+      if (response.ok) {
+        toast({
+          title: "Disliked",
+          description: "You disliked this review",
+        });
+        getMovieReviews(id || "");
+      } else {
+        throw new Error("Failed to dislike review");
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to dislike review",
+        variant: "destructive",
+      });
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -150,9 +463,17 @@ export function MovieDetailPage() {
     return `${hours}h ${mins}m`;
   };
 
+  if (!movie) {
+    return (
+      <div className="text-center py-16">
+        <h2 className="text-2xl font-bold mb-4">Movie not found</h2>
+        <Button onClick={() => navigate("/movies")}>Back to Movies</Button>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-8">
-      {/* Movie Hero Section */}
       <div className="relative h-[500px] overflow-hidden rounded-lg">
         <img
           src={movie.backdropUrl || "/placeholder.svg"}
@@ -165,7 +486,7 @@ export function MovieDetailPage() {
           <div className="flex items-center space-x-4 mb-4">
             <div className="flex items-center">
               <Star className="h-5 w-5 text-yellow-400 fill-yellow-400 mr-1" />
-              <span>{movie.rating.toFixed(1)}/10</span>
+              <span>{averageRating?.toFixed(1) || "N/A"}/10</span>
             </div>
             <span>•</span>
             <span>{formatDate(movie.releaseDate)}</span>
@@ -174,8 +495,8 @@ export function MovieDetailPage() {
           </div>
           <div className="flex flex-wrap gap-2 mb-6">
             {movie.genres.map((genre) => (
-              <Badge key={genre} variant="secondary">
-                {genre}
+              <Badge key={genre.genreId} variant="secondary">
+                {genre.name}
               </Badge>
             ))}
           </div>
@@ -190,13 +511,14 @@ export function MovieDetailPage() {
                     <AlertDialogTitle>Confirm Rental</AlertDialogTitle>
                     <AlertDialogDescription>
                       You are about to rent "{movie.title}" for $
-                      {movie.rentalPrice.toFixed(2)}. The rental period is 7
-                      days.
+                      {movie.rentalPrice}. The rental period is 7 days.
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={handleRentMovie}>
+                    <AlertDialogAction
+                      onClick={() => rentMovie(movie.id, user?.id || "")}
+                    >
                       Confirm
                     </AlertDialogAction>
                   </AlertDialogFooter>
@@ -254,11 +576,20 @@ export function MovieDetailPage() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="lg" onClick={handleLikeMovie}>
+                <ThumbsUp className="h-5 w-5 mr-1" />{" "}
+                <span>{reactions.likes}</span>
+              </Button>
+              <Button variant="ghost" size="lg" onClick={handleDislikeMovie}>
+                <ThumbsDown className="h-5 w-5 mr-1 " />{" "}
+                <span>{reactions.dislikes}</span>
+              </Button>
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Movie Details Tabs */}
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -266,7 +597,6 @@ export function MovieDetailPage() {
           <TabsTrigger value="reviews">Reviews</TabsTrigger>
         </TabsList>
 
-        {/* Overview Tab */}
         <TabsContent value="overview" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
             <div>
@@ -303,14 +633,14 @@ export function MovieDetailPage() {
                   <Film className="h-5 w-5 mr-2 text-muted-foreground" />
                   <div>
                     <p className="text-sm text-muted-foreground">Director</p>
-                    <p>{movie.directors.join(", ")}</p>
+                    <p>{movie.director}</p>
                   </div>
                 </div>
                 <div className="flex items-center">
                   <Users className="h-5 w-5 mr-2 text-muted-foreground" />
                   <div>
                     <p className="text-sm text-muted-foreground">Genres</p>
-                    <p>{movie.genres.join(", ")}</p>
+                    <p>{movie.genres.map((genre) => genre.name).join(", ")}</p>
                   </div>
                 </div>
               </div>
@@ -318,24 +648,21 @@ export function MovieDetailPage() {
           </div>
         </TabsContent>
 
-        {/* Cast & Crew Tab */}
         <TabsContent value="cast" className="space-y-6">
           <div>
-            <h2 className="text-2xl font-semibold mb-6">Directors</h2>
+            <h2 className="text-2xl font-semibold mb-6">Director</h2>
             <div className="flex flex-wrap gap-6">
-              {movie.directors.map((director) => (
-                <div key={director} className="text-center">
-                  <Avatar className="h-24 w-24 mb-2">
-                    <AvatarImage
-                      src="/placeholder.svg?height=96&width=96"
-                      alt={director}
-                    />
-                    <AvatarFallback>{director.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <p className="font-medium">{director}</p>
-                  <p className="text-sm text-muted-foreground">Director</p>
-                </div>
-              ))}
+              <div className="text-center">
+                <Avatar className="h-24 w-24 mb-2">
+                  <AvatarImage
+                    src="/placeholder.svg?height=96&width=96"
+                    alt={movie.director}
+                  />
+                  <AvatarFallback>{movie.director}</AvatarFallback>
+                </Avatar>
+                <p className="font-medium">{movie.director}</p>
+                <p className="text-sm text-muted-foreground">Director</p>
+              </div>
             </div>
           </div>
 
@@ -346,7 +673,7 @@ export function MovieDetailPage() {
                 <div key={actor.name} className="text-center">
                   <Avatar className="h-24 w-24 mb-2">
                     <AvatarImage src={actor.photoUrl} alt={actor.name} />
-                    <AvatarFallback>{actor.name.charAt(0)}</AvatarFallback>
+                    <AvatarFallback>{actor.name}</AvatarFallback>
                   </Avatar>
                   <p className="font-medium">{actor.name}</p>
                   <p className="text-sm text-muted-foreground">
@@ -358,14 +685,10 @@ export function MovieDetailPage() {
           </div>
         </TabsContent>
 
-        {/* Reviews Tab */}
         <TabsContent value="reviews" className="space-y-6">
           <div className="flex justify-between items-center">
             <h2 className="text-2xl font-semibold">User Reviews</h2>
             <Dialog>
-              <DialogTrigger asChild>
-                <Button>Write a Review</Button>
-              </DialogTrigger>
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>Write a Review</DialogTitle>
@@ -480,9 +803,7 @@ export function MovieDetailPage() {
                           src={review.userAvatar}
                           alt={review.userName}
                         />
-                        <AvatarFallback>
-                          {review.userName.charAt(0)}
-                        </AvatarFallback>
+                        <AvatarFallback>{review.userName}</AvatarFallback>
                       </Avatar>
                       <div>
                         <p className="font-medium">{review.userName}</p>
@@ -512,7 +833,7 @@ export function MovieDetailPage() {
                       variant="ghost"
                       size="sm"
                       className={review.userLiked ? "text-primary" : ""}
-                      onClick={() => likeReview(review.id)}
+                      onClick={() => handleLikeReview(review.id)}
                     >
                       <ThumbsUp className="h-4 w-4 mr-1" />
                       <span>{review.likes}</span>
@@ -521,7 +842,7 @@ export function MovieDetailPage() {
                       variant="ghost"
                       size="sm"
                       className={review.userDisliked ? "text-primary" : ""}
-                      onClick={() => dislikeReview(review.id)}
+                      onClick={() => handleDislikeReview(review.id)}
                     >
                       <ThumbsDown className="h-4 w-4 mr-1" />
                       <span>{review.dislikes}</span>

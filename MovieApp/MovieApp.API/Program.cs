@@ -53,12 +53,14 @@ public class Program
 
         builder.Services.AddCors(options =>
         {
-            options.AddPolicy("AllowReactApp",
-                builder => builder
-                    .WithOrigins(corsOrigins)
-                    .AllowAnyHeader()
-                    .AllowAnyMethod());
+            options.AddPolicy("AllowAll", policy =>
+            {
+                policy.AllowAnyOrigin()
+                      .AllowAnyMethod()
+                      .AllowAnyHeader();
+            });
         });
+
 
         builder.Services.AddAuth(builder.Configuration);
         builder.Services.AddJwtOptions(builder.Configuration);
@@ -87,6 +89,7 @@ public class Program
                 opt.EnablePersistAuthorization();
             });
         }
+        app.UseCors("AllowAll");
 
         app.UseHttpsRedirection();
 
