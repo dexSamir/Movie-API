@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "react-router-dom";
 
 export function Footer() {
   return (
@@ -8,7 +8,8 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">MovieRental</h3>
             <p className="text-muted-foreground">
-              Your one-stop destination for renting the latest and greatest movies.
+              Your one-stop destination for renting the latest and greatest
+              movies.
             </p>
           </div>
 
@@ -16,17 +17,26 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>
-                <Link to="/movies" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/movies"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Movies
                 </Link>
               </li>
               <li>
-                <Link to="/rentals" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/rentals"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   My Rentals
                 </Link>
               </li>
@@ -37,22 +47,34 @@ export function Footer() {
             <h3 className="text-lg font-semibold mb-4">Genres</h3>
             <ul className="space-y-2">
               <li>
-                <Link to="/movies?genre=action" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/movies?genre=action"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Action
                 </Link>
               </li>
               <li>
-                <Link to="/movies?genre=comedy" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/movies?genre=comedy"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Comedy
                 </Link>
               </li>
               <li>
-                <Link to="/movies?genre=drama" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/movies?genre=drama"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Drama
                 </Link>
               </li>
               <li>
-                <Link to="/movies?genre=sci-fi" className="text-muted-foreground hover:text-primary transition-colors">
+                <Link
+                  to="/movies?genre=sci-fi"
+                  className="text-muted-foreground hover:text-primary transition-colors"
+                >
                   Sci-Fi
                 </Link>
               </li>
@@ -62,19 +84,19 @@ export function Footer() {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <address className="not-italic text-muted-foreground">
-              <p>123 Movie Street</p>
-              <p>Hollywood, CA 90210</p>
-              <p>Email: info@movierental.com</p>
-              <p>Phone: (123) 456-7890</p>
+              <p>Baku, CodeAcademy</p>
+              <p>Email: samira-bp215@code.edu.az</p>
+              <p>Phone: (050) 622-9328</p>
             </address>
           </div>
         </div>
 
         <div className="mt-8 pt-6 border-t text-center text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} MovieRental. All rights reserved.</p>
+          <p>
+            &copy; {new Date().getFullYear()} MovieRental. All rights reserved.
+          </p>
         </div>
       </div>
     </footer>
-  )
+  );
 }
-

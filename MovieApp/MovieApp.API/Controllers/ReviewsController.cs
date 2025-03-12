@@ -38,7 +38,7 @@ public class ReviewsController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetReviewsByMovie([FromQuery] int movieId)
+    public async Task<IActionResult> GetReviewsByMovie(int movieId)
     {
         return Ok(await _service.GetReviewsByMovieAsync(movieId));
     }

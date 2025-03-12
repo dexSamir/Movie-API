@@ -1,17 +1,28 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.API/Controllers/ReviewsController.cs">
+    <Files>
+      <File FileName="MovieApp.BL/Services/Implements/MovieService.cs" />
+      <File FileName="MovieApp.API/Controllers/ReviewsController.cs" Line="40" Column="14" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MovieApp" expanded="True">
-            <Node name="MovieApp.BL" expanded="True" />
+            <Node name="MovieApp.API" expanded="True">
+              <Node name="Controllers" expanded="True">
+                <Node name="ReviewsController.cs" selected="True" />
+              </Node>
+            </Node>
+            <Node name="MovieApp.BL" expanded="True">
+              <Node name="Services" expanded="True">
+                <Node name="Implements" expanded="True" />
+              </Node>
+            </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="352" column="1" />
@@ -20,6 +31,8 @@
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="62" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

@@ -21,11 +21,9 @@ export function HomePage() {
 
   useEffect(() => {
     if (movies.length > 0) {
-      // Featured movies (random selection)
       const featured = [...movies].sort(() => 0.5 - Math.random()).slice(0, 3);
       setFeaturedMovies(featured);
 
-      // New releases (sort by release date)
       const releases = [...movies]
         .sort(
           (a, b) =>
@@ -35,7 +33,6 @@ export function HomePage() {
         .slice(0, 6);
       setNewReleases(releases);
 
-      // Top rated (sort by rating)
       const rated = [...movies].sort((a, b) => b.rating - a.rating).slice(0, 6);
       setTopRated(rated);
     }
@@ -49,7 +46,6 @@ export function HomePage() {
 
   return (
     <div className="space-y-12">
-      {/* Hero Section with Featured Movies */}
       <section>
         <Carousel className="w-full">
           <CarouselContent>
@@ -85,7 +81,6 @@ export function HomePage() {
         </Carousel>
       </section>
 
-      {/* New Releases Section */}
       <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold">New Releases</h2>
@@ -100,7 +95,6 @@ export function HomePage() {
         </div>
       </section>
 
-      {/* Top Rated Section */}
       <section>
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-3xl font-bold">Top Rated</h2>

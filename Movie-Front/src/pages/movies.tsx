@@ -1,8 +1,6 @@
 "use client";
 
-import type React from "react";
-
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useMovies } from "../contexts/movie-context";
 import { MovieCard } from "../components/movie-card";
@@ -34,7 +32,6 @@ export function MoviesPage() {
     searchParams.get("available") === "true"
   );
 
-  // Extract unique genres from all movies
   const allGenres = movies
     .reduce((genres, movie) => {
       movie.genres.forEach((genre) => {
@@ -50,7 +47,6 @@ export function MoviesPage() {
     if (!isLoading) {
       let filtered = [...movies];
 
-      // Apply search filter
       if (searchTerm) {
         filtered = filtered.filter(
           (movie) =>
@@ -66,12 +62,10 @@ export function MoviesPage() {
         );
       }
 
-      // Apply availability filter
       if (showAvailableOnly) {
         filtered = filtered.filter((movie) => movie.available);
       }
 
-      // Apply sorting
       switch (sortBy) {
         case "title":
           filtered.sort((a, b) => a.title.localeCompare(b.title));
@@ -122,7 +116,6 @@ export function MoviesPage() {
       <h1 className="text-3xl font-bold mb-8">Browse Movies</h1>
 
       <div className="grid grid-cols-1 md:grid-cols-[250px_1fr] gap-8">
-        {/* Filters Sidebar */}
         <div className="space-y-6">
           <div>
             <h3 className="text-lg font-semibold mb-4">Filters</h3>
@@ -201,7 +194,6 @@ export function MoviesPage() {
           </div>
         </div>
 
-        {/* Movies Grid */}
         <div>
           {filteredMovies.length === 0 ? (
             <div className="text-center py-12">

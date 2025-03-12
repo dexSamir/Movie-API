@@ -74,7 +74,6 @@ export function MovieProvider({ children }: { children: React.ReactNode }) {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // In a real app, you would fetch this data from an API
     setMovies(mockMovies)
 
     // Mock reviews
@@ -269,4 +268,3 @@ export function useMovies() {
   }
   return context
 }
-
