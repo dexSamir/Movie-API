@@ -1,7 +1,5 @@
 "use client";
 
-import type React from "react";
-
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../contexts/auth-context";
@@ -19,8 +17,9 @@ import {
 import { useToast } from "../hooks/use-toast";
 
 export function LoginPage() {
-  const [email, setEmail] = useState("");
+  const [usernameOrEmail, setUsernameOrEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const { login, isLoading, error } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
@@ -28,12 +27,20 @@ export function LoginPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    await login(email, password);
-    toast({
-      title: "Login successful",
-      description: "Welcome back!",
-    });
-    navigate("/");
+    try {
+      await login(usernameOrEmail, password, rememberMe);
+      toast({
+        title: "Login successful",
+        description: "Welcome back!",
+      });
+      navigate("/");
+    } catch (err) {
+      toast({
+        title: "Login failed",
+        description: error || "An error occurred",
+        variant: "destructive",
+      });
+    }
   };
 
   return (
@@ -48,13 +55,13 @@ export function LoginPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="usernameOrEmail">Username or Email</Label>
               <Input
-                id="email"
-                type="email"
-                placeholder="name@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                id="usernameOrEmail"
+                type="text"
+                placeholder="username or email"
+                value={usernameOrEmail}
+                onChange={(e) => setUsernameOrEmail(e.target.value)}
                 required
               />
             </div>
@@ -76,6 +83,15 @@ export function LoginPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+            </div>
+            <div className="flex items-center space-x-2">
+              <input
+                type="checkbox"
+                id="rememberMe"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+              />
+              <Label htmlFor="rememberMe">Remember me</Label>
             </div>
             {error && <div className="text-destructive text-sm">{error}</div>}
             <Button type="submit" className="w-full" disabled={isLoading}>

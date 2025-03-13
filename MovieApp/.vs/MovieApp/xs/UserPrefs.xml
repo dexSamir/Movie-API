@@ -1,4 +1,5 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
+  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="352" column="1" />
@@ -6,26 +7,24 @@
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/HistoryService.cs" relfile="MovieApp.BL/Services/Implements/HistoryService.cs" line="66" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MultiItemStartupConfigurations />
-  <MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.API/Controllers/AuthsController.cs">
+    <Files>
+      <File FileName="MovieApp.BL/DTOs/UserDtos/LoginDto.cs" Line="10" Column="1" />
+      <File FileName="MovieApp.BL/DTOs/UserDtos/RegisterDto.cs" Line="16" Column="1" />
+      <File FileName="MovieApp.API/Controllers/AuthsController.cs" Line="6" Column="25" />
+    </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MovieApp" expanded="True">
             <Node name="MovieApp.API">
-              <Node name="wwwroot">
-                <Node name="imgs">
-                  <Node name="Movies">
-                    <Node name="trailers" selected="True" />
-                  </Node>
-                </Node>
+              <Node name="Controllers" expanded="True">
+                <Node name="AuthsController.cs" selected="True" />
               </Node>
             </Node>
             <Node name="MovieApp.BL" expanded="True">
               <Node name="DTOs" expanded="True">
-                <Node name="ActorDtos" expanded="True" />
+                <Node name="UserDtos" expanded="True" />
               </Node>
               <Node name="Profiles" expanded="True" />
             </Node>
@@ -37,5 +36,7 @@
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

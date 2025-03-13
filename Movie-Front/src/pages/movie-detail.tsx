@@ -45,6 +45,7 @@ import {
 import { useToast } from "../hooks/use-toast";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { AlertDialogTrigger } from "@radix-ui/react-alert-dialog";
+import axios from "axios";
 
 export interface Movie {
   id: string;
@@ -162,22 +163,17 @@ export function MovieDetailPage() {
         description: "Please log in to like movies",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7116/api/movies/likemovie/${id}/like`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }
+      const response = await axios.post(
+        `https://localhost:7116/api/Movies/LikeMovie/${id}/like`,
+        { userId: user.id }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Liked",
           description: "You liked this movie",
@@ -202,22 +198,17 @@ export function MovieDetailPage() {
         description: "Please log in to dislike movies",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7116/api/movies/dislikemovie/${id}/dislike`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }
+      const response = await axios.post(
+        `https://localhost:7116/api/Movies/DislikeMovie/${id}/dislike`,
+        { userId: user.id }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Disliked",
           description: "You disliked this movie",
@@ -242,22 +233,17 @@ export function MovieDetailPage() {
         description: "Please log in to undo like",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7116/api/movies/undolikemovie/${id}/undo-like`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }
+      const response = await axios.post(
+        `https://localhost:7116/api/Movies/UndoLikeMovie/${id}/undo-like`,
+        { userId: user.id }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Like Removed",
           description: "You removed your like from this movie",
@@ -282,22 +268,17 @@ export function MovieDetailPage() {
         description: "Please log in to undo dislike",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7116/api/movies/undodislikemovie/${id}/undo-dislike`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }
+      const response = await axios.post(
+        `https://localhost:7116/api/Movies/UndoDislikeMovie/${id}/undo-dislike`,
+        { userId: user.id }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Dislike Removed",
           description: "You removed your dislike from this movie",
@@ -322,6 +303,7 @@ export function MovieDetailPage() {
         description: "Please log in to submit a review",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
@@ -337,25 +319,19 @@ export function MovieDetailPage() {
     setIsSubmitting(true);
 
     try {
-      const response = await fetch(
+      const response = await axios.post(
         "https://localhost:7116/api/reviews/addreview",
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            movieId: id,
-            userId: user.id,
-            userName: user.name,
-            userAvatar: user.avatar,
-            rating: userRating,
-            comment: reviewText,
-          }),
+          movieId: id,
+          userId: user.id,
+          userName: user.name,
+          userAvatar: user.avatar,
+          rating: userRating,
+          comment: reviewText,
         }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Review submitted",
           description: "Thank you for your feedback!",
@@ -384,22 +360,17 @@ export function MovieDetailPage() {
         description: "Please log in to like reviews",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7116/api/reviews/likereview/${reviewId}/like`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }
+      const response = await axios.post(
+        `https://localhost:7116/api/Reviews/LikeReview/${reviewId}/like`,
+        { userId: user.id }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Liked",
           description: "You liked this review",
@@ -424,22 +395,17 @@ export function MovieDetailPage() {
         description: "Please log in to dislike reviews",
         variant: "destructive",
       });
+      navigate("/login");
       return;
     }
 
     try {
-      const response = await fetch(
-        `https://localhost:7116/api/reviews/dislikereview/${reviewId}/dislike`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ userId: user.id }),
-        }
+      const response = await axios.post(
+        `https://localhost:7116/api/Reviews/DislikeReview/${reviewId}/dislike`,
+        { userId: user.id }
       );
 
-      if (response.ok) {
+      if (response.status === 200) {
         toast({
           title: "Disliked",
           description: "You disliked this review",

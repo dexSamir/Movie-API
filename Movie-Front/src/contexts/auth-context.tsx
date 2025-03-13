@@ -1,104 +1,148 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { createContext, useContext, useState, useEffect } from "react"
+import { createContext, useContext, useState, useEffect } from "react";
 
 interface User {
-  id: string
-  name: string
-  email: string
-  avatar?: string
+  id: string;
+  name: string;
+  email: string;
+  avatar?: string;
 }
 
 interface AuthContextType {
-  user: User | null
-  login: (email: string, password: string) => Promise<void>
-  register: (name: string, email: string, password: string) => Promise<void>
-  logout: () => void
-  isLoading: boolean
-  error: string | null
+  user: User | null;
+  login: (usernameOrEmail: string, password: string, rememberMe: boolean) => Promise<void>;
+  register: (
+    profileUrl: File | null,
+    userName: string,
+    password: string,
+    email: string,
+    name: string,
+    surname: string,
+    birthDate: string,
+    isMale: boolean
+  ) => Promise<void>;
+  logout: () => void;
+  isLoading: boolean;
+  error: string | null;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined)
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null)
-  const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
+  const [user, setUser] = useState<User | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    // Check if user is logged in
-    const storedUser = localStorage.getItem("user")
+    const storedUser = localStorage.getItem("user");
     if (storedUser) {
-      setUser(JSON.parse(storedUser))
+      setUser(JSON.parse(storedUser));
     }
-    setIsLoading(false)
-  }, [])
+  }, []);
 
-  const login = async (email: string, password: string) => {
-    setIsLoading(true)
-    setError(null)
+  const login = async (usernameOrEmail: string, password: string, rememberMe: boolean) => {
+    setIsLoading(true);
+    setError(null);
 
     try {
-      // In a real app, you would make an API call here
-      // This is a mock implementation
-      if (email === "user@example.com" && password === "password") {
-        const user = {
-          id: "1",
-          name: "John Doe",
-          email: "user@example.com",
-          avatar: "/placeholder.svg?height=32&width=32",
-        }
-        setUser(user)
-        localStorage.setItem("user", JSON.stringify(user))
-      } else {
-        throw new Error("Invalid email or password")
+      const response = await fetch("https://localhost:7116/api/Auths/Login/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ usernameOrEmail, password, rememberMe }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Invalid username/email or password");
       }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
-    } finally {
-      setIsLoading(false)
-    }
-  }
 
-  const register = async (name: string, email: string, password: string) => {
-    setIsLoading(true)
-    setError(null)
-
-    try {
-      // In a real app, you would make an API call here
-      // This is a mock implementation
+      const data = await response.json();
       const user = {
-        id: "1",
-        name,
-        email,
-        avatar: "/placeholder.svg?height=32&width=32",
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        avatar: data.avatar,
+      };
+      setUser(user);
+      if (rememberMe) {
+        localStorage.setItem("user", JSON.stringify(user));
       }
-      setUser(user)
-      localStorage.setItem("user", JSON.stringify(user))
     } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred")
+      setError(err instanceof Error ? err.message : "An error occurred");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
+
+  const register = async (
+    profileUrl: File | null,
+    userName: string,
+    password: string,
+    email: string,
+    name: string,
+    surname: string,
+    birthDate: string,
+    isMale: boolean
+  ) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const formData = new FormData();
+      if (profileUrl) {
+        formData.append("ProfileUrl", profileUrl);
+      }
+      formData.append("UserName", userName);
+      formData.append("Password", password);
+      formData.append("Email", email);
+      formData.append("Name", name);
+      formData.append("Surname", surname);
+      formData.append("BirthDate", birthDate);
+      formData.append("IsMale", isMale.toString());
+
+      const response = await fetch("https://localhost:7116/api/Auths/Register/register", {
+        method: "POST",
+        body: formData,
+      });
+
+      if (!response.ok) {
+        throw new Error("Registration failed");
+      }
+
+      const data = await response.json();
+      const user = {
+        id: data.id,
+        name: data.name,
+        email: data.email,
+        avatar: data.avatar,
+      };
+      setUser(user);
+      localStorage.setItem("user", JSON.stringify(user));
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred");
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   const logout = () => {
-    setUser(null)
-    localStorage.removeItem("user")
-  }
+    setUser(null);
+    localStorage.removeItem("user");
+  };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isLoading, error }}>{children}</AuthContext.Provider>
-  )
+    <AuthContext.Provider value={{ user, login, register, logout, isLoading, error }}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext)
+  const context = useContext(AuthContext);
   if (context === undefined) {
-    throw new Error("useAuth must be used within an AuthProvider")
+    throw new Error("useAuth must be used within an AuthProvider");
   }
-  return context
+  return context;
 }
-

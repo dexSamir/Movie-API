@@ -19,38 +19,38 @@ public class ReviewsController : ControllerBase
         return Ok(await _service.AddReviewAsync(dto));
     }
 
-    [HttpPut]
-    public async Task<IActionResult> UpdateReview([FromQuery] int reviewId, [FromBody] ReviewUpdateDto dto)
+    [HttpPut("reviewId")]
+    public async Task<IActionResult> UpdateReview(int reviewId, [FromBody] ReviewUpdateDto dto)
     {
         return Ok(await _service.UpdateReviewAsync( reviewId, dto));
     }
 
-    [HttpDelete]
-    public async Task<IActionResult> DeleteReview([FromQuery] int reviewId)
+    [HttpDelete("reviewId")]
+    public async Task<IActionResult> DeleteReview(int reviewId)
     {
         return Ok(await _service.DeleteReviewAsync(reviewId));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetReviewById([FromQuery] int reviewId)
+    [HttpGet("reviewId")]
+    public async Task<IActionResult> GetReviewById(int reviewId)
     {
         return Ok(await _service.GetReviewByIdAsync(reviewId));
     }
 
-    [HttpGet]
+    [HttpGet("movieId")]
     public async Task<IActionResult> GetReviewsByMovie(int movieId)
     {
         return Ok(await _service.GetReviewsByMovieAsync(movieId));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetReviewsBySerie([FromQuery] int serieId)
+    [HttpGet("serieId")]
+    public async Task<IActionResult> GetReviewsBySerie(int serieId)
     {
         return Ok(await _service.GetReviewsBySerieAsync(serieId));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetReviewsByEpisode([FromQuery] int episodeId)
+    [HttpGet("episodeId")]
+    public async Task<IActionResult> GetReviewsByEpisode(int episodeId)
     {
         return Ok(await _service.GetReviewsByEpisodeAsync(episodeId));
     }
@@ -61,38 +61,38 @@ public class ReviewsController : ControllerBase
         return Ok(await _service.GetReviewsByUserAsync());
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetRepliesByReview([FromQuery] int parentReviewId)
+    [HttpGet("parentReviewId")]
+    public async Task<IActionResult> GetRepliesByReview(int parentReviewId)
     {
         return Ok(await _service.GetRepliesByReviewAsync(parentReviewId));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> LikeReview([FromQuery] int reviewId)
+    [HttpPost("reviewId")]
+    public async Task<IActionResult> LikeReview(int reviewId)
     {
         return Ok(await _service.LikeReviewAsync(reviewId));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> DislikeReview([FromQuery] int reviewId)
+    [HttpPost("reviewId")]
+    public async Task<IActionResult> DislikeReview(int reviewId)
     {
         return Ok(await _service.DislikeReviewAsync(reviewId));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UndoLikeReview([FromQuery] int reviewId)
+    [HttpPost("reviewId")]
+    public async Task<IActionResult> UndoLikeReview(int reviewId)
     {
         return Ok(await _service.UndoLikeReviewAsync(reviewId));
     }
 
-    [HttpPost]
-    public async Task<IActionResult> UndoDislikeReview([FromQuery] int reviewId)
+    [HttpPost("reviewId")]
+    public async Task<IActionResult> UndoDislikeReview(int reviewId)
     {
         return Ok(await _service.UndoDislikeReviewAsync(reviewId));
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetReviewReactionCount([FromQuery] int reviewId)
+    [HttpGet("reviewId")]
+    public async Task<IActionResult> GetReviewReactionCount(int reviewId)
     {
         return Ok(await _service.GetReviewReactionCountAsync(reviewId));
     }
