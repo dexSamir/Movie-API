@@ -30,6 +30,6 @@ export function useGenres() {
 
     fetchGenres();
   }, []);
-
+  
   return { genres, isLoading, error };
 }

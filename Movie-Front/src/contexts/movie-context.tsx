@@ -7,7 +7,7 @@ export interface Movie {
   title: string;
   description: string;
   posterUrl: string;
-  backdropUrl: string;
+  trailerUrl: string;
   releaseDate: string;
   genres: string[];
   duration: number;

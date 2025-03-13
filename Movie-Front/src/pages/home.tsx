@@ -46,38 +46,42 @@ export function HomePage() {
 
   return (
     <div className="space-y-12">
-      <section>
-        <Carousel className="w-full">
+      <section className="relative h-[600px] w-full overflow-hidden">
+        <Carousel className="w-full h-full">
           <CarouselContent>
             {featuredMovies.map((movie) => (
-              <CarouselItem key={movie.id}>
-                <div className="relative h-[500px] w-full overflow-hidden rounded-lg">
-                  <img
-                    src={movie.backdropUrl || "/placeholder.svg"}
-                    alt={movie.title}
-                    className="w-full h-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent" />
-                  <div className="absolute bottom-0 left-0 p-8 text-white">
-                    <h2 className="text-4xl font-bold mb-2">{movie.title}</h2>
-                    <p className="text-lg mb-4 max-w-2xl">
-                      {movie.description}
-                    </p>
-                    <div className="flex space-x-4">
-                      <Button asChild>
-                        <Link to={`/movies/${movie.id}`}>Watch Now</Link>
-                      </Button>
-                      <Button variant="outline">
-                        <Link to={`/movies/${movie.id}`}>More Info</Link>
-                      </Button>
-                    </div>
+              <CarouselItem key={movie.id} className="relative h-[600px]">
+                <video
+                  src={`https://localhost:7116/imgs/Movies/trailers/${movie.trailerUrl}`}
+                  autoPlay
+                  muted
+                  loop
+                  className="absolute inset-0 w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-transparent" />
+                <div className="absolute bottom-0 left-0 p-8 text-white max-w-3xl">
+                  <h2 className="text-5xl font-bold mb-4">{movie.title}</h2>
+                  <p className="text-lg mb-6">{movie.description}</p>
+                  <div className="flex space-x-4">
+                    <Button
+                      asChild
+                      className="bg-white text-black hover:bg-white/90"
+                    >
+                      <Link to={`/movies/${movie.id}`}>Play</Link>
+                    </Button>
+                    <Button
+                      variant="outline"
+                      className="bg-transparent border-white text-white hover:bg-white/10"
+                    >
+                      <Link to={`/movies/${movie.id}`}>More Info</Link>
+                    </Button>
                   </div>
                 </div>
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="left-4" />
-          <CarouselNext className="right-4" />
+          <CarouselPrevious className="left-4 text-white hover:bg-white/10" />
+          <CarouselNext className="right-4 text-white hover:bg-white/10" />
         </Carousel>
       </section>
 

@@ -51,16 +51,16 @@ export interface Movie {
   title: string;
   description: string;
   posterUrl: string;
-  backdropUrl: string;
+  trailerUrl: string;
   releaseDate: string;
   genres: { genreId: number; name: string }[];
   duration: number;
   rating: number;
-  director: string;
+  directorName: string;
   actors: {
-    name: string;
-    character: string;
-    photoUrl?: string;
+    fullname: string;
+    actorId: number;
+    profilePhotoUrl: string;
   }[];
   rentalPrice: number;
   available: boolean;
@@ -86,6 +86,7 @@ export function MovieDetailPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [totalWatchCount, setTotalWatchCount] = useState<number | null>(null);
+  const [actors, setActors] = useState([]);
   const [reactions, setReactions] = useState<{
     likes: number;
     dislikes: number;
@@ -99,6 +100,13 @@ export function MovieDetailPage() {
       .then((res) => res.json())
       .then((data: Movie) => setMovie(data))
       .catch((error) => console.error("Failed to fetch movie:", error));
+  }, [id]);
+
+  useEffect(() => {
+    fetch("https://localhost:7116/api/actors/getall")
+      .then((res) => res.json())
+      .then((data) => setActors(data))
+      .catch((error) => console.error("Failed to fetch actor:", error));
   }, [id]);
 
   const reviews = getMovieReviews(id || "");
@@ -474,14 +482,17 @@ export function MovieDetailPage() {
 
   return (
     <div className="space-y-8">
-      <div className="relative h-[500px] overflow-hidden rounded-lg">
-        <img
-          src={movie.backdropUrl || "/placeholder.svg"}
-          alt={movie.title}
-          className="w-full h-full object-cover"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/50 to-transparent" />
-        <div className="absolute bottom-0 left-0 p-8 text-white">
+      <div className="space-y-8">
+        <div className="h-[500px] overflow-hidden rounded-lg w-11/12 mx-auto ">
+          <video
+            src={`https://localhost:7116/imgs/Movies/trailers/${movie.trailerUrl}`}
+            controls
+            className="w-full h-full object-cover"
+            poster={`https://localhost:7116/imgs/Movies/posters/${movie.posterUrl}`} 
+          />
+        </div>
+
+        <div className="p-8">
           <h1 className="text-4xl font-bold mb-2">{movie.title}</h1>
           <div className="flex items-center space-x-4 mb-4">
             <div className="flex items-center">
@@ -589,7 +600,6 @@ export function MovieDetailPage() {
           </div>
         </div>
       </div>
-
       <Tabs defaultValue="overview" className="w-full">
         <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="overview">Overview</TabsTrigger>
@@ -601,7 +611,7 @@ export function MovieDetailPage() {
           <div className="grid grid-cols-1 md:grid-cols-[300px_1fr] gap-8">
             <div>
               <img
-                src={movie.posterUrl || "/placeholder.svg"}
+                src={`https://localhost:7116/imgs/Movies/posters/${movie.posterUrl}`}
                 alt={movie.title}
                 className="w-full rounded-lg shadow-lg"
               />
@@ -633,7 +643,7 @@ export function MovieDetailPage() {
                   <Film className="h-5 w-5 mr-2 text-muted-foreground" />
                   <div>
                     <p className="text-sm text-muted-foreground">Director</p>
-                    <p>{movie.director}</p>
+                    <p>{movie.directorName}</p>
                   </div>
                 </div>
                 <div className="flex items-center">
@@ -656,11 +666,11 @@ export function MovieDetailPage() {
                 <Avatar className="h-24 w-24 mb-2">
                   <AvatarImage
                     src="/placeholder.svg?height=96&width=96"
-                    alt={movie.director}
+                    alt={movie.directorName}
                   />
-                  <AvatarFallback>{movie.director}</AvatarFallback>
+                  <AvatarFallback>{movie.directorName}</AvatarFallback>
                 </Avatar>
-                <p className="font-medium">{movie.director}</p>
+                <p className="font-medium">{movie.directorName}</p>
                 <p className="text-sm text-muted-foreground">Director</p>
               </div>
             </div>
@@ -669,16 +679,16 @@ export function MovieDetailPage() {
           <div>
             <h2 className="text-2xl font-semibold mb-6">Cast</h2>
             <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6">
-              {movie.actors.map((actor) => (
-                <div key={actor.name} className="text-center">
+              {movie.actors.map((data) => (
+                <div key={data.fullname} className="text-start">
                   <Avatar className="h-24 w-24 mb-2">
-                    <AvatarImage src={actor.photoUrl} alt={actor.name} />
-                    <AvatarFallback>{actor.name}</AvatarFallback>
+                    <AvatarFallback>{data.fullname}</AvatarFallback>
+                    <AvatarImage
+                      src={`https://localhost:7116/imgs/actors/${data.profilePhotoUrl}`}
+                      alt={data.profilePhotoUrl}
+                    />
                   </Avatar>
-                  <p className="font-medium">{actor.name}</p>
-                  <p className="text-sm text-muted-foreground">
-                    {actor.character}
-                  </p>
+                  <p className="font-medium inline">{data.fullname}</p>
                 </div>
               ))}
             </div>

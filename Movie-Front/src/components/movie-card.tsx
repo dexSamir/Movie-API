@@ -14,7 +14,7 @@ export function MovieCard({ movie }: MovieCardProps) {
       <Link to={`/movies/${movie.id}`}>
         <div className="relative aspect-[2/3] overflow-hidden">
           <img
-            src={movie.posterUrl || "/placeholder.svg"}
+            src={`https://localhost:7116/imgs/Movies/posters/${movie.posterUrl}`}
             alt={movie.title}
             className="w-full h-full object-cover transition-transform hover:scale-105"
           />

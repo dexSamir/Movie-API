@@ -1,36 +1,41 @@
 ﻿<Properties StartupConfiguration="{9FFFBFA6-6C81-426B-9A11-869BB339CF68}|https">
-  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
-  <MultiItemStartupConfigurations />
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="352" column="1" />
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/OtherServices/Implements/MovieWatchProgressStrategy.cs" relfile="MovieApp.BL/OtherServices/Implements/MovieWatchProgressStrategy.cs" line="24" column="1" />
       <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/HistoryService.cs" relfile="MovieApp.BL/Services/Implements/HistoryService.cs" line="66" column="1" />
-      <Breakpoint file="/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.BL/Services/Implements/MovieService.cs" relfile="MovieApp.BL/Services/Implements/MovieService.cs" line="62" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.ItemProperties.MovieApp.API PreferredExecutionTarget="/Applications/Google Chrome.app" />
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
-  <MonoDevelop.Ide.Workbench ActiveDocument="MovieApp.API/Controllers/ReviewsController.cs">
-    <Files>
-      <File FileName="MovieApp.BL/Services/Implements/MovieService.cs" />
-      <File FileName="MovieApp.API/Controllers/ReviewsController.cs" Line="40" Column="14" />
-    </Files>
+  <MultiItemStartupConfigurations />
+  <MonoDevelop.Ide.Workbench>
     <Pads>
       <Pad Id="ProjectPad">
         <State name="__root__">
           <Node name="MovieApp" expanded="True">
-            <Node name="MovieApp.API" expanded="True">
-              <Node name="Controllers" expanded="True" />
+            <Node name="MovieApp.API">
+              <Node name="wwwroot">
+                <Node name="imgs">
+                  <Node name="Movies">
+                    <Node name="trailers" selected="True" />
+                  </Node>
+                </Node>
+              </Node>
             </Node>
             <Node name="MovieApp.BL" expanded="True">
-              <Node name="Services" expanded="True">
-                <Node name="Implements" expanded="True" />
+              <Node name="DTOs" expanded="True">
+                <Node name="ActorDtos" expanded="True" />
               </Node>
+              <Node name="Profiles" expanded="True" />
+            </Node>
+            <Node name="MovieApp.Core" expanded="True">
+              <Node name="Entities" expanded="True" />
             </Node>
           </Node>
         </State>
       </Pad>
     </Pads>
   </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
