@@ -1,7 +1,6 @@
 "use client";
 
 import type React from "react";
-
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
@@ -16,16 +15,38 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "../components/ui/avatar";
 import { useState } from "react";
 import { Search, User, LogOut } from "lucide-react";
+import axios from "axios";
 
 export function Navbar() {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = useState("");
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = async (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      navigate(`/movies?search=${encodeURIComponent(searchQuery)}`);
+      try {
+        const response = await axios.get(
+          `https://localhost:7116/api/Movies/GetMoviesByTitle/title/${encodeURIComponent(
+            searchQuery
+          )}`
+        );
+
+        if (response.data && response.data.length > 0) {
+          navigate(`/movies?search=${encodeURIComponent(searchQuery)}`, {
+            state: { searchResults: response.data }, 
+          });
+        } else {
+          navigate(`/movies?search=${encodeURIComponent(searchQuery)}`, {
+            state: { searchResults: [] }, 
+          });
+        }
+      } catch (error) {
+        console.error("error", error);
+        navigate(`/movies?search=${encodeURIComponent(searchQuery)}`, {
+          state: { searchResults: [] }, 
+        });
+      }
     }
   };
 
@@ -87,8 +108,8 @@ export function Navbar() {
                     className="relative h-8 w-8 rounded-full"
                   >
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.avatar} alt={user.name} />
-                      <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+                      <AvatarImage src={user.avatar} alt={user.Name} />
+                      <AvatarFallback>{user.Name}</AvatarFallback>
                     </Avatar>
                   </Button>
                 </DropdownMenuTrigger>

@@ -45,7 +45,6 @@ public class AuthService : IAuthService
 
         var result = await _signInManager.PasswordSignInAsync(user, dto.Password, dto.RememberMe, true);
 
-        //Buna exception qoy da gijd. 
         if (!result.Succeeded)
             throw new NotFoundException<User>(); 
         return _tokenHandler.CreateToken(user, 12);

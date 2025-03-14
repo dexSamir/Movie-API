@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using MovieApp.BL.DTOs.UserDtos;
 using MovieApp.BL.Services.Interfaces;
+using NuGet.Common;
 
 namespace MovieApp.API.Controllers;
 [Route("api/[controller]/[action]")]
@@ -16,7 +17,8 @@ public class AuthsController : ControllerBase
     [HttpPost("login")]
     public async Task<IActionResult> LoginAsync([FromBody] LoginDto dto)
     {
-        return Ok(await _service.LoginAsync(dto));
+        string token = await _service.LoginAsync(dto);
+        return Ok(new { token });
     }
 
     [HttpPost("register")]

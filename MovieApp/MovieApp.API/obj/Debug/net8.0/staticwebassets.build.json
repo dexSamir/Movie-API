@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "EKLyRKgJ99s7Sib8/LgnsbIKGJwN6+F8Vgc7DteOpkE=",
+  "Hash": "Il89l+jDLLNLniz/pJgROdicaKbf4iHaL4QM46AALFQ=",
   "Source": "MovieApp.API",
   "BasePath": "_content/MovieApp.API",
   "Mode": "Default",
@@ -3532,6 +3532,25 @@
       "OriginalItemSpec": "wwwroot/imgs/Movies/trailers/ylanjydh.x0v.mp4"
     },
     {
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/0kryzqt5.gpz.jpg",
+      "SourceId": "MovieApp.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "RelativePath": "imgs/users/0kryzqt5.gpz.jpg",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/imgs/users/0kryzqt5.gpz.jpg"
+    },
+    {
       "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/0tr0q2xb.24p.png",
       "SourceId": "MovieApp.API",
       "SourceType": "Discovered",
@@ -3549,6 +3568,25 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot/imgs/users/0tr0q2xb.24p.png"
+    },
+    {
+      "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/1hiv3asi.vot.webp",
+      "SourceId": "MovieApp.API",
+      "SourceType": "Discovered",
+      "ContentRoot": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/",
+      "BasePath": "_content/MovieApp.API",
+      "RelativePath": "imgs/users/1hiv3asi.vot.webp",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "AssetMergeBehavior": "PreferTarget",
+      "AssetMergeSource": "",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot/imgs/users/1hiv3asi.vot.webp"
     },
     {
       "Identity": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/cfm0dxbs.a45.png",

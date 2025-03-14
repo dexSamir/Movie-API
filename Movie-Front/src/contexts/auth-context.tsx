@@ -3,24 +3,28 @@
 import { createContext, useContext, useState, useEffect } from "react";
 
 interface User {
-  id: string;
-  name: string;
-  email: string;
+  Id: string;
+  Name: string;
+  Email: string;
   avatar?: string;
 }
 
 interface AuthContextType {
   user: User | null;
-  login: (usernameOrEmail: string, password: string, rememberMe: boolean) => Promise<void>;
+  login: (
+    UsernameOrEmail: string,
+    Password: string,
+    RememberMe: boolean
+  ) => Promise<void>;
   register: (
-    profileUrl: File | null,
-    userName: string,
-    password: string,
-    email: string,
-    name: string,
-    surname: string,
-    birthDate: string,
-    isMale: boolean
+    ProfileUrl: File | null,
+    UserName: string,
+    Password: string,
+    Email: string,
+    Name: string,
+    Surname: string,
+    BirthDate: string,
+    IsMale: boolean
   ) => Promise<void>;
   logout: () => void;
   isLoading: boolean;
@@ -41,18 +45,25 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  const login = async (usernameOrEmail: string, password: string, rememberMe: boolean) => {
+  const login = async (
+    UsernameOrEmail: string,
+    Password: string,
+    RememberMe: boolean
+  ) => {
     setIsLoading(true);
     setError(null);
 
     try {
-      const response = await fetch("https://localhost:7116/api/Auths/Login/login", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ usernameOrEmail, password, rememberMe }),
-      });
+      const response = await fetch(
+        "https://localhost:7116/api/Auths/Login/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ UsernameOrEmail, Password, RememberMe }),
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Invalid username/email or password");
@@ -60,13 +71,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const data = await response.json();
       const user = {
-        id: data.id,
-        name: data.name,
-        email: data.email,
+        Id: data.Id,
+        Name: data.Name,
+        Email: data.Email,
         avatar: data.avatar,
       };
       setUser(user);
-      if (rememberMe) {
+      if (RememberMe) {
         localStorage.setItem("user", JSON.stringify(user));
       }
     } catch (err) {
@@ -75,37 +86,39 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       setIsLoading(false);
     }
   };
-
   const register = async (
-    profileUrl: File | null,
-    userName: string,
-    password: string,
-    email: string,
-    name: string,
-    surname: string,
-    birthDate: string,
-    isMale: boolean
+    ProfileUrl: File | null,
+    UserName: string,
+    Password: string,
+    Email: string,
+    Name: string,
+    Surname: string,
+    BirthDate: string,
+    IsMale: boolean
   ) => {
     setIsLoading(true);
     setError(null);
 
     try {
       const formData = new FormData();
-      if (profileUrl) {
-        formData.append("ProfileUrl", profileUrl);
+      if (ProfileUrl) {
+        formData.append("ProfileUrl", ProfileUrl);
       }
-      formData.append("UserName", userName);
-      formData.append("Password", password);
-      formData.append("Email", email);
-      formData.append("Name", name);
-      formData.append("Surname", surname);
-      formData.append("BirthDate", birthDate);
-      formData.append("IsMale", isMale.toString());
+      formData.append("UserName", UserName);
+      formData.append("Password", Password);
+      formData.append("Email", Email);
+      formData.append("Name", Name);
+      formData.append("Surname", Surname);
+      formData.append("BirthDate", BirthDate);
+      formData.append("IsMale", IsMale.toString());
 
-      const response = await fetch("https://localhost:7116/api/Auths/Register/register", {
-        method: "POST",
-        body: formData,
-      });
+      const response = await fetch(
+        "https://localhost:7116/api/Auths/Register/register",
+        {
+          method: "POST",
+          body: formData,
+        }
+      );
 
       if (!response.ok) {
         throw new Error("Registration failed");
@@ -113,9 +126,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
       const data = await response.json();
       const user = {
-        id: data.id,
-        name: data.name,
-        email: data.email,
+        Id: data.Id,
+        Name: data.Name,
+        Email: data.Email,
         avatar: data.avatar,
       };
       setUser(user);
@@ -133,7 +146,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, register, logout, isLoading, error }}>
+    <AuthContext.Provider
+      value={{ user, login, register, logout, isLoading, error }}
+    >
       {children}
     </AuthContext.Provider>
   );

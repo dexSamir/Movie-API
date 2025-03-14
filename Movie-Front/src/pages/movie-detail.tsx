@@ -56,7 +56,7 @@ export interface Movie {
   releaseDate: string;
   genres: { genreId: number; name: string }[];
   duration: number;
-  rating: number;
+  avgRating: number;
   directorName: string;
   actors: {
     fullname: string;
@@ -84,6 +84,8 @@ export function MovieDetailPage() {
   const [movie, setMovie] = useState<Movie | null>(null);
   const [reviewText, setReviewText] = useState("");
   const [userRating, setUserRating] = useState(5);
+  const [userLiked, setUserLiked] = useState(false);
+  const [userDisliked, setUserDisliked] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [averageRating, setAverageRating] = useState<number | null>(null);
   const [totalWatchCount, setTotalWatchCount] = useState<number | null>(null);
@@ -95,6 +97,120 @@ export function MovieDetailPage() {
     likes: 0,
     dislikes: 0,
   });
+
+  const rateMovie = async (movieId: string, rating: number) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to rate movies",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+  
+    try {
+      const response = await axios.post(
+        `https://localhost:7116/api/Movies/RateMovie/${movieId}/rate`,
+        { userId: user.Id, rating },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        toast({
+          title: "Rating submitted",
+          description: "Thank you for your rating!",
+        });
+        fetchAverageRating(); 
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to submit rating",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const updateRating = async (movieId: string, rating: number) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to update your rating",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `https://localhost:7116/api/Movies/UpdateRating/rating/${movieId}`,
+        { userId: user.Id, rating },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+
+      if (response.status === 200) {
+        toast({
+          title: "Rating updated",
+          description: "Your rating has been updated!",
+        });
+        fetchAverageRating();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update rating",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteRating = async (movieId: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to delete your rating",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const response = await axios.delete(
+        `https://localhost:7116/api/Movies/DeleteRating/rating/${movieId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          data: { userId: user.Id },
+        }
+      );
+
+      if (response.status === 200) {
+        toast({
+          title: "Rating deleted",
+          description: "Your rating has been deleted!",
+        });
+        fetchAverageRating();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete rating",
+        variant: "destructive",
+      });
+    }
+  };
 
   useEffect(() => {
     fetch("https://localhost:7116/api/movies/getmoviebyid/" + id)
@@ -156,6 +272,25 @@ export function MovieDetailPage() {
     }
   }, [id]);
 
+  //   useEffect(() => {
+  //     const fetchUserReaction = async () => {
+  //       if (user) {
+  //         try {
+  //           const response = await axios.get(
+  //             `https://localhost:7116/api/Movies/GetUserReaction`,
+  //             { params: { userId: user.Id } }
+  //           );
+  //           setUserLiked(response.data.liked);
+  //           setUserDisliked(response.data.disliked);
+  //         } catch (error) {
+  //           console.error("Failed to fetch user reaction:", error);
+  //         }
+  //       }
+  //     };
+
+  //     fetchUserReaction();
+  //   }, [id, user]);
+
   const handleLikeMovie = async () => {
     if (!user) {
       toast({
@@ -170,7 +305,7 @@ export function MovieDetailPage() {
     try {
       const response = await axios.post(
         `https://localhost:7116/api/Movies/LikeMovie/${id}/like`,
-        { userId: user.id }
+        { userId: user.Id }
       );
 
       if (response.status === 200) {
@@ -178,6 +313,8 @@ export function MovieDetailPage() {
           title: "Liked",
           description: "You liked this movie",
         });
+        setUserLiked(true);
+        setUserDisliked(false);
         fetchMovieReactions();
       } else {
         throw new Error("Failed to like movie");
@@ -205,7 +342,7 @@ export function MovieDetailPage() {
     try {
       const response = await axios.post(
         `https://localhost:7116/api/Movies/DislikeMovie/${id}/dislike`,
-        { userId: user.id }
+        { userId: user.Id }
       );
 
       if (response.status === 200) {
@@ -213,6 +350,8 @@ export function MovieDetailPage() {
           title: "Disliked",
           description: "You disliked this movie",
         });
+        setUserDisliked(true);
+        setUserLiked(false);
         fetchMovieReactions();
       } else {
         throw new Error("Failed to dislike movie");
@@ -240,7 +379,7 @@ export function MovieDetailPage() {
     try {
       const response = await axios.post(
         `https://localhost:7116/api/Movies/UndoLikeMovie/${id}/undo-like`,
-        { userId: user.id }
+        { userId: user.Id }
       );
 
       if (response.status === 200) {
@@ -248,6 +387,7 @@ export function MovieDetailPage() {
           title: "Like Removed",
           description: "You removed your like from this movie",
         });
+        setUserLiked(false);
         fetchMovieReactions();
       } else {
         throw new Error("Failed to undo like");
@@ -275,7 +415,7 @@ export function MovieDetailPage() {
     try {
       const response = await axios.post(
         `https://localhost:7116/api/Movies/UndoDislikeMovie/${id}/undo-dislike`,
-        { userId: user.id }
+        { userId: user.Id }
       );
 
       if (response.status === 200) {
@@ -283,6 +423,7 @@ export function MovieDetailPage() {
           title: "Dislike Removed",
           description: "You removed your dislike from this movie",
         });
+        setUserDisliked(false);
         fetchMovieReactions();
       } else {
         throw new Error("Failed to undo dislike");
@@ -296,6 +437,21 @@ export function MovieDetailPage() {
     }
   };
 
+  const fetchReviews = async () => {
+    try {
+      const response = await axios.get(
+        `https://localhost:7116/api/Reviews/GetReviewsByMovie/${id}`
+      );
+      setReviews(response.data);
+    } catch (error) {
+      console.error("Failed to fetch reviews:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchReviews();
+  }, [id]);
+
   const handleSubmitReview = async () => {
     if (!user) {
       toast({
@@ -306,7 +462,7 @@ export function MovieDetailPage() {
       navigate("/login");
       return;
     }
-
+  
     if (!reviewText.trim()) {
       toast({
         title: "Review required",
@@ -315,22 +471,27 @@ export function MovieDetailPage() {
       });
       return;
     }
-
+  
     setIsSubmitting(true);
-
+  
     try {
       const response = await axios.post(
-        "https://localhost:7116/api/reviews/addreview",
+        "https://localhost:7116/api/Reviews/AddReview",
         {
           movieId: id,
-          userId: user.id,
-          userName: user.name,
+          userId: user.Id,
+          userName: user.Name,
           userAvatar: user.avatar,
           rating: userRating,
           comment: reviewText,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         }
       );
-
+  
       if (response.status === 200) {
         toast({
           title: "Review submitted",
@@ -338,9 +499,7 @@ export function MovieDetailPage() {
         });
         setReviewText("");
         setUserRating(5);
-        getMovieReviews(id || "");
-      } else {
-        throw new Error("Failed to submit review");
+        fetchReviews(); 
       }
     } catch (error) {
       toast({
@@ -350,6 +509,81 @@ export function MovieDetailPage() {
       });
     } finally {
       setIsSubmitting(false);
+    }
+  };
+
+  const updateReview = async (reviewId: string, updatedComment: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to update your review",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+  
+    try {
+      const response = await axios.put(
+        `https://localhost:7116/api/Reviews/UpdateReview/${reviewId}`,
+        { comment: updatedComment },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        toast({
+          title: "Review updated",
+          description: "Your review has been updated!",
+        });
+        fetchReviews(); 
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to update review",
+        variant: "destructive",
+      });
+    }
+  };
+
+  const deleteReview = async (reviewId: string) => {
+    if (!user) {
+      toast({
+        title: "Authentication required",
+        description: "Please log in to delete your review",
+        variant: "destructive",
+      });
+      navigate("/login");
+      return;
+    }
+  
+    try {
+      const response = await axios.delete(
+        `https://localhost:7116/api/Reviews/DeleteReview/${reviewId}`,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
+      );
+  
+      if (response.status === 200) {
+        toast({
+          title: "Review deleted",
+          description: "Your review has been deleted!",
+        });
+        fetchReviews();
+      }
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Failed to delete review",
+        variant: "destructive",
+      });
     }
   };
 
@@ -363,21 +597,24 @@ export function MovieDetailPage() {
       navigate("/login");
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `https://localhost:7116/api/Reviews/LikeReview/${reviewId}/like`,
-        { userId: user.id }
+        { userId: user.Id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
-
+  
       if (response.status === 200) {
         toast({
           title: "Liked",
           description: "You liked this review",
         });
-        getMovieReviews(id || "");
-      } else {
-        throw new Error("Failed to like review");
+        fetchReviews(); 
       }
     } catch (error) {
       toast({
@@ -398,21 +635,24 @@ export function MovieDetailPage() {
       navigate("/login");
       return;
     }
-
+  
     try {
       const response = await axios.post(
         `https://localhost:7116/api/Reviews/DislikeReview/${reviewId}/dislike`,
-        { userId: user.id }
+        { userId: user.Id },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        }
       );
-
+  
       if (response.status === 200) {
         toast({
           title: "Disliked",
           description: "You disliked this review",
         });
-        getMovieReviews(id || "");
-      } else {
-        throw new Error("Failed to dislike review");
+        fetchReviews(); 
       }
     } catch (error) {
       toast({
@@ -454,7 +694,7 @@ export function MovieDetailPage() {
             src={`https://localhost:7116/imgs/Movies/trailers/${movie.trailerUrl}`}
             controls
             className="w-full h-full object-cover"
-            poster={`https://localhost:7116/imgs/Movies/posters/${movie.posterUrl}`} 
+            poster={`https://localhost:7116/imgs/Movies/posters/${movie.posterUrl}`}
           />
         </div>
 
@@ -494,7 +734,7 @@ export function MovieDetailPage() {
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
-                      onClick={() => rentMovie(movie.id, user?.id || "")}
+                      onClick={() => rentMovie(movie.id, user?.Id || "")}
                     >
                       Confirm
                     </AlertDialogAction>
@@ -521,7 +761,7 @@ export function MovieDetailPage() {
                       <button
                         key={rating}
                         type="button"
-                        onClick={() => setUserRating(rating)}
+                        onClick={() => rateMovie(movie.id, rating)}
                         className={`p-1 ${
                           rating <= userRating
                             ? "text-yellow-400"
@@ -536,12 +776,6 @@ export function MovieDetailPage() {
                       </button>
                     ))}
                   </div>
-                  <Textarea
-                    placeholder="Write your review here..."
-                    value={reviewText}
-                    onChange={(e) => setReviewText(e.target.value)}
-                    rows={5}
-                  />
                 </div>
                 <DialogFooter>
                   <Button
@@ -554,11 +788,23 @@ export function MovieDetailPage() {
               </DialogContent>
             </Dialog>
             <div className="flex items-center space-x-4">
-              <Button variant="ghost" size="lg" onClick={handleLikeMovie}>
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={userLiked ? handleUndoLikeMovie : handleLikeMovie}
+                className={userLiked ? "text-primary" : ""}
+              >
                 <ThumbsUp className="h-5 w-5 mr-1" />{" "}
                 <span>{reactions.likes}</span>
               </Button>
-              <Button variant="ghost" size="lg" onClick={handleDislikeMovie}>
+              <Button
+                variant="ghost"
+                size="lg"
+                onClick={
+                  userDisliked ? handleUndoDislikeMovie : handleDislikeMovie
+                }
+                className={userDisliked ? "text-primary" : ""}
+              >
                 <ThumbsDown className="h-5 w-5 mr-1 " />{" "}
                 <span>{reactions.dislikes}</span>
               </Button>
@@ -770,7 +1016,7 @@ export function MovieDetailPage() {
             </div>
           ) : (
             <div className="space-y-6">
-              {reviews.map((review: Review) => (
+              {reviews.map((review) => (
                 <div key={review.id} className="border rounded-lg p-6">
                   <div className="flex justify-between items-start mb-4">
                     <div className="flex items-center">
@@ -802,13 +1048,30 @@ export function MovieDetailPage() {
                         </div>
                       </div>
                     </div>
+                    <div className="flex space-x-2">
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() =>
+                          updateReview(review.id, "Updated comment")
+                        }
+                      >
+                        Edit
+                      </Button>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => deleteReview(review.id)}
+                      >
+                        Delete
+                      </Button>
+                    </div>
                   </div>
                   <p className="mb-4">{review.comment}</p>
                   <div className="flex items-center space-x-4">
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={review.userLiked ? "text-primary" : ""}
                       onClick={() => handleLikeReview(review.id)}
                     >
                       <ThumbsUp className="h-4 w-4 mr-1" />
@@ -817,7 +1080,6 @@ export function MovieDetailPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className={review.userDisliked ? "text-primary" : ""}
                       onClick={() => handleDislikeReview(review.id)}
                     >
                       <ThumbsDown className="h-4 w-4 mr-1" />

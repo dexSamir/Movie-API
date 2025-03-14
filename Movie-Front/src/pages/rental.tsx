@@ -40,7 +40,7 @@ export function RentalsPage() {
   };
 
   if (!user) {
-    return null; // Should be handled by ProtectedRoute
+    return null;
   }
 
   return (
@@ -53,7 +53,6 @@ export function RentalsPage() {
           <TabsTrigger value="history">Rental History</TabsTrigger>
         </TabsList>
 
-        {/* Active Rentals Tab */}
         <TabsContent value="active">
           {activeRentals.length === 0 ? (
             <div className="text-center py-12 border rounded-lg">
@@ -152,7 +151,6 @@ export function RentalsPage() {
           )}
         </TabsContent>
 
-        {/* Rental History Tab */}
         <TabsContent value="history">
           {rentalHistory.length === 0 ? (
             <div className="text-center py-12 border rounded-lg">

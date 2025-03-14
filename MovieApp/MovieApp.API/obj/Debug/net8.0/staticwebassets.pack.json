@@ -729,8 +729,16 @@
       "PackagePath": "staticwebassets/imgs/languages/zrirqiyu.sg5.png"
     },
     {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/0kryzqt5.gpz.jpg",
+      "PackagePath": "staticwebassets/imgs/users/0kryzqt5.gpz.jpg"
+    },
+    {
       "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/0tr0q2xb.24p.png",
       "PackagePath": "staticwebassets/imgs/users/0tr0q2xb.24p.png"
+    },
+    {
+      "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/1hiv3asi.vot.webp",
+      "PackagePath": "staticwebassets/imgs/users/1hiv3asi.vot.webp"
     },
     {
       "Id": "/Users/samirhebibov/Desktop/Movie-API/MovieApp/MovieApp.API/wwwroot/imgs/users/cfm0dxbs.a45.png",

@@ -47,7 +47,7 @@ export function RegisterPage() {
         title: "Registration successful",
         description: "Your account has been created",
       });
-      navigate("/");
+      navigate("/login");
     } catch (err) {
       toast({
         title: "Registration failed",

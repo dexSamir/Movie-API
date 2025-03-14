@@ -30,13 +30,13 @@ export function ProfilePage() {
   const { getUserRentals } = useMovies();
   const { toast } = useToast();
 
-  const [name, setName] = useState(user?.name || "");
-  const [email, setEmail] = useState(user?.email || "");
+  const [name, setName] = useState(user?.Name || "");
+  const [email, setEmail] = useState(user?.Email || "");
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const rentals = user ? getUserRentals(user.id) : [];
+  const rentals = user ? getUserRentals(user.Id) : [];
   const activeRentals = rentals.filter((rental) => !rental.returned);
   const rentalHistory = rentals.filter((rental) => rental.returned);
 
@@ -60,7 +60,6 @@ export function ProfilePage() {
       return;
     }
 
-    // In a real app, you would make an API call to change the password
     toast({
       title: "Password changed",
       description: "Your password has been changed successfully",
@@ -72,19 +71,19 @@ export function ProfilePage() {
   };
 
   if (!user) {
-    return null; // Should be handled by ProtectedRoute
+    return null;
   }
 
   return (
     <div className="space-y-8">
       <div className="flex items-center space-x-4">
         <Avatar className="h-16 w-16">
-          <AvatarImage src={user.avatar} alt={user.name} />
-          <AvatarFallback>{user.name.charAt(0)}</AvatarFallback>
+          <AvatarImage src={user.avatar} alt={user.Name} />
+          <AvatarFallback>{user.Name}</AvatarFallback>
         </Avatar>
         <div>
-          <h1 className="text-3xl font-bold">{user.name}</h1>
-          <p className="text-muted-foreground">{user.email}</p>
+          <h1 className="text-3xl font-bold">{user.Name}</h1>
+          <p className="text-muted-foreground">{user.Email}</p>
         </div>
       </div>
 
@@ -95,7 +94,6 @@ export function ProfilePage() {
           <TabsTrigger value="history">Rental History</TabsTrigger>
         </TabsList>
 
-        {/* Profile Tab */}
         <TabsContent value="profile" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <Card>
@@ -172,7 +170,6 @@ export function ProfilePage() {
           </div>
         </TabsContent>
 
-        {/* Active Rentals Tab */}
         <TabsContent value="rentals">
           {activeRentals.length === 0 ? (
             <div className="text-center py-12 border rounded-lg">
@@ -207,7 +204,6 @@ export function ProfilePage() {
           )}
         </TabsContent>
 
-        {/* Rental History Tab */}
         <TabsContent value="history">
           {rentalHistory.length === 0 ? (
             <div className="text-center py-12 border rounded-lg">
